@@ -23,15 +23,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:test_edu/core/constants/app_strings.dart';
-import 'package:test_edu/core/widgets/app_pill.dart';
-import 'package:test_edu/core/widgets/app_search_field.dart';
-import 'package:test_edu/core/widgets/category_chip_row.dart';
-import 'package:test_edu/core/widgets/empty_state_view.dart';
-import 'package:test_edu/core/widgets/promo_banner.dart';
+import 'package:test_edu/features/auth/auth_notifier.dart';
+import 'package:test_edu/shared/widgets/app_pill.dart';
+import 'package:test_edu/shared/widgets/app_search_field.dart';
+import 'package:test_edu/shared/widgets/category_chip_row.dart';
+import 'package:test_edu/shared/widgets/empty_state_view.dart';
+import 'package:test_edu/shared/widgets/promo_banner.dart';
 import 'package:test_edu/features/explore_courses/constants/explore_courses_strings.dart';
-import 'package:test_edu/features/explore_courses/presentation/screens/explore_courses_screen.dart';
-import 'package:test_edu/features/explore_courses/presentation/widgets/course_card.dart';
-import 'package:test_edu/features/explore_courses/presentation/widgets/course_card_skeleton.dart';
+import 'package:test_edu/features/explore_courses/student/explore_courses_screen.dart';
+import 'package:test_edu/features/explore_courses/widgets/course_card.dart';
+import 'package:test_edu/features/explore_courses/widgets/course_card_skeleton.dart';
 import 'package:test_edu/main.dart';
 
 /// A common phone canvas (iPhone 14-ish), in logical pixels.
@@ -102,7 +103,7 @@ Future<void> pumpExploreScreen(
   tester.view.physicalSize = phoneSize;
   tester.view.devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
-  await tester.pumpWidget(const MyApp());
+  await tester.pumpWidget(MyApp(auth: AuthNotifier.signedIn()));
   await tester.pump();
 
   await tester.tap(find.text(AppStrings.navExplore));

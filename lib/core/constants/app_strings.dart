@@ -9,6 +9,11 @@ abstract final class AppStrings {
   static const navAssignments = 'الواجبات';
   static const navProfile = 'حسابي';
 
+  // Bottom navigation — the roles that don't have the student's tabs
+  static const navStudents = 'الطلاب';
+  static const navChildren = 'الأبناء';
+  static const navProgress = 'التقدم';
+
   // Generic chrome / tooltips
   static const notifications = 'الإشعارات';
   static const filterResults = 'تصفية النتائج';

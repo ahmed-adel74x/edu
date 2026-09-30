@@ -16,12 +16,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:test_edu/core/constants/app_strings.dart';
-import 'package:test_edu/features/course_details/presentation/screens/course_details_screen.dart';
-import 'package:test_edu/features/explore_courses/presentation/screens/explore_courses_screen.dart';
-import 'package:test_edu/features/explore_courses/presentation/widgets/course_card.dart';
-import 'package:test_edu/features/home/presentation/screens/home_screen.dart';
-import 'package:test_edu/features/home/presentation/widgets/compact_course_tile.dart';
-import 'package:test_edu/features/home/presentation/widgets/continue_course_card.dart';
+import 'package:test_edu/features/auth/auth_notifier.dart';
+import 'package:test_edu/features/course_details/student/course_details_screen.dart';
+import 'package:test_edu/features/explore_courses/student/explore_courses_screen.dart';
+import 'package:test_edu/features/explore_courses/widgets/course_card.dart';
+import 'package:test_edu/features/home/student/home_screen.dart';
+import 'package:test_edu/features/home/student/widgets/compact_course_tile.dart';
+import 'package:test_edu/features/home/student/widgets/continue_course_card.dart';
 import 'package:test_edu/main.dart';
 
 /// A common phone canvas (iPhone 14-ish), in logical pixels.
@@ -39,7 +40,7 @@ Future<void> pumpApp(WidgetTester tester) async {
   tester.view.physicalSize = phoneSize;
   tester.view.devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
-  await tester.pumpWidget(const MyApp());
+  await tester.pumpWidget(MyApp(auth: AuthNotifier.signedIn()));
   await tester.pump();
   await tester.pump(ExploreCoursesScreen.loadingDuration);
   await tester.pump();

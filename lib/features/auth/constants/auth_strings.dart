@@ -11,6 +11,12 @@ abstract final class AuthStrings {
   static const emailOrPhoneHint = 'name@example.com أو 05xxxxxxxx';
   static const passwordLabel = 'كلمة المرور';
 
+  // Mock sign-in: which role the next session belongs to
+  static const roleSelectorLabel = 'نوع الحساب';
+  static const roleStudent = 'طالب';
+  static const roleTeacher = 'معلم';
+  static const roleParent = 'ولي أمر';
+
   // Login
   static const loginTitle = 'تسجيل الدخول';
   static const loginBadge = '+500 دورة تدريبية معتمدة';

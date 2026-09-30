@@ -14,12 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:test_edu/core/navigation/app_bottom_nav_bar.dart';
 import 'package:test_edu/core/theme/app_theme.dart';
+import 'package:test_edu/features/auth/auth_notifier.dart';
+import 'package:test_edu/navigation/app_bottom_nav_bar.dart';
+import 'package:test_edu/navigation/student_shell.dart';
 import 'package:test_edu/features/home/constants/home_strings.dart';
-import 'package:test_edu/features/home/presentation/screens/home_screen.dart';
-import 'package:test_edu/features/home/presentation/widgets/stat_tile_grid.dart';
-import 'package:test_edu/features/home/presentation/widgets/weekly_activity_card.dart';
+import 'package:test_edu/features/home/student/home_screen.dart';
+import 'package:test_edu/features/home/student/widgets/stat_tile_grid.dart';
+import 'package:test_edu/features/home/student/widgets/weekly_activity_card.dart';
 import 'package:test_edu/main.dart';
 
 /// A common phone canvas (iPhone 14-ish), in logical pixels.
@@ -55,9 +57,12 @@ Future<void> pumpHomeScreen(WidgetTester tester, {Size size = phoneSize}) async 
 
 /// Pumps the whole app (shell + tabs) and lets the explore tab's simulated
 /// fetch finish, so no timer is left pending at teardown.
+///
+/// The session is injected as a signed-in student: the app itself starts signed
+/// out and would open login instead of the shell.
 Future<void> pumpApp(WidgetTester tester, {Size size = phoneSize}) async {
   useCanvas(tester, size);
-  await tester.pumpWidget(const MyApp());
+  await tester.pumpWidget(MyApp(auth: AuthNotifier.signedIn()));
   await tester.pump();
   await tester.pump(const Duration(seconds: 1));
 }
@@ -166,15 +171,15 @@ void main() {
     NavigationBar navBar() =>
         tester.widget<NavigationBar>(find.byType(NavigationBar));
 
-    expect(navBar().selectedIndex, AppBottomNavBar.homeIndex);
+    expect(navBar().selectedIndex, StudentShell.homeIndex);
 
     await tester.tap(find.text('دوراتي'));
     await tester.pump();
-    expect(navBar().selectedIndex, AppBottomNavBar.myCoursesIndex);
+    expect(navBar().selectedIndex, StudentShell.myCoursesIndex);
 
     await tester.tap(find.text('الرئيسية'));
     await tester.pump();
-    expect(navBar().selectedIndex, AppBottomNavBar.homeIndex);
+    expect(navBar().selectedIndex, StudentShell.homeIndex);
     expect(find.byType(AppBottomNavBar), findsOneWidget);
   });
 }

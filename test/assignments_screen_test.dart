@@ -10,11 +10,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:test_edu/core/constants/app_strings.dart';
-import 'package:test_edu/core/navigation/app_bottom_nav_bar.dart';
 import 'package:test_edu/core/theme/app_theme.dart';
-import 'package:test_edu/features/assignments/presentation/screens/assignments_screen.dart';
-import 'package:test_edu/features/assignments/presentation/widgets/assignment_card.dart';
-import 'package:test_edu/features/home/presentation/screens/home_screen.dart';
+import 'package:test_edu/features/auth/auth_notifier.dart';
+import 'package:test_edu/navigation/app_bottom_nav_bar.dart';
+import 'package:test_edu/navigation/student_shell.dart';
+import 'package:test_edu/features/assignments/student/assignments_screen.dart';
+import 'package:test_edu/features/assignments/widgets/assignment_card.dart';
+import 'package:test_edu/features/home/student/home_screen.dart';
 import 'package:test_edu/main.dart';
 
 /// Sizes the test surface like a phone: on a much larger canvas ScreenUtil
@@ -191,7 +193,7 @@ void main() {
   testWidgets('opens from the shared bottom navigation without disturbing '
       'the other tabs', (tester) async {
     useCanvas(tester, const Size(390, 844));
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(MyApp(auth: AuthNotifier.signedIn()));
     await tester.pump(const Duration(milliseconds: 600));
 
     NavigationBar navBar() =>
@@ -214,13 +216,13 @@ void main() {
         AppStrings.navProfile,
       ],
     );
-    expect(navBar().selectedIndex, AppBottomNavBar.homeIndex);
+    expect(navBar().selectedIndex, StudentShell.homeIndex);
     expect(find.byType(HomeScreen), findsOneWidget);
 
     await tester.tap(find.text('الواجبات'));
     await tester.pump(const Duration(milliseconds: 600));
 
-    expect(navBar().selectedIndex, AppBottomNavBar.assignmentsIndex);
+    expect(navBar().selectedIndex, StudentShell.assignmentsIndex);
     expect(find.byType(AssignmentsScreen), findsOneWidget);
     expect(find.text('مستوى التميز'), findsOneWidget);
     expect(tester.takeException(), isNull);
@@ -229,7 +231,7 @@ void main() {
     await tester.tap(find.text('الرئيسية'));
     await tester.pump(const Duration(milliseconds: 600));
 
-    expect(navBar().selectedIndex, AppBottomNavBar.homeIndex);
+    expect(navBar().selectedIndex, StudentShell.homeIndex);
     expect(find.byType(HomeScreen), findsOneWidget);
     expect(find.text('مستوى التميز'), findsNothing);
     expect(tester.takeException(), isNull);
@@ -258,7 +260,8 @@ void main() {
               textDirection: TextDirection.rtl,
               child: Scaffold(
                 bottomNavigationBar: AppBottomNavBar(
-                  currentIndex: AppBottomNavBar.assignmentsIndex,
+                  currentIndex: StudentShell.assignmentsIndex,
+                  destinations: StudentShell.destinations,
                   onDestinationSelected: (_) {},
                 ),
               ),
