@@ -24,6 +24,4 @@ class Course {
   final String avatar;
   final String category;
   final String buttonLabel;
-
-  static get samples => null;
 }

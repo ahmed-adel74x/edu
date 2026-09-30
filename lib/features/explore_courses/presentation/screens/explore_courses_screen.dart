@@ -15,27 +15,17 @@ import '../../../course_details/presentation/course_details_route.dart';
 import '../widgets/course_card.dart';
 import '../widgets/course_card_skeleton.dart';
 import '../../../../core/widgets/empty_state_view.dart';
+import '../../../../core/widgets/app_pill.dart';
 
 class ExploreCoursesScreen extends StatefulWidget {
   const ExploreCoursesScreen({super.key});
 
-  static Duration? get loadingDuration => null;
+  /// How long the simulated catalogue fetch takes: the skeleton placeholders
+  /// stay on screen for this long, and the tests advance the clock by it.
+  static const Duration loadingDuration = Duration(milliseconds: 700);
 
-  @override
-  State<ExploreCoursesScreen> createState() => _ExploreCoursesScreenState();
-}
-
-class _ExploreCoursesScreenState extends State<ExploreCoursesScreen> {
-  static const String allCategory = 'الكل';
-
-  static const List<String> categories = [
-    allCategory,
-    'إدارة أعمال',
-    'لغات',
-    'علوم وتكنولوجيا',
-    'برمجة وتطوير',
-  ];
-
+  /// Sample catalogue — wire these to a repository call when the backend is
+  /// connected, exactly like the home screen keeps its dashboard content.
   static const List<Course> courses = [
     Course(
       image: 'assets/courses/course_1.png',
@@ -88,6 +78,21 @@ class _ExploreCoursesScreenState extends State<ExploreCoursesScreen> {
     ),
   ];
 
+  @override
+  State<ExploreCoursesScreen> createState() => _ExploreCoursesScreenState();
+}
+
+class _ExploreCoursesScreenState extends State<ExploreCoursesScreen> {
+  static const String allCategory = 'الكل';
+
+  static const List<String> categories = [
+    allCategory,
+    'إدارة أعمال',
+    'لغات',
+    'علوم وتكنولوجيا',
+    'برمجة وتطوير',
+  ];
+
   final TextEditingController searchController = TextEditingController();
   String query = '';
   String selectedCategory = allCategory;
@@ -95,7 +100,7 @@ class _ExploreCoursesScreenState extends State<ExploreCoursesScreen> {
 
   List<Course> get visibleCourses {
     final normalizedQuery = query.trim().toLowerCase();
-    return courses.where((course) {
+    return ExploreCoursesScreen.courses.where((course) {
       final matchesCategory =
           selectedCategory == allCategory || course.category == selectedCategory;
       if (!matchesCategory) return false;
@@ -112,7 +117,7 @@ class _ExploreCoursesScreenState extends State<ExploreCoursesScreen> {
     super.initState();
     // Brief simulated fetch so the skeleton loading state is demonstrated;
     // wire this to a real repository call when the backend is connected.
-    Future.delayed(const Duration(milliseconds: 700), () {
+    Future.delayed(ExploreCoursesScreen.loadingDuration, () {
       if (mounted) setState(() => _loading = false);
     });
   }
@@ -279,29 +284,45 @@ class _SectionHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            Container(
-              width: 4.w,
-              height: 22.h,
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(AppRadius.pill),
+        // The title keeps a flexible width and ellipsizes: the header has to
+        // survive narrow phones and long section titles.
+        Expanded(
+          child: Row(
+            children: [
+              Container(
+                width: 4.w,
+                height: 22.h,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                ),
+              ),
+              HGap.xs(),
+              Flexible(
+                child: Text(
+                  ExploreCoursesStrings.sectionTitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.sectionTitle,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (!loading) ...[
+          HGap.sm(),
+          Flexible(
+            child: AppPill(
+              color: AppColors.surfaceTint,
+              child: Text(
+                _countLabel,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.bodySmall,
               ),
             ),
-            HGap.xs(),
-            Text(ExploreCoursesStrings.sectionTitle, style: AppTextStyles.sectionTitle),
-          ],
-        ),
-        if (!loading)
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.xs, vertical: 4.h),
-            decoration: BoxDecoration(
-              color: AppColors.surfaceTint,
-              borderRadius: BorderRadius.circular(AppRadius.pill),
-            ),
-            child: Text(_countLabel, style: AppTextStyles.bodySmall),
           ),
+        ],
       ],
     );
   }

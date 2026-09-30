@@ -66,6 +66,15 @@ abstract final class AppColors {
     colors: [Color(0xFFEDEFFC), Color(0xFFE3F3EE)],
   );
 
+  // ---------------------------------------------------------------------------
+  // Assignment accents (assignments screen)
+  //
+  // The "hand in" call to action is the app's one pink surface: it reads as an
+  // urgent action next to the blue brand surfaces without adding a second
+  // brand color.
+  // ---------------------------------------------------------------------------
+  static const uploadAccent = Color(0xFFF4407F);
+
   /// Progress fill, anchored at the trailing (right, in RTL) edge where the
   /// bar starts growing: teal into brand blue.
   static const progressGradient = LinearGradient(

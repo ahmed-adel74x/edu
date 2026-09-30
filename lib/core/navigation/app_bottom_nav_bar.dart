@@ -21,7 +21,8 @@ class AppBottomNavBar extends StatelessWidget {
   static const int homeIndex = 0;
   static const int myCoursesIndex = 1;
   static const int exploreIndex = 2;
-  static const int profileIndex = 3;
+  static const int assignmentsIndex = 3;
+  static const int profileIndex = 4;
 
   final int currentIndex;
   final ValueChanged<int> onDestinationSelected;
@@ -46,6 +47,11 @@ class AppBottomNavBar extends StatelessWidget {
           icon: Icon(Icons.explore_outlined),
           selectedIcon: Icon(Icons.explore_rounded),
           label: AppStrings.navExplore,
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.assignment_outlined),
+          selectedIcon: Icon(Icons.assignment_rounded),
+          label: AppStrings.navAssignments,
         ),
         NavigationDestination(
           icon: Icon(Icons.person_outline_rounded),

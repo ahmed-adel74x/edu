@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../features/assignments/presentation/screens/assignments_screen.dart';
 import '../../features/explore_courses/presentation/screens/explore_courses_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../constants/app_strings.dart';
@@ -45,6 +46,7 @@ class _MainShellState extends State<MainShell> {
             ),
             const _ComingSoonScreen(icon: Icons.bookmark_rounded),
             const ExploreCoursesScreen(),
+            const AssignmentsScreen(),
             const _ComingSoonScreen(icon: Icons.person_rounded),
           ],
         ),

@@ -51,26 +51,41 @@ class PromoBanner extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppPill(
-                color: Colors.white.withOpacity(0.16),
-                child: Text(
-                  eyebrow,
-                  style: AppTextStyles.label.copyWith(color: Colors.white),
+              // Both labels keep a flexible width and ellipsize, so a long
+              // eyebrow or countdown can never push the row over.
+              Flexible(
+                child: AppPill(
+                  color: Colors.white.withOpacity(0.16),
+                  child: Text(
+                    eyebrow,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.label.copyWith(color: Colors.white),
+                  ),
                 ),
               ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.schedule_rounded,
-                    size: 13.sp,
-                    color: Colors.white70,
-                  ),
-                  HGap.xxs(),
-                  Text(
-                    countdown,
-                    style: AppTextStyles.label.copyWith(color: Colors.white70),
-                  ),
-                ],
+              HGap.sm(),
+              Flexible(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.schedule_rounded,
+                      size: 13.sp,
+                      color: Colors.white70,
+                    ),
+                    HGap.xxs(),
+                    Flexible(
+                      child: Text(
+                        countdown,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            AppTextStyles.label.copyWith(color: Colors.white70),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -92,33 +107,45 @@ class PromoBanner extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.local_offer_rounded,
-                    size: 15.sp,
-                    color: Colors.white,
-                  ),
-                  HGap.xxs(),
-                  Text(
-                    code,
-                    style: AppTextStyles.cardTitle.copyWith(
+              Flexible(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.local_offer_rounded,
+                      size: 15.sp,
                       color: Colors.white,
-                      letterSpacing: 0.5,
                     ),
-                  ),
-                ],
-              ),
-              FilledButton(
-                onPressed: () {},
-                style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: AppColors.primary,
+                    HGap.xxs(),
+                    Flexible(
+                      child: Text(
+                        code,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.cardTitle.copyWith(
+                          color: Colors.white,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                child: Text(
-                  ctaLabel,
-                  style: AppTextStyles.button.copyWith(
-                    color: AppColors.primary,
+              ),
+              HGap.sm(),
+              Flexible(
+                child: FilledButton(
+                  onPressed: () {},
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: AppColors.primary,
+                  ),
+                  child: Text(
+                    ctaLabel,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.button.copyWith(
+                      color: AppColors.primary,
+                    ),
                   ),
                 ),
               ),

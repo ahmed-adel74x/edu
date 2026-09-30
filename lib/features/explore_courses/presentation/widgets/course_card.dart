@@ -135,37 +135,58 @@ class _CourseCardState extends State<CourseCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              ExploreCoursesStrings.totalPrice,
-                              style: AppTextStyles.label,
-                            ),
-                            VGap.xxs(),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.baseline,
-                              textBaseline: TextBaseline.alphabetic,
-                              children: [
-                                Text(
-                                  course.price,
-                                  style: AppTextStyles.priceLarge,
-                                ),
-                                HGap.xxs(),
-                                Text(
-                                  AppStrings.currencySar,
-                                  style: AppTextStyles.bodySmall.copyWith(
-                                    color: AppColors.primary,
+                        // Both ends hug their content but can give way, so a
+                        // long price or action label never overflows the row.
+                        Flexible(
+                          child: Column(
+                            // Start (not end): the caption has to sit *above*
+                            // the amount, i.e. flush with the leading edge of
+                            // the price row — the row is wider than the number
+                            // because the currency rides next to it.
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                ExploreCoursesStrings.totalPrice,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTextStyles.label,
+                              ),
+                              VGap.xxs(),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      course.price,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: AppTextStyles.priceLarge,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                  HGap.xxs(),
+                                  Text(
+                                    AppStrings.currencySar,
+                                    style: AppTextStyles.bodySmall.copyWith(
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        FilledButton.icon(
-                          onPressed: () {},
-                          icon: Icon(Icons.arrow_back_rounded, size: 16.sp),
-                          label: Text(course.buttonLabel),
+                        HGap.sm(),
+                        Flexible(
+                          child: FilledButton.icon(
+                            onPressed: () {},
+                            icon: Icon(Icons.arrow_back_rounded, size: 16.sp),
+                            label: Text(
+                              course.buttonLabel,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ),
                       ],
                     ),

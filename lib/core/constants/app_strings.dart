@@ -6,6 +6,7 @@ abstract final class AppStrings {
   static const navHome = 'الرئيسية';
   static const navMyCourses = 'دوراتي';
   static const navExplore = 'استكشاف';
+  static const navAssignments = 'الواجبات';
   static const navProfile = 'حسابي';
 
   // Generic chrome / tooltips
