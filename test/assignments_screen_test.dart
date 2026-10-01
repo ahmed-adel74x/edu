@@ -6,11 +6,9 @@
 // shared search field and filter bar.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:test_edu/core/constants/app_strings.dart';
-import 'package:test_edu/core/theme/app_theme.dart';
 import 'package:test_edu/features/auth/auth_notifier.dart';
 import 'package:test_edu/navigation/app_bottom_nav_bar.dart';
 import 'package:test_edu/navigation/student_shell.dart';
@@ -18,6 +16,8 @@ import 'package:test_edu/features/assignments/student/assignments_screen.dart';
 import 'package:test_edu/features/assignments/widgets/assignment_card.dart';
 import 'package:test_edu/features/home/student/home_screen.dart';
 import 'package:test_edu/main.dart';
+
+import 'helpers/app_test_harness.dart';
 
 /// Sizes the test surface like a phone: on a much larger canvas ScreenUtil
 /// would scale every `.w`/`.sp` value past the screens' `maxWidth` column.
@@ -42,21 +42,13 @@ Future<void> pumpAssignments(
   tester.platformDispatcher.textScaleFactorTestValue = textScale;
   addTearDown(tester.view.reset);
   addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
-  await tester.pumpWidget(
-    ScreenUtilInit(
-      designSize: const Size(375, 812),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) => MaterialApp(
-        theme: AppTheme.data(),
-        home: const AssignmentsScreen(),
-      ),
-    ),
-  );
+  await tester.pumpWidget(localizedApp(child: const AssignmentsScreen()));
   await tester.pump(const Duration(milliseconds: 600));
 }
 
 void main() {
+  setUp(prepareAppEnvironment);
+
   testWidgets('lays out without overflow on an iPhone-sized phone', (
     tester,
   ) async {
@@ -95,10 +87,7 @@ void main() {
     expect(find.text('تم التسليم في: 2026-05-02'), findsOneWidget);
 
     // The under-review card shows the uploaded file, its time and its actions.
-    expect(
-      find.text('تم تسليم الملف: UI_CaseStudy_Final.fig'),
-      findsOneWidget,
-    );
+    expect(find.text('تم تسليم الملف: UI_CaseStudy_Final.fig'), findsOneWidget);
     expect(find.text('أمس، 08:30 م'), findsOneWidget);
     expect(find.text('معاينة المرفق'), findsOneWidget);
     expect(find.text('إعادة الإرسال'), findsOneWidget);
@@ -193,7 +182,9 @@ void main() {
   testWidgets('opens from the shared bottom navigation without disturbing '
       'the other tabs', (tester) async {
     useCanvas(tester, const Size(390, 844));
-    await tester.pumpWidget(MyApp(auth: AuthNotifier.signedIn()));
+    await tester.pumpWidget(
+      MyApp(auth: AuthNotifier.signedIn(), assetLoader: memoryAssetLoader),
+    );
     await tester.pump(const Duration(milliseconds: 600));
 
     NavigationBar navBar() =>
@@ -203,8 +194,7 @@ void main() {
     // existing items keeping their order.
     expect(find.byType(AppBottomNavBar), findsOneWidget);
     expect(
-      navBar()
-          .destinations
+      navBar().destinations
           .cast<NavigationDestination>()
           .map((destination) => destination.label)
           .toList(),
@@ -250,21 +240,12 @@ void main() {
       addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
 
       await tester.pumpWidget(
-        ScreenUtilInit(
-          designSize: const Size(375, 812),
-          minTextAdapt: true,
-          splitScreenMode: true,
-          builder: (context, child) => MaterialApp(
-            theme: AppTheme.data(),
-            home: Directionality(
-              textDirection: TextDirection.rtl,
-              child: Scaffold(
-                bottomNavigationBar: AppBottomNavBar(
-                  currentIndex: StudentShell.assignmentsIndex,
-                  destinations: StudentShell.destinations,
-                  onDestinationSelected: (_) {},
-                ),
-              ),
+        localizedApp(
+          child: Scaffold(
+            bottomNavigationBar: AppBottomNavBar(
+              currentIndex: StudentShell.assignmentsIndex,
+              destinations: StudentShell.destinations,
+              onDestinationSelected: (_) {},
             ),
           ),
         ),

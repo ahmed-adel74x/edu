@@ -27,6 +27,8 @@ import 'package:test_edu/shared/models/user_role.dart';
 import 'package:test_edu/shared/widgets/app_primary_button.dart';
 import 'package:test_edu/shared/widgets/app_text_field.dart';
 
+import 'helpers/app_test_harness.dart';
+
 /// A common phone canvas (iPhone 14-ish), in logical pixels. Every dimension
 /// comes from `flutter_screenutil` (design canvas 375x812), so the surface has
 /// to stay phone-sized.
@@ -38,7 +40,7 @@ Future<void> pumpApp(WidgetTester tester, AuthNotifier auth) async {
   tester.view.physicalSize = phoneSize;
   tester.view.devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
-  await tester.pumpWidget(MyApp(auth: auth));
+  await tester.pumpWidget(MyApp(auth: auth, assetLoader: memoryAssetLoader));
   await tester.pump();
   await tester.pump(const Duration(seconds: 1));
 }
@@ -80,6 +82,8 @@ Future<void> signInThroughLogin(
 }
 
 void main() {
+  setUp(prepareAppEnvironment);
+
   group('the router guard', () {
     test('sends a signed-out session to login', () {
       expect(
@@ -105,15 +109,18 @@ void main() {
       expect(redirectFor(role: null, location: RoutePaths.signUp), isNull);
     });
 
-    test('moves a signed-in session off auth and the root to its first tab', () {
-      for (final role in UserRole.values) {
-        final home = homePathFor(role);
-        expect(redirectFor(role: role, location: RoutePaths.login), home);
-        expect(redirectFor(role: role, location: RoutePaths.signUp), home);
-        expect(redirectFor(role: role, location: RoutePaths.root), home);
-        expect(redirectFor(role: role, location: home), isNull);
-      }
-    });
+    test(
+      'moves a signed-in session off auth and the root to its first tab',
+      () {
+        for (final role in UserRole.values) {
+          final home = homePathFor(role);
+          expect(redirectFor(role: role, location: RoutePaths.login), home);
+          expect(redirectFor(role: role, location: RoutePaths.signUp), home);
+          expect(redirectFor(role: role, location: RoutePaths.root), home);
+          expect(redirectFor(role: role, location: home), isNull);
+        }
+      },
+    );
 
     test('lets a role open its own pages', () {
       expect(
@@ -153,7 +160,10 @@ void main() {
         RoutePaths.parentHome,
       );
       expect(
-        redirectFor(role: UserRole.teacher, location: RoutePaths.parentProgress),
+        redirectFor(
+          role: UserRole.teacher,
+          location: RoutePaths.parentProgress,
+        ),
         RoutePaths.teacherHome,
       );
     });

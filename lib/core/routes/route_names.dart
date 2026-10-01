@@ -87,17 +87,17 @@ const _roleRoots = <UserRole, String>{
 
 /// The first tab of [role]'s shell — where a signed-in session belongs.
 String homePathFor(UserRole role) => switch (role) {
-      UserRole.student => RoutePaths.studentHome,
-      UserRole.teacher => RoutePaths.teacherHome,
-      UserRole.parent => RoutePaths.parentHome,
-    };
+  UserRole.student => RoutePaths.studentHome,
+  UserRole.teacher => RoutePaths.teacherHome,
+  UserRole.parent => RoutePaths.parentHome,
+};
 
 /// [homePathFor] as a route name, for code that navigates by name.
 String homeNameFor(UserRole role) => switch (role) {
-      UserRole.student => RouteNames.studentHome,
-      UserRole.teacher => RouteNames.teacherHome,
-      UserRole.parent => RouteNames.parentHome,
-    };
+  UserRole.student => RouteNames.studentHome,
+  UserRole.teacher => RouteNames.teacherHome,
+  UserRole.parent => RouteNames.parentHome,
+};
 
 /// True for the two screens that only make sense while signed out.
 bool isAuthLocation(String location) =>

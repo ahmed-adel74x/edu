@@ -49,14 +49,14 @@ class AuthNotifier extends ChangeNotifier {
   }
 
   static User _mockUser(UserRole role) => User(
-        id: 'mock-${role.name}',
-        name: switch (role) {
-          UserRole.student => 'أحمد',
-          UserRole.teacher => 'منى',
-          UserRole.parent => 'والد أحمد',
-        },
-        role: role,
-      );
+    id: 'mock-${role.name}',
+    name: switch (role) {
+      UserRole.student => 'أحمد',
+      UserRole.teacher => 'منى',
+      UserRole.parent => 'والد أحمد',
+    },
+    role: role,
+  );
 }
 
 /// Makes the app's [AuthNotifier] reachable from every screen.

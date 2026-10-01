@@ -25,14 +25,16 @@ import 'package:test_edu/features/home/student/widgets/compact_course_tile.dart'
 import 'package:test_edu/features/home/student/widgets/continue_course_card.dart';
 import 'package:test_edu/main.dart';
 
+import 'helpers/app_test_harness.dart';
+
 /// A common phone canvas (iPhone 14-ish), in logical pixels.
 const Size phoneSize = Size(390, 844);
 
 /// Finder scoped to the details page (the list behind it stays in the tree).
 Finder inDetails(String text) => find.descendant(
-      of: find.byType(CourseDetailsScreen),
-      matching: find.text(text),
-    );
+  of: find.byType(CourseDetailsScreen),
+  matching: find.text(text),
+);
 
 /// Pumps the app on a phone canvas, letting the explore tab's simulated fetch
 /// finish so that no timer is left pending at teardown.
@@ -40,7 +42,9 @@ Future<void> pumpApp(WidgetTester tester) async {
   tester.view.physicalSize = phoneSize;
   tester.view.devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
-  await tester.pumpWidget(MyApp(auth: AuthNotifier.signedIn()));
+  await tester.pumpWidget(
+    MyApp(auth: AuthNotifier.signedIn(), assetLoader: memoryAssetLoader),
+  );
   await tester.pump();
   await tester.pump(ExploreCoursesScreen.loadingDuration);
   await tester.pump();
@@ -76,11 +80,13 @@ Future<void> scrollAndTap(
 
 /// The details page's back affordance: the arrow that points back in RTL.
 Finder detailsBackButton() => find.descendant(
-      of: find.byType(CourseDetailsScreen),
-      matching: find.byIcon(Icons.arrow_forward_rounded),
-    );
+  of: find.byType(CourseDetailsScreen),
+  matching: find.byIcon(Icons.arrow_forward_rounded),
+);
 
 void main() {
+  setUp(prepareAppEnvironment);
+
   testWidgets('home: continue card opens the tapped course, back returns', (
     tester,
   ) async {
@@ -108,7 +114,11 @@ void main() {
   testWidgets('home: compact tile opens its own course', (tester) async {
     await pumpApp(tester);
 
-    await scrollAndTap(tester, find.byType(CompactCourseTile), homeScrollable());
+    await scrollAndTap(
+      tester,
+      find.byType(CompactCourseTile),
+      homeScrollable(),
+    );
 
     expect(find.byType(CourseDetailsScreen), findsOneWidget);
     expect(inDetails('أساسيات وتطوير الويب'), findsOneWidget);

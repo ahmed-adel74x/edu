@@ -1,31 +1,40 @@
+import 'package:easy_localization/easy_localization.dart';
+
+/// Shared copy: the app's identity, the shell's navigation and the strings the
+/// shared widgets fall back to.
+///
+/// Every entry resolves a key from `assets/translations`, so a screen keeps
+/// calling the name it always has (`AppStrings.navHome`) and still follows the
+/// language the user picked.
 abstract final class AppStrings {
   // App identity
-  static const appName = 'أكاديمية التعلم';
+  static String get appName => 'common.appName'.tr();
+  static String get appTitle => 'common.appTitle'.tr();
 
   // Bottom navigation
-  static const navHome = 'الرئيسية';
-  static const navMyCourses = 'دوراتي';
-  static const navExplore = 'استكشاف';
-  static const navAssignments = 'الواجبات';
-  static const navProfile = 'حسابي';
+  static String get navHome => 'nav.home'.tr();
+  static String get navMyCourses => 'nav.myCourses'.tr();
+  static String get navExplore => 'nav.explore'.tr();
+  static String get navAssignments => 'nav.assignments'.tr();
+  static String get navProfile => 'nav.profile'.tr();
 
   // Bottom navigation — the roles that don't have the student's tabs
-  static const navStudents = 'الطلاب';
-  static const navChildren = 'الأبناء';
-  static const navProgress = 'التقدم';
+  static String get navStudents => 'nav.students'.tr();
+  static String get navChildren => 'nav.children'.tr();
+  static String get navProgress => 'nav.progress'.tr();
 
   // Generic chrome / tooltips
-  static const notifications = 'الإشعارات';
-  static const filterResults = 'تصفية النتائج';
+  static String get notifications => 'common.notifications'.tr();
+  static String get filterResults => 'common.filterResults'.tr();
 
   // Generic empty-state fallback (used when a feature doesn't override it)
-  static const emptyStateTitle = 'لا توجد نتائج';
-  static const emptyStateMessage = 'جرّب تعديل معايير البحث.';
+  static String get emptyStateTitle => 'common.emptyState.title'.tr();
+  static String get emptyStateMessage => 'common.emptyState.message'.tr();
 
   // Tabs that live in the shell but don't have a screen yet
-  static const comingSoonTitle = 'قريبًا';
-  static const comingSoonMessage = 'هذا القسم قيد التطوير حاليًا.';
+  static String get comingSoonTitle => 'common.comingSoon.title'.tr();
+  static String get comingSoonMessage => 'common.comingSoon.message'.tr();
 
   // Currency
-  static const currencySar = 'ر.س';
+  static String get currencySar => 'common.currencySar'.tr();
 }

@@ -25,7 +25,7 @@ class StudentShell extends StatelessWidget {
 
   /// The student's tabs, in [homeIndex] … [profileIndex] order. The branch order
   /// in `student_routes.dart` matches this list.
-  static const tabs = <NavTab>[
+  static List<NavTab> get tabs => [
     NavTab(
       label: AppStrings.navHome,
       icon: Icons.home_outlined,
@@ -55,18 +55,19 @@ class StudentShell extends StatelessWidget {
 
   /// The bar's destinations, in tab order: the shell renders them, and hands
   /// them to anything that stands the bar up on its own (previews, tests).
-  static List<NavigationDestination> get destinations =>
-      [for (final tab in tabs) tab.toDestination()];
+  static List<NavigationDestination> get destinations => [
+    for (final tab in tabs) tab.toDestination(),
+  ];
 
   /// The stand-in page for tab [index], while that tab has no screen yet.
   static Widget placeholder(int index) => ComingSoonScreen(
-        icon: tabs[index].selectedIcon,
-        title: tabs[index].label,
-      );
+    icon: tabs[index].selectedIcon,
+    title: tabs[index].label,
+  );
 
   @override
   Widget build(BuildContext context) => AppShellScaffold(
-        navigationShell: navigationShell,
-        destinations: destinations,
-      );
+    navigationShell: navigationShell,
+    destinations: destinations,
+  );
 }

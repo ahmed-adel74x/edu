@@ -1,51 +1,69 @@
 import 'package:flutter/material.dart';
 
-import 'app_colors.dart';
+import 'app_colors_extension.dart';
 import 'app_dimensions.dart';
-import 'app_text_styles.dart';
+import 'app_type_scale.dart';
 
-/// Builds the app's [ThemeData]. Call this only after ScreenUtil has been
-/// initialized (it relies on the responsive text styles / radii above).
+/// Builds the app's [ThemeData]. Call these only after ScreenUtil has been
+/// initialized (they rely on the responsive text styles / radii above).
+///
+/// Both themes are one builder run on a different [AppColorsExtension], so a
+/// component can never end up styled for a single theme only.
 abstract final class AppTheme {
-  static ThemeData data() {
+  /// The theme the app was designed in.
+  static ThemeData light() =>
+      _build(AppColorsExtension.light, Brightness.light);
+
+  /// Its dark counterpart.
+  static ThemeData dark() => _build(AppColorsExtension.dark, Brightness.dark);
+
+  static ThemeData _build(AppColorsExtension colors, Brightness brightness) {
+    final text = AppTypeScale(colors);
+
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
-      primary: AppColors.primary,
-      secondary: AppColors.secondary,
-      surface: AppColors.surface,
-      error: AppColors.error,
+      seedColor: colors.primary,
+      brightness: brightness,
+      primary: colors.primary,
+      secondary: colors.secondary,
+      surface: colors.surface,
+      error: colors.error,
     );
 
     return ThemeData(
       useMaterial3: true,
+      brightness: brightness,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: AppColors.background,
+      scaffoldBackgroundColor: colors.background,
       splashFactory: InkSparkle.splashFactory,
-      fontFamily: AppTextStyles.body.fontFamily,
+      fontFamily: text.body.fontFamily,
+
+      // The palette travels with the theme, so `context.colors` always matches
+      // the ThemeData in force.
+      extensions: [colors],
 
       textTheme: TextTheme(
-        headlineSmall: AppTextStyles.display,
-        titleLarge: AppTextStyles.sectionTitle,
-        titleMedium: AppTextStyles.cardTitle,
-        bodyMedium: AppTextStyles.body,
-        bodySmall: AppTextStyles.bodySmall,
-        labelSmall: AppTextStyles.label,
-        labelLarge: AppTextStyles.button,
+        headlineSmall: text.display,
+        titleLarge: text.sectionTitle,
+        titleMedium: text.cardTitle,
+        bodyMedium: text.body,
+        bodySmall: text.bodySmall,
+        labelSmall: text.label,
+        labelLarge: text.button,
       ),
 
-      appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.background,
+      appBarTheme: AppBarTheme(
+        backgroundColor: colors.background,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        foregroundColor: AppColors.ink,
+        foregroundColor: colors.ink,
       ),
 
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.onPrimary,
-          textStyle: AppTextStyles.button,
+          backgroundColor: colors.primary,
+          foregroundColor: colors.onPrimary,
+          textStyle: text.button,
           padding: EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
             vertical: AppSpacing.sm,
@@ -59,8 +77,8 @@ abstract final class AppTheme {
 
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
-          backgroundColor: AppColors.surfaceTint,
-          foregroundColor: AppColors.primary,
+          backgroundColor: colors.surfaceTint,
+          foregroundColor: colors.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.xs),
           ),
@@ -69,8 +87,8 @@ abstract final class AppTheme {
 
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.surfaceMuted,
-        hintStyle: AppTextStyles.body.copyWith(color: AppColors.inkFaint),
+        fillColor: colors.surfaceMuted,
+        hintStyle: text.body.copyWith(color: colors.inkFaint),
         contentPadding: EdgeInsets.symmetric(
           horizontal: AppSpacing.md,
           vertical: AppSpacing.sm,
@@ -85,21 +103,21 @@ abstract final class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.sm),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.4),
+          borderSide: BorderSide(color: colors.primary, width: 1.4),
         ),
       ),
 
       chipTheme: ChipThemeData(
-        backgroundColor: AppColors.surfaceTint,
-        selectedColor: AppColors.primary,
+        backgroundColor: colors.surfaceTint,
+        selectedColor: colors.primary,
         showCheckmark: false,
-        labelStyle: AppTextStyles.bodySmall.copyWith(
+        labelStyle: text.bodySmall.copyWith(
           fontWeight: FontWeight.w700,
-          color: AppColors.primary,
+          color: colors.primary,
         ),
-        secondaryLabelStyle: AppTextStyles.bodySmall.copyWith(
+        secondaryLabelStyle: text.bodySmall.copyWith(
           fontWeight: FontWeight.w700,
-          color: AppColors.onPrimary,
+          color: colors.onPrimary,
         ),
         side: BorderSide.none,
         padding: EdgeInsets.symmetric(
@@ -111,29 +129,29 @@ abstract final class AppTheme {
 
       navigationBarTheme: NavigationBarThemeData(
         height: 68,
-        backgroundColor: AppColors.surface,
+        backgroundColor: colors.surface,
         elevation: 0,
-        indicatorColor: AppColors.primary,
+        indicatorColor: colors.primary,
         surfaceTintColor: Colors.transparent,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
-          return AppTextStyles.bodySmall.copyWith(
+          return text.bodySmall.copyWith(
             fontWeight: FontWeight.w700,
-            color: selected ? AppColors.primary : AppColors.inkFaint,
+            color: selected ? colors.primary : colors.inkFaint,
             fontSize: 11,
           );
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return IconThemeData(
-            color: selected ? AppColors.onPrimary : AppColors.inkFaint,
+            color: selected ? colors.onPrimary : colors.inkFaint,
             size: 22,
           );
         }),
       ),
 
-      dividerTheme: const DividerThemeData(
-        color: AppColors.border,
+      dividerTheme: DividerThemeData(
+        color: colors.border,
         thickness: 1,
         space: 1,
       ),

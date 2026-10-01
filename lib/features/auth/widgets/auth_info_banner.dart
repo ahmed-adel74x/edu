@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 
 /// Soft mint info strip with an icon tile, a bold [label] and a [text] body.
 class AuthInfoBanner extends StatelessWidget {
@@ -27,9 +27,9 @@ class AuthInfoBanner extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.sm),
       decoration: BoxDecoration(
-        color: AppColors.tintMint.withOpacity(0.35),
+        color: context.colors.tintMint.withOpacity(0.35),
         borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(color: AppColors.tintMint),
+        border: Border.all(color: context.colors.tintMint),
       ),
       child: Row(
         children: [
@@ -49,12 +49,12 @@ class AuthInfoBanner extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: label,
-                    style: AppTextStyles.bodySmall.copyWith(
+                    style: context.texts.bodySmall.copyWith(
                       fontWeight: FontWeight.w800,
-                      color: AppColors.accent,
+                      color: context.colors.accent,
                     ),
                   ),
-                  TextSpan(text: text, style: AppTextStyles.bodySmall),
+                  TextSpan(text: text, style: context.texts.bodySmall),
                 ],
               ),
             ),

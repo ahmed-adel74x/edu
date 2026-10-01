@@ -1,0 +1,174 @@
+{
+  "common": {
+    "appName": "Learning Academy",
+    "appTitle": "Explore Courses",
+    "currencySar": "SAR",
+    "notifications": "Notifications",
+    "filterResults": "Filter results",
+    "emptyState": {
+      "title": "Nothing to show yet",
+      "message": "Try adjusting your search filters."
+    },
+    "comingSoon": {
+      "title": "Coming soon",
+      "message": "We're still building this section."
+    },
+    "language": {
+      "label": "Language",
+      "ar": "العربية",
+      "en": "English"
+    },
+    "theme": {
+      "label": "Appearance",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "myCourses": "My Courses",
+    "explore": "Explore",
+    "assignments": "Assignments",
+    "profile": "Profile",
+    "students": "Students",
+    "children": "Children",
+    "progress": "Progress"
+  },
+  "auth": {
+    "common": {
+      "help": "Need help?",
+      "back": "Back",
+      "continueWith": "Or continue with",
+      "quickSignUpWith": "Or sign up quickly with",
+      "google": "Google",
+      "apple": "Apple",
+      "passwordHint": "••••••••",
+      "emailOrPhoneLabel": "Email or phone number",
+      "emailOrPhoneHint": "name@example.com or 05xxxxxxxx",
+      "passwordLabel": "Password"
+    },
+    "roles": {
+      "label": "Account type",
+      "student": "Student",
+      "teacher": "Teacher",
+      "parent": "Parent"
+    },
+    "login": {
+      "title": "Sign in",
+      "badge": "500+ certified courses",
+      "tag": "🚀 Your path to excellence",
+      "heroTitle": "Welcome back! 👋",
+      "heroSubtitle": "Sign in to pick up your lessons, assignments and daily quizzes right where you left off.",
+      "forgotPassword": "Forgot your password?",
+      "rememberDevice": "Always remember this device",
+      "cta": "Sign in",
+      "wisdomLabel": "Today's tip:",
+      "wisdomText": " Fifteen focused minutes of learning every day makes a real difference to your future.",
+      "noAccount": "Don't have an account yet?",
+      "createAccountLink": "Create a new account"
+    },
+    "signUp": {
+      "title": "Create a new account",
+      "studentsBadge": "50,000+ students",
+      "academicTag": "✨ Your path to academic excellence",
+      "heroTitle": "Start your learning journey today! 🎓",
+      "heroSubtitle": "Join a community of learners and experts, and build the most in-demand skills with instant certified credentials.",
+      "fullNameLabel": "Full name",
+      "fullNameHint": "e.g. Basant Saeed or Ahmed Mahmoud",
+      "confirmPasswordLabel": "Confirm password",
+      "termsPrefix": "I agree to the ",
+      "termsLink": "terms and conditions",
+      "termsAnd": " and ",
+      "privacyLink": "privacy policy",
+      "termsSuffix": " of the Learning Academy",
+      "cta": "Create account and start learning",
+      "certificatesLabel": "Instant certified credentials:",
+      "certificatesText": " lifetime access to every lesson and assignment from the moment you sign up.",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Sign in"
+    },
+    "validation": {
+      "fullNameRequired": "Please enter your full name",
+      "fullNameTooShort": "That name is too short",
+      "emailOrPhoneRequired": "Please enter your email or phone number",
+      "emailOrPhoneInvalid": "Enter a valid email address or phone number",
+      "passwordRequired": "Please enter your password",
+      "passwordTooShort": "Your password must be at least 8 characters",
+      "confirmPasswordRequired": "Please confirm your password",
+      "passwordsMismatch": "The two passwords don't match",
+      "termsRequired": "You need to accept the terms and conditions to continue"
+    }
+  },
+  "assignments": {
+    "screenTitle": "Assignments",
+    "levelBadge": "Excellence level",
+    "streakBadge": "3-day streak 🔥",
+    "heroTitle": "Your urgent assignments are waiting, champion!",
+    "heroSubtitle": "Hand your coursework in on time to earn experience points and climb the leaderboard.",
+    "pointsTooltip": "Experience points",
+    "searchHint": "Search by assignment or lecture…",
+    "filterAll": "All",
+    "filterPending": "Pending",
+    "filterSubmitted": "Submitted",
+    "filterGraded": "Graded",
+    "pendingBadge": "Pending",
+    "underReviewBadge": "Under review",
+    "gradedBadge": "Graded",
+    "instructorNotesPrefix": "Feedback from",
+    "submitCta": "Submit assignment",
+    "briefCta": "Download brief",
+    "viewSubmissionCta": "View answer file and certificate",
+    "previewCta": "Preview attachment",
+    "resendCta": "Resubmit",
+    "emptyTitle": "No assignments match",
+    "emptyMessage": "Try adjusting your search or the assignment status."
+  },
+  "home": {
+    "userName": "Ahmed",
+    "welcomeTitle": "Welcome back, {name} 👋",
+    "welcomeSubtitle": "Ready to carry on your learning journey and reach your goals today?",
+    "streakBadge": "On a roll • 4-day streak 🔥",
+    "browseNew": "Browse new",
+    "curriculumBadge": "An advanced interactive curriculum, ready for you",
+    "continueLearningTitle": "Continue learning",
+    "seeAll": "See all",
+    "upcomingTitle": "Upcoming quizzes and tasks",
+    "upcomingBadge": "2 waiting for you",
+    "progressLabel": "Progress",
+    "continueLessonCta": "Continue current lesson",
+    "weeklyTitle": "Weekly attendance activity",
+    "weeklySubtitle": "Total engagement: 5 active days",
+    "weeklyRangePill": "This week"
+  },
+  "explore": {
+    "screenTitle": "Explore courses",
+    "searchHint": "Search for a course, instructor or category…",
+    "sectionTitle": "Available courses",
+    "noCourses": "No courses",
+    "oneCourse": "One course",
+    "twoCourses": "Two courses",
+    "count": "{count} courses",
+    "allCategory": "All",
+    "totalPrice": "Total price",
+    "emptyTitle": "No courses match",
+    "emptyMessage": "Try a different search term or pick another category.",
+    "promoEyebrow": "Deal of the week",
+    "promoTitle": "30% off every\ntech course",
+    "promoSubtitle": "Level up your professional skills today with certified credentials and hands-on practice.",
+    "promoCode": "TECH30",
+    "promoCountdown": "Ends in 48 hours",
+    "promoActivateCta": "Apply discount"
+  },
+  "courseDetails": {
+    "screenTitle": "Course details",
+    "instructorSectionTitle": "Meet your instructor",
+    "instructorProfileBadge": "Profile",
+    "studentsLabel": "Students",
+    "curriculumTitle": "Course curriculum",
+    "nowBadge": "Now",
+    "enrolledLabel": "Already enrolled",
+    "progressLabel": "Progress",
+    "continueCta": "Continue course"
+  }
+}

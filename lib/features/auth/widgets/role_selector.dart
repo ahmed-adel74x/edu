@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/models/user_role.dart';
 import '../constants/auth_strings.dart';
 
@@ -18,19 +18,24 @@ class RoleSelector extends StatelessWidget {
     super.key,
     required this.selected,
     required this.onSelected,
-    this.label = AuthStrings.roleSelectorLabel,
+    this.label,
   });
 
   final UserRole selected;
   final ValueChanged<UserRole> onSelected;
-  final String label;
+
+  /// Defaults to the shared "account type" label.
+  final String? label;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(label, style: AppTextStyles.label),
+        Text(
+          label ?? AuthStrings.roleSelectorLabel,
+          style: context.texts.label,
+        ),
         VGap.xs(),
         Row(
           children: [
@@ -65,7 +70,9 @@ class _RoleChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final foreground = isSelected ? AppColors.onPrimary : AppColors.inkMuted;
+    final foreground = isSelected
+        ? context.colors.onPrimary
+        : context.colors.inkMuted;
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -76,10 +83,10 @@ class _RoleChip extends StatelessWidget {
           vertical: AppSpacing.xs,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : AppColors.surface,
+          color: isSelected ? context.colors.primary : context.colors.surface,
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.border,
+            color: isSelected ? context.colors.primary : context.colors.border,
           ),
         ),
         child: Column(
@@ -91,7 +98,7 @@ class _RoleChip extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: AppTextStyles.bodySmall.copyWith(
+              style: context.texts.bodySmall.copyWith(
                 fontWeight: FontWeight.w700,
                 color: foreground,
               ),
@@ -103,14 +110,14 @@ class _RoleChip extends StatelessWidget {
   }
 
   static IconData _iconFor(UserRole role) => switch (role) {
-        UserRole.student => Icons.school_rounded,
-        UserRole.teacher => Icons.co_present_rounded,
-        UserRole.parent => Icons.family_restroom_rounded,
-      };
+    UserRole.student => Icons.school_rounded,
+    UserRole.teacher => Icons.co_present_rounded,
+    UserRole.parent => Icons.family_restroom_rounded,
+  };
 
   static String _labelFor(UserRole role) => switch (role) {
-        UserRole.student => AuthStrings.roleStudent,
-        UserRole.teacher => AuthStrings.roleTeacher,
-        UserRole.parent => AuthStrings.roleParent,
-      };
+    UserRole.student => AuthStrings.roleStudent,
+    UserRole.teacher => AuthStrings.roleTeacher,
+    UserRole.parent => AuthStrings.roleParent,
+  };
 }

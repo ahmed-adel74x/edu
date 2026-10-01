@@ -11,10 +11,9 @@
 //     outside this file's scope and keeps its own tests.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:test_edu/core/theme/app_theme.dart';
+import 'package:test_edu/core/theme/app_colors_extension.dart';
 import 'package:test_edu/features/auth/auth_notifier.dart';
 import 'package:test_edu/navigation/app_bottom_nav_bar.dart';
 import 'package:test_edu/navigation/student_shell.dart';
@@ -23,6 +22,8 @@ import 'package:test_edu/features/home/student/home_screen.dart';
 import 'package:test_edu/features/home/student/widgets/stat_tile_grid.dart';
 import 'package:test_edu/features/home/student/widgets/weekly_activity_card.dart';
 import 'package:test_edu/main.dart';
+
+import 'helpers/app_test_harness.dart';
 
 /// A common phone canvas (iPhone 14-ish), in logical pixels.
 const Size phoneSize = Size(390, 844);
@@ -36,22 +37,13 @@ void useCanvas(WidgetTester tester, Size size) {
   addTearDown(tester.view.reset);
 }
 
-/// Pumps just the home screen, with the same `ScreenUtilInit` + theme setup
-/// the app itself uses.
-Future<void> pumpHomeScreen(WidgetTester tester, {Size size = phoneSize}) async {
+/// Pumps just the home screen, inside the app's localization + theme setup.
+Future<void> pumpHomeScreen(
+  WidgetTester tester, {
+  Size size = phoneSize,
+}) async {
   useCanvas(tester, size);
-  await tester.pumpWidget(
-    ScreenUtilInit(
-      designSize: const Size(375, 812),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.data(),
-        home: const HomeScreen(),
-      ),
-    ),
-  );
+  await tester.pumpWidget(localizedApp(child: const HomeScreen()));
   await tester.pump();
 }
 
@@ -62,7 +54,9 @@ Future<void> pumpHomeScreen(WidgetTester tester, {Size size = phoneSize}) async 
 /// out and would open login instead of the shell.
 Future<void> pumpApp(WidgetTester tester, {Size size = phoneSize}) async {
   useCanvas(tester, size);
-  await tester.pumpWidget(MyApp(auth: AuthNotifier.signedIn()));
+  await tester.pumpWidget(
+    MyApp(auth: AuthNotifier.signedIn(), assetLoader: memoryAssetLoader),
+  );
   await tester.pump();
   await tester.pump(const Duration(seconds: 1));
 }
@@ -70,28 +64,34 @@ Future<void> pumpApp(WidgetTester tester, {Size size = phoneSize}) async {
 /// The home screen's scrollable (the shell keeps every tab alive, so the tree
 /// can hold more than one scrollable).
 Finder homeScrollable() => find.descendant(
-      of: find.byType(HomeScreen),
-      matching: find.byType(Scrollable),
-    );
+  of: find.byType(HomeScreen),
+  matching: find.byType(Scrollable),
+);
 
 /// Scrolls the dashboard until [target] is on screen.
 
 void main() {
+  setUp(prepareAppEnvironment);
+
   testWidgets('shows the greeting and the summary tiles', (
     WidgetTester tester,
   ) async {
     await pumpHomeScreen(tester);
+
+    // The screen's sample rows carry theme colors, so they are built against
+    // the light palette here — the same palette the screen renders with.
+    final stats = HomeScreen.stats(AppColorsExtension.light);
 
     expect(find.text(HomeStrings.welcomeTitle), findsOneWidget);
     expect(find.text(HomeStrings.streakBadge), findsOneWidget);
     expect(find.text(HomeStrings.browseNew), findsOneWidget);
 
     // Every tile of the grid is driven by the screen's sample stats.
-    for (final stat in HomeScreen.stats) {
+    for (final stat in stats) {
       expect(find.text(stat.label), findsOneWidget);
       expect(find.text(stat.value), findsOneWidget);
     }
-    expect(find.byType(StatTile), findsNWidgets(HomeScreen.stats.length));
+    expect(find.byType(StatTile), findsNWidgets(stats.length));
 
     expect(tester.takeException(), isNull);
   });
@@ -124,17 +124,19 @@ void main() {
   ) async {
     await pumpHomeScreen(tester);
 
-    await reveal(tester, find.text(HomeScreen.tasks.first.title));
+    final tasks = HomeScreen.tasks(AppColorsExtension.light);
+
+    await reveal(tester, find.text(tasks.first.title));
     expect(find.text(HomeStrings.upcomingTitle), findsOneWidget);
     expect(find.text(HomeStrings.upcomingBadge), findsOneWidget);
-    expect(find.text(HomeScreen.tasks.first.meta!), findsOneWidget);
-    expect(find.text(HomeScreen.tasks.first.countdown!), findsOneWidget);
-    expect(find.text(HomeScreen.tasks.first.progressBadge!), findsOneWidget);
-    expect(find.text(HomeScreen.tasks.first.actionLabel), findsOneWidget);
+    expect(find.text(tasks.first.meta!), findsOneWidget);
+    expect(find.text(tasks.first.countdown!), findsOneWidget);
+    expect(find.text(tasks.first.progressBadge!), findsOneWidget);
+    expect(find.text(tasks.first.actionLabel), findsOneWidget);
 
-    await reveal(tester, find.text(HomeScreen.tasks.last.title));
-    expect(find.text(HomeScreen.tasks.last.statusNote!), findsOneWidget);
-    expect(find.text(HomeScreen.tasks.last.actionLabel), findsOneWidget);
+    await reveal(tester, find.text(tasks.last.title));
+    expect(find.text(tasks.last.statusNote!), findsOneWidget);
+    expect(find.text(tasks.last.actionLabel), findsOneWidget);
 
     await reveal(tester, find.byType(WeeklyActivityChart));
     expect(find.text(HomeStrings.weeklyTitle), findsOneWidget);

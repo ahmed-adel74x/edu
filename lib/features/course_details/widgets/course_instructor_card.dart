@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/app_pill.dart';
 import '../constants/course_details_strings.dart';
@@ -27,22 +27,22 @@ class CourseInstructorCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   CourseDetailsStrings.instructorSectionTitle,
-                  textAlign: TextAlign.right,
+                  textAlign: TextAlign.start,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.linkAction,
+                  style: context.texts.linkAction,
                 ),
               ),
               HGap.xs(),
               Flexible(
                 child: AppPill(
-                  color: AppColors.tintLavender,
+                  color: context.colors.tintLavender,
                   child: Text(
                     CourseDetailsStrings.instructorProfileBadge,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.label.copyWith(
-                      color: AppColors.primary,
+                    style: context.texts.label.copyWith(
+                      color: context.colors.primary,
                     ),
                   ),
                 ),
@@ -61,18 +61,18 @@ class CourseInstructorCard extends StatelessWidget {
                   children: [
                     Text(
                       instructor.name,
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.start,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.cardTitle,
+                      style: context.texts.cardTitle,
                     ),
                     VGap.xxs(),
                     Text(
                       instructor.headline,
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.start,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.bodySmall,
+                      style: context.texts.bodySmall,
                     ),
                   ],
                 ),
@@ -82,8 +82,8 @@ class CourseInstructorCard extends StatelessWidget {
           VGap.sm(),
           Text(
             instructor.bio,
-            textAlign: TextAlign.right,
-            style: AppTextStyles.body,
+            textAlign: TextAlign.start,
+            style: context.texts.body,
           ),
           VGap.md(),
           Row(
@@ -91,14 +91,15 @@ class CourseInstructorCard extends StatelessWidget {
             children: [
               _InstructorMetric(
                 icon: Icons.star_rounded,
-                iconColor: AppColors.star,
+                iconColor: context.colors.star,
                 value: instructor.rating,
               ),
               HGap.lg(),
               _InstructorMetric(
                 icon: Icons.groups_rounded,
-                iconColor: AppColors.inkMuted,
-                value: '${instructor.students} '
+                iconColor: context.colors.inkMuted,
+                value:
+                    '${instructor.students} '
                     '${CourseDetailsStrings.studentsLabel}',
               ),
             ],
@@ -131,33 +132,33 @@ class _InstructorAvatar extends StatelessWidget {
             height: _size.w,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: AppColors.primary,
+              color: context.colors.primary,
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.surface, width: 2),
+              border: Border.all(color: context.colors.surface, width: 2),
             ),
             child: Text(
               initials,
-              style: AppTextStyles.cardTitle.copyWith(
-                color: AppColors.onPrimary,
+              style: context.texts.cardTitle.copyWith(
+                color: context.colors.onPrimary,
                 fontSize: 20.sp,
               ),
             ),
           ),
-          Positioned(
-            right: -2.w,
+          PositionedDirectional(
+            end: -2.w,
             bottom: -2.w,
             child: Container(
               width: 22.w,
               height: 22.w,
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: context.colors.primary,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.surface, width: 2),
+                border: Border.all(color: context.colors.surface, width: 2),
               ),
               child: Icon(
                 Icons.workspace_premium_rounded,
                 size: 11.sp,
-                color: AppColors.onPrimary,
+                color: context.colors.onPrimary,
               ),
             ),
           ),
@@ -191,9 +192,9 @@ class _InstructorMetric extends StatelessWidget {
             value,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.statLabel.copyWith(
+            style: context.texts.statLabel.copyWith(
               fontWeight: FontWeight.w700,
-              color: AppColors.ink,
+              color: context.colors.ink,
             ),
           ),
         ),

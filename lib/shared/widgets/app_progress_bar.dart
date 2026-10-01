@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_colors_extension.dart';
 import '../../core/theme/app_dimensions.dart';
 
 /// Rounded, direction-aware progress bar.
@@ -14,8 +14,8 @@ class AppProgressBar extends StatelessWidget {
     super.key,
     required this.value,
     this.height = 8,
-    this.gradient = AppColors.progressGradient,
-    this.trackColor = AppColors.surfaceTint,
+    this.gradient,
+    this.trackColor,
   });
 
   /// Completion in the 0..1 range (clamped).
@@ -24,8 +24,11 @@ class AppProgressBar extends StatelessWidget {
   /// Bar thickness in design pixels, resolved through `.h`.
   final double height;
 
-  final LinearGradient gradient;
-  final Color trackColor;
+  /// Defaults to the theme's progress gradient.
+  final LinearGradient? gradient;
+
+  /// Defaults to the theme's tinted surface.
+  final Color? trackColor;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +45,7 @@ class AppProgressBar extends StatelessWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                ColoredBox(color: trackColor),
+                ColoredBox(color: trackColor ?? context.colors.surfaceTint),
                 Align(
                   alignment: AlignmentDirectional.centerStart,
                   child: FractionallySizedBox(
@@ -50,7 +53,7 @@ class AppProgressBar extends StatelessWidget {
                     heightFactor: 1,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        gradient: gradient,
+                        gradient: gradient ?? context.colors.progressGradient,
                         borderRadius: BorderRadius.circular(AppRadius.pill),
                       ),
                     ),

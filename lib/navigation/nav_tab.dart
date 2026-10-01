@@ -22,8 +22,8 @@ class NavTab {
   final IconData selectedIcon;
 
   NavigationDestination toDestination() => NavigationDestination(
-        icon: Icon(icon),
-        selectedIcon: Icon(selectedIcon),
-        label: label,
-      );
+    icon: Icon(icon),
+    selectedIcon: Icon(selectedIcon),
+    label: label,
+  );
 }

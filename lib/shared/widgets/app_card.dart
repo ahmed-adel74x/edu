@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_colors_extension.dart';
 import '../../core/theme/app_dimensions.dart';
 
-/// The standard white content surface for the app.
+/// The standard content surface for the app.
 ///
-/// It reuses the exact card treatment already used by the course cards:
-/// white fill, hairline [AppColors.border] outline, the shared [AppColors.shadow]
-/// and a corner radius from [AppRadius]. Pass [onTap] to get the same
-/// subtle "press to shrink" feedback the tappable course cards have.
+/// It reuses the exact card treatment already used by the course cards: the
+/// theme's surface fill, a hairline [AppColorsExtension.border] outline, the
+/// shared [AppColorsExtension.shadow] and a corner radius from [AppRadius]. Pass
+/// [onTap] to get the same subtle "press to shrink" feedback the tappable course
+/// cards have.
 class AppCard extends StatefulWidget {
   const AppCard({
     super.key,
@@ -29,7 +30,7 @@ class AppCard extends StatefulWidget {
   /// Defaults to [AppRadius.lg].
   final double? radius;
 
-  /// Defaults to [AppColors.surface].
+  /// Defaults to the theme's surface.
   final Color? color;
 
   final VoidCallback? onTap;
@@ -52,14 +53,14 @@ class _AppCardState extends State<AppCard> {
       clipBehavior: Clip.antiAlias,
       padding: widget.padding ?? EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: widget.color ?? AppColors.surface,
+        color: widget.color ?? context.colors.surface,
         borderRadius: BorderRadius.circular(widget.radius ?? AppRadius.lg),
         border: widget.showBorder
-            ? Border.all(color: AppColors.border)
+            ? Border.all(color: context.colors.border)
             : null,
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow,
+            color: context.colors.shadow,
             blurRadius: 18,
             offset: Offset(0, 6.h),
           ),

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constants/app_strings.dart';
-import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_colors_extension.dart';
 import '../../core/theme/app_dimensions.dart';
-import '../../core/theme/app_text_styles.dart';
+import '../../core/theme/app_type_scale.dart';
 
 class AppSearchField extends StatefulWidget {
   const AppSearchField({
@@ -50,13 +50,17 @@ class _AppSearchFieldState extends State<AppSearchField> {
           onPressed: widget.onFilterTap,
           tooltip: AppStrings.filterResults,
           style: IconButton.styleFrom(
-            backgroundColor: AppColors.surfaceTint,
+            backgroundColor: context.colors.surfaceTint,
             fixedSize: Size(46.w, 46.w),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppRadius.sm),
             ),
           ),
-          icon: Icon(Icons.tune_rounded, color: AppColors.primary, size: 20.sp),
+          icon: Icon(
+            Icons.tune_rounded,
+            color: context.colors.primary,
+            size: 20.sp,
+          ),
         ),
         HGap.sm(),
         Expanded(
@@ -66,23 +70,23 @@ class _AppSearchFieldState extends State<AppSearchField> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.sm),
               border: Border.all(
-                color: _focused ? AppColors.primary : Colors.transparent,
+                color: _focused ? context.colors.primary : Colors.transparent,
                 width: 1.4,
               ),
             ),
             child: TextField(
               controller: widget.controller,
               focusNode: _focusNode,
-              textAlign: TextAlign.right,
+              textAlign: TextAlign.start,
               textInputAction: TextInputAction.search,
               onChanged: widget.onChanged,
               onSubmitted: widget.onChanged,
-              style: AppTextStyles.body.copyWith(color: AppColors.ink),
+              style: context.texts.body.copyWith(color: context.colors.ink),
               decoration: InputDecoration(
                 hintText: widget.hintText,
                 suffixIcon: Icon(
                   Icons.search_rounded,
-                  color: AppColors.primary,
+                  color: context.colors.primary,
                   size: 20.sp,
                 ),
               ),

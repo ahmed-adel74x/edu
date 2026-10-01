@@ -35,13 +35,10 @@ abstract final class AppColors {
   static const scrim = Color(0x66101021);
   static const shadow = Color(0x14131B2E);
 
-  /// Restrained two-stop gradient for the hero/promo surface —
-  /// deliberately not the original 3-color blend, for a calmer premium look.
-  static const promoGradient = LinearGradient(
-    begin: Alignment.topRight,
-    end: Alignment.bottomLeft,
-    colors: [primaryDark, secondary],
-  );
+  // The gradients (promo, hero, progress, auth background) used to live here.
+  // They are built from the flat colors above and exposed by the theme
+  // extension now, so there is a single source of truth and their direction can
+  // follow the reading direction.
 
   // ---------------------------------------------------------------------------
   // Dashboard accents (home screen)
@@ -59,13 +56,6 @@ abstract final class AppColors {
   /// regular [warning] reads too light.
   static const warningDeep = Color(0xFFB8730E);
 
-  /// Airy welcome-card surface: lavender washing into a soft mint.
-  static const heroGradient = LinearGradient(
-    begin: Alignment.topRight,
-    end: Alignment.bottomLeft,
-    colors: [Color(0xFFEDEFFC), Color(0xFFE3F3EE)],
-  );
-
   // ---------------------------------------------------------------------------
   // Assignment accents (assignments screen)
   //
@@ -74,18 +64,4 @@ abstract final class AppColors {
   // brand color.
   // ---------------------------------------------------------------------------
   static const uploadAccent = Color(0xFFF4407F);
-
-  /// Progress fill, anchored at the trailing (right, in RTL) edge where the
-  /// bar starts growing: teal into brand blue.
-  static const progressGradient = LinearGradient(
-    begin: Alignment.centerRight,
-    end: Alignment.centerLeft,
-    colors: [accent, primary],
-  );
-
-  static const authBackgroundGradient = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [Color(0xFFE3EEFF), background],
-  );
 }

@@ -5,9 +5,9 @@ import 'package:test_edu/features/explore_courses/constants/explore_courses_stri
 
 import '../data/models/course.dart';
 import '../../../core/constants/app_strings.dart';
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/widgets/app_search_field.dart';
 import '../../../shared/widgets/category_chip_row.dart';
 import '../../course_details/data/models/course_details.dart';
@@ -100,16 +100,19 @@ class _ExploreCoursesScreenState extends State<ExploreCoursesScreen> {
 
   List<Course> get visibleCourses {
     final normalizedQuery = query.trim().toLowerCase();
-    return ExploreCoursesScreen.courses.where((course) {
-      final matchesCategory =
-          selectedCategory == allCategory || course.category == selectedCategory;
-      if (!matchesCategory) return false;
-      if (normalizedQuery.isEmpty) return true;
-      return course.title.toLowerCase().contains(normalizedQuery) ||
-          course.instructor.toLowerCase().contains(normalizedQuery) ||
-          course.badge.toLowerCase().contains(normalizedQuery) ||
-          course.category.toLowerCase().contains(normalizedQuery);
-    }).toList(growable: false);
+    return ExploreCoursesScreen.courses
+        .where((course) {
+          final matchesCategory =
+              selectedCategory == allCategory ||
+              course.category == selectedCategory;
+          if (!matchesCategory) return false;
+          if (normalizedQuery.isEmpty) return true;
+          return course.title.toLowerCase().contains(normalizedQuery) ||
+              course.instructor.toLowerCase().contains(normalizedQuery) ||
+              course.badge.toLowerCase().contains(normalizedQuery) ||
+              course.category.toLowerCase().contains(normalizedQuery);
+        })
+        .toList(growable: false);
   }
 
   @override
@@ -134,6 +137,7 @@ class _ExploreCoursesScreenState extends State<ExploreCoursesScreen> {
     openCourseDetails(
       context,
       CourseDetails.fromCourse(
+        colors: context.colors,
         image: course.image,
         title: course.title,
         instructor: course.instructor,
@@ -148,114 +152,108 @@ class _ExploreCoursesScreenState extends State<ExploreCoursesScreen> {
   @override
   Widget build(BuildContext context) {
     final filteredCourses = visibleCourses;
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        body: SafeArea(
-          bottom: false,
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 520),
-              child: CustomScrollView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                slivers: [
+    return Scaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 520),
+            child: CustomScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              slivers: [
+                SliverPadding(
+                  padding: EdgeInsets.fromLTRB(
+                    AppSpacing.lg,
+                    AppSpacing.sm,
+                    AppSpacing.lg,
+                    AppSpacing.lg,
+                  ),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate([
+                      const _TopBar(),
+                      VGap.lg(),
+                      AppSearchField(
+                        controller: searchController,
+                        hintText: ExploreCoursesStrings.searchHint,
+                        onChanged: (value) => setState(() => query = value),
+                        onFilterTap: () {},
+                      ),
+                      VGap.md(),
+                      CategoryChipRow(
+                        categories: categories,
+                        selected: selectedCategory,
+                        onSelected: (category) =>
+                            setState(() => selectedCategory = category),
+                      ),
+                      VGap.lg(),
+                      PromoBanner(
+                        eyebrow: ExploreCoursesStrings.promoEyebrow,
+                        title: ExploreCoursesStrings.promoTitle,
+                        subtitle: ExploreCoursesStrings.promoSubtitle,
+                        code: ExploreCoursesStrings.promoCode,
+                        countdown: ExploreCoursesStrings.promoCountdown,
+                        ctaLabel: ExploreCoursesStrings.promoActivateCta,
+                      ),
+                      VGap.xl(),
+                      _SectionHeader(
+                        courseCount: filteredCourses.length,
+                        loading: _loading,
+                      ),
+                      VGap.sm(),
+                    ]),
+                  ),
+                ),
+                if (_loading)
                   SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      AppSpacing.lg,
-                      AppSpacing.sm,
-                      AppSpacing.lg,
-                      AppSpacing.lg,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                     sliver: SliverList(
-                      delegate: SliverChildListDelegate([
-                        const _TopBar(),
-                        VGap.lg(),
-                        AppSearchField(
-                          controller: searchController,
-                          hintText: ExploreCoursesStrings.searchHint,
-                          onChanged: (value) => setState(() => query = value),
-                          onFilterTap: () {},
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => Padding(
+                          padding: EdgeInsets.only(bottom: AppSpacing.md),
+                          child: const CourseCardSkeleton(),
                         ),
-                        VGap.md(),
-                        CategoryChipRow(
-                          categories: categories,
-                          selected: selectedCategory,
-                          onSelected: (category) =>
-                              setState(() => selectedCategory = category),
-                        ),
-                        VGap.lg(),
-                        const PromoBanner(
-                          eyebrow: ExploreCoursesStrings.promoEyebrow,
-                          title: ExploreCoursesStrings.promoTitle,
-                          subtitle: ExploreCoursesStrings.promoSubtitle,
-                          code: ExploreCoursesStrings.promoCode,
-                          countdown: ExploreCoursesStrings.promoCountdown,
-                          ctaLabel: ExploreCoursesStrings.promoActivateCta,
-                        ),
-                        VGap.xl(),
-                        _SectionHeader(
-                          courseCount: filteredCourses.length,
-                          loading: _loading,
-                        ),
-                        VGap.sm(),
-                      ]),
+                        childCount: 3,
+                      ),
+                    ),
+                  )
+                else if (filteredCourses.isEmpty)
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                    sliver: SliverToBoxAdapter(
+                      child: EmptyStateView(
+                        title: ExploreCoursesStrings.emptyTitle,
+                        message: ExploreCoursesStrings.emptyMessage,
+                      ),
+                    ),
+                  )
+                else
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final course = filteredCourses[index];
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            bottom: index == filteredCourses.length - 1
+                                ? AppSpacing.xl
+                                : AppSpacing.md,
+                          ),
+                          child: CourseCard(
+                            course: course,
+                            onTap: () => _openCourseDetails(course),
+                          ),
+                        );
+                      }, childCount: filteredCourses.length),
                     ),
                   ),
-                  if (_loading)
-                    SliverPadding(
-                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      sliver: SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) => Padding(
-                            padding: EdgeInsets.only(bottom: AppSpacing.md),
-                            child: const CourseCardSkeleton(),
-                          ),
-                          childCount: 3,
-                        ),
-                      ),
-                    )
-                  else if (filteredCourses.isEmpty)
-                    SliverPadding(
-                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      sliver: const SliverToBoxAdapter(
-                        child: EmptyStateView(
-                          title: ExploreCoursesStrings.emptyTitle,
-                          message: ExploreCoursesStrings.emptyMessage,
-                        ),
-                      ),
-                    )
-                  else
-                    SliverPadding(
-                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      sliver: SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            final course = filteredCourses[index];
-                            return Padding(
-                              padding: EdgeInsets.only(
-                                bottom: index == filteredCourses.length - 1
-                                    ? AppSpacing.xl
-                                    : AppSpacing.md,
-                              ),
-                              child: CourseCard(
-                                course: course,
-                                onTap: () => _openCourseDetails(course),
-                              ),
-                            );
-                          },
-                          childCount: filteredCourses.length,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
+              ],
             ),
           ),
         ),
-        // The bottom navigation bar lives in the shared shell
-        // (`core/navigation/main_shell.dart`) so the home and explore screens
-        // show the exact same bar.
       ),
+      // The bottom navigation bar lives in the shared shell
+      // (`core/navigation/main_shell.dart`) so the home and explore screens
+      // show the exact same bar.
     );
   }
 }
@@ -293,7 +291,7 @@ class _SectionHeader extends StatelessWidget {
                 width: 4.w,
                 height: 22.h,
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  color: context.colors.primary,
                   borderRadius: BorderRadius.circular(AppRadius.pill),
                 ),
               ),
@@ -303,7 +301,7 @@ class _SectionHeader extends StatelessWidget {
                   ExploreCoursesStrings.sectionTitle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.sectionTitle,
+                  style: context.texts.sectionTitle,
                 ),
               ),
             ],
@@ -313,12 +311,12 @@ class _SectionHeader extends StatelessWidget {
           HGap.sm(),
           Flexible(
             child: AppPill(
-              color: AppColors.surfaceTint,
+              color: context.colors.surfaceTint,
               child: Text(
                 _countLabel,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.bodySmall,
+                style: context.texts.bodySmall,
               ),
             ),
           ),
@@ -339,18 +337,29 @@ class _TopBar extends StatelessWidget {
           width: 40.w,
           height: 40.w,
           decoration: BoxDecoration(
-            color: AppColors.surfaceTint,
+            color: context.colors.surfaceTint,
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
-          child: Icon(Icons.school_rounded, color: AppColors.primary, size: 20.sp),
+          child: Icon(
+            Icons.school_rounded,
+            color: context.colors.primary,
+            size: 20.sp,
+          ),
         ),
         HGap.sm(),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(AppStrings.appName, style: AppTextStyles.label),
-            Text(ExploreCoursesStrings.screenTitle, style: AppTextStyles.cardTitle),
-          ],
+        // The titles may shrink: a longer app name (or a wide glyph set) wraps
+        // instead of overflowing the row.
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(AppStrings.appName, style: context.texts.label),
+              Text(
+                ExploreCoursesStrings.screenTitle,
+                style: context.texts.cardTitle,
+              ),
+            ],
+          ),
         ),
         const Spacer(),
         IconButton(

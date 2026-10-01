@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/app_type_scale.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/app_icon_tile.dart';
 import '../../data/models/home_stat.dart';
@@ -61,10 +61,10 @@ class StatTile extends StatelessWidget {
               Expanded(
                 child: Text(
                   stat.label,
-                  textAlign: TextAlign.right,
+                  textAlign: TextAlign.start,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.statLabel,
+                  style: context.texts.statLabel,
                 ),
               ),
               HGap.xs(),
@@ -81,9 +81,9 @@ class StatTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              Text(stat.value, style: AppTextStyles.statValue),
+              Text(stat.value, style: context.texts.statValue),
               HGap.xxs(),
-              Text(stat.unit, style: AppTextStyles.statUnit),
+              Text(stat.unit, style: context.texts.statUnit),
             ],
           ),
         ],

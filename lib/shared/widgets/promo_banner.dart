@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_colors_extension.dart';
 import '../../core/theme/app_dimensions.dart';
-import '../../core/theme/app_text_styles.dart';
+import '../../core/theme/app_type_scale.dart';
 import 'app_pill.dart';
 
 /// Course-discount promo banner. Lives in this feature (not `core/`)
@@ -36,10 +36,10 @@ class PromoBanner extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        gradient: AppColors.promoGradient,
+        gradient: context.colors.promoGradient,
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.25),
+            color: context.colors.primary.withOpacity(0.25),
             blurRadius: 16,
             offset: Offset(0, 8.h),
           ),
@@ -55,12 +55,14 @@ class PromoBanner extends StatelessWidget {
               // eyebrow or countdown can never push the row over.
               Flexible(
                 child: AppPill(
-                  color: Colors.white.withOpacity(0.16),
+                  color: context.colors.onPrimary.withValues(alpha: 0.16),
                   child: Text(
                     eyebrow,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.label.copyWith(color: Colors.white),
+                    style: context.texts.label.copyWith(
+                      color: context.colors.onPrimary,
+                    ),
                   ),
                 ),
               ),
@@ -72,7 +74,7 @@ class PromoBanner extends StatelessWidget {
                     Icon(
                       Icons.schedule_rounded,
                       size: 13.sp,
-                      color: Colors.white70,
+                      color: context.colors.onPrimary.withValues(alpha: 0.7),
                     ),
                     HGap.xxs(),
                     Flexible(
@@ -80,8 +82,11 @@ class PromoBanner extends StatelessWidget {
                         countdown,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style:
-                            AppTextStyles.label.copyWith(color: Colors.white70),
+                        style: context.texts.label.copyWith(
+                          color: context.colors.onPrimary.withValues(
+                            alpha: 0.7,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -92,15 +97,17 @@ class PromoBanner extends StatelessWidget {
           VGap.md(),
           Text(
             title,
-            textAlign: TextAlign.right,
-            style: AppTextStyles.display.copyWith(color: Colors.white),
+            textAlign: TextAlign.start,
+            style: context.texts.display.copyWith(
+              color: context.colors.onPrimary,
+            ),
           ),
           VGap.xs(),
           Text(
             subtitle,
-            textAlign: TextAlign.right,
-            style: AppTextStyles.body.copyWith(
-              color: Colors.white.withOpacity(0.85),
+            textAlign: TextAlign.start,
+            style: context.texts.body.copyWith(
+              color: context.colors.onPrimary.withValues(alpha: 0.85),
             ),
           ),
           VGap.lg(),
@@ -114,7 +121,7 @@ class PromoBanner extends StatelessWidget {
                     Icon(
                       Icons.local_offer_rounded,
                       size: 15.sp,
-                      color: Colors.white,
+                      color: context.colors.onPrimary,
                     ),
                     HGap.xxs(),
                     Flexible(
@@ -122,8 +129,8 @@ class PromoBanner extends StatelessWidget {
                         code,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.cardTitle.copyWith(
-                          color: Colors.white,
+                        style: context.texts.cardTitle.copyWith(
+                          color: context.colors.onPrimary,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -136,15 +143,15 @@ class PromoBanner extends StatelessWidget {
                 child: FilledButton(
                   onPressed: () {},
                   style: FilledButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppColors.primary,
+                    backgroundColor: context.colors.onPrimary,
+                    foregroundColor: context.colors.primary,
                   ),
                   child: Text(
                     ctaLabel,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.button.copyWith(
-                      color: AppColors.primary,
+                    style: context.texts.button.copyWith(
+                      color: context.colors.primary,
                     ),
                   ),
                 ),

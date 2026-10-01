@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/app_type_scale.dart';
 import '../../../../shared/widgets/app_pill.dart';
 import '../../constants/home_strings.dart';
 
@@ -22,11 +22,11 @@ class WelcomeHeroCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        gradient: AppColors.heroGradient,
+        gradient: context.colors.heroGradient,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow,
+            color: context.colors.shadow,
             blurRadius: 18,
             offset: Offset(0, 6.h),
           ),
@@ -44,14 +44,14 @@ class WelcomeHeroCard extends StatelessWidget {
                 child: Align(
                   alignment: AlignmentDirectional.centerStart,
                   child: AppPill(
-                    color: Colors.white.withValues(alpha: 0.72),
+                    color: context.colors.surface.withValues(alpha: 0.72),
                     child: Text(
                       HomeStrings.streakBadge,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.bodySmall.copyWith(
+                      style: context.texts.bodySmall.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: AppColors.ink,
+                        color: context.colors.ink,
                       ),
                     ),
                   ),
@@ -62,14 +62,11 @@ class WelcomeHeroCard extends StatelessWidget {
             ],
           ),
           VGap.md(),
-          Text(HomeStrings.welcomeTitle, style: AppTextStyles.display),
+          Text(HomeStrings.welcomeTitle, style: context.texts.display),
           VGap.xs(),
-          Text(HomeStrings.welcomeSubtitle, style: AppTextStyles.body),
+          Text(HomeStrings.welcomeSubtitle, style: context.texts.body),
           VGap.lg(),
-          _CurriculumPreview(
-            image: previewImage,
-            onTap: onCurriculumTap,
-          ),
+          _CurriculumPreview(image: previewImage, onTap: onCurriculumTap),
         ],
       ),
     );
@@ -94,14 +91,14 @@ class _BrowseNewLink extends StatelessWidget {
               HomeStrings.browseNew,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.linkAction,
+              style: context.texts.linkAction,
             ),
           ),
           HGap.xxs(),
           Icon(
             Icons.arrow_back_rounded,
             size: 16.sp,
-            color: AppColors.primary,
+            color: context.colors.primary,
           ),
         ],
       ),
@@ -124,14 +121,14 @@ class _CurriculumPreview extends StatelessWidget {
       child: Container(
         height: 148.h,
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: context.colors.surface,
           borderRadius: BorderRadius.circular(AppRadius.md),
           // Frames the shot so it reads as a product preview window, like the
           // reference's browser mock.
-          border: Border.all(color: AppColors.borderStrong),
+          border: Border.all(color: context.colors.borderStrong),
           boxShadow: [
             BoxShadow(
-              color: AppColors.shadow,
+              color: context.colors.shadow,
               blurRadius: 14,
               offset: Offset(0, 6.h),
             ),
@@ -141,7 +138,11 @@ class _CurriculumPreview extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(image, fit: BoxFit.cover, alignment: Alignment.topCenter),
+            Image.asset(
+              image,
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+            ),
             // Faint bottom fade only: enough to seat the chip that sits on the
             // shot without washing the image out.
             DecoratedBox(
@@ -157,9 +158,9 @@ class _CurriculumPreview extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-              left: AppSpacing.sm,
-              right: AppSpacing.sm,
+            PositionedDirectional(
+              start: AppSpacing.sm,
+              end: AppSpacing.sm,
               bottom: AppSpacing.sm,
               child: Align(
                 alignment: AlignmentDirectional.centerStart,
@@ -179,12 +180,9 @@ class _CurriculumChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm,
-        vertical: 6.h,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 6.h),
       decoration: BoxDecoration(
-        color: AppColors.scrim.withValues(alpha: 0.55),
+        color: context.colors.scrim.withValues(alpha: 0.55),
         borderRadius: BorderRadius.circular(AppRadius.pill),
       ),
       child: Row(
@@ -197,7 +195,7 @@ class _CurriculumChip extends StatelessWidget {
               HomeStrings.curriculumBadge,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.bodySmall.copyWith(
+              style: context.texts.bodySmall.copyWith(
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
               ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/app_pill.dart';
 import '../../../shared/widgets/app_progress_bar.dart';
@@ -25,59 +25,61 @@ class CourseDetailsScreen extends StatelessWidget {
   /// Preview course used when the screen is shown without a picked course
   /// (design previews / tests). Cards opened from the lists build their own
   /// instance through [CourseDetails.fromCourse].
-  static final CourseDetails sample = CourseDetails.fromCourse(
-    image: 'assets/courses/course_1.png',
-    title: 'تجربة للدورات (المحاضرات)',
-    instructor: 'أحمد سعيد',
-    rating: '4.9',
-    duration: '30 ساعة',
-    badge: 'المنهاج الدراسي - معتمد',
-    ctaLabel: 'متابعة الدورة (الدرس 2)',
-    isEnrolled: true,
-    progress: 0.25,
-    progressLabel: '25%',
-  );
+  ///
+  /// Takes the palette because its placeholder summary tiles are painted with
+  /// it; pass `context.colors`.
+  static CourseDetails sample(AppColorsExtension colors) =>
+      CourseDetails.fromCourse(
+        colors: colors,
+        image: 'assets/courses/course_1.png',
+        title: 'تجربة للدورات (المحاضرات)',
+        instructor: 'أحمد سعيد',
+        rating: '4.9',
+        duration: '30 ساعة',
+        badge: 'المنهاج الدراسي - معتمد',
+        ctaLabel: 'متابعة الدورة (الدرس 2)',
+        isEnrolled: true,
+        progress: 0.25,
+        progressLabel: '25%',
+      );
 
   final CourseDetails course;
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: AppColors.background,
-        body: SafeArea(
-          bottom: false,
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 520),
-              child: ListView(
-                padding: EdgeInsets.fromLTRB(
-                  AppSpacing.lg,
-                  AppSpacing.sm,
-                  AppSpacing.lg,
-                  AppSpacing.xl,
-                ),
-                children: [
-                  const _TopBar(title: CourseDetailsStrings.screenTitle),
-                  VGap.md(),
-                  _CoverSection(course: course),
-                  VGap.md(),
-                  _OverviewSection(course: course),
-                  VGap.md(),
-                  CourseInstructorCard(instructor: course.instructor),
-                  VGap.xl(),
-                  _CurriculumSection(course: course),
-                  VGap.xl(),
-                ],
+    return Scaffold(
+      backgroundColor: context.colors.background,
+      body: SafeArea(
+        bottom: false,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 520),
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.sm,
+                AppSpacing.lg,
+                AppSpacing.xl,
               ),
+              children: [
+                _TopBar(title: CourseDetailsStrings.screenTitle),
+                VGap.md(),
+                _CoverSection(course: course),
+                VGap.md(),
+                _OverviewSection(course: course),
+                VGap.md(),
+                CourseInstructorCard(instructor: course.instructor),
+                VGap.xl(),
+                _CurriculumSection(course: course),
+                VGap.xl(),
+              ],
             ),
           ),
         ),
-        bottomNavigationBar: _BottomActionBar(
-          course: course,
-          onContinue: onContinue,
-        ),
+      ),
+      bottomNavigationBar: _BottomActionBar(
+        course: course,
+        onContinue: onContinue,
       ),
     );
   }
@@ -100,7 +102,7 @@ class _TopBar extends StatelessWidget {
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.sectionTitle,
+            style: context.texts.sectionTitle,
           ),
         ),
 
@@ -109,7 +111,7 @@ class _TopBar extends StatelessWidget {
           tooltip: MaterialLocalizations.of(context).backButtonTooltip,
           style: IconButton.styleFrom(
             backgroundColor: Colors.transparent,
-            foregroundColor: AppColors.ink,
+            foregroundColor: context.colors.ink,
             fixedSize: Size(40.w, 40.w),
             shape: const CircleBorder(),
           ),
@@ -129,11 +131,15 @@ class _ProfileAvatar extends StatelessWidget {
       width: 40.w,
       height: 40.w,
       decoration: BoxDecoration(
-        color: AppColors.surfaceTint,
+        color: context.colors.surfaceTint,
         shape: BoxShape.circle,
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
-      child: Icon(Icons.person_rounded, size: 20.sp, color: AppColors.primary),
+      child: Icon(
+        Icons.person_rounded,
+        size: 20.sp,
+        color: context.colors.primary,
+      ),
     );
   }
 }
@@ -152,7 +158,7 @@ class _CoverSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow,
+            color: context.colors.shadow,
             blurRadius: 18,
             offset: Offset(0, 6.h),
           ),
@@ -167,9 +173,9 @@ class _CoverSection extends StatelessWidget {
               width: double.infinity,
               child: Image.asset(course.image, fit: BoxFit.cover),
             ),
-            Positioned(
-              left: 0,
-              right: 0,
+            PositionedDirectional(
+              start: 0,
+              end: 0,
               bottom: 0,
               height: 72.h,
               child: DecoratedBox(
@@ -179,15 +185,15 @@ class _CoverSection extends StatelessWidget {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      AppColors.scrim.withValues(alpha: 0.45),
+                      context.colors.scrim.withValues(alpha: 0.45),
                     ],
                   ),
                 ),
               ),
             ),
-            Positioned(
-              left: AppSpacing.sm,
-              right: AppSpacing.sm,
+            PositionedDirectional(
+              start: AppSpacing.sm,
+              end: AppSpacing.sm,
               bottom: AppSpacing.sm,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -215,22 +221,22 @@ class _CoverRating extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppPill(
-      color: AppColors.surface,
+      color: context.colors.surface,
       horizontalPadding: AppSpacing.sm,
       verticalPadding: 6.h,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.star_rounded, size: 15.sp, color: AppColors.star),
+          Icon(Icons.star_rounded, size: 15.sp, color: context.colors.star),
           HGap.xxs(),
           Flexible(
             child: Text(
               rating,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.bodySmall.copyWith(
+              style: context.texts.bodySmall.copyWith(
                 fontWeight: FontWeight.w700,
-                color: AppColors.ink,
+                color: context.colors.ink,
               ),
             ),
           ),
@@ -249,20 +255,20 @@ class _CoverBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppPill(
-      color: AppColors.surface.withValues(alpha: 0.95),
+      color: context.colors.surface.withValues(alpha: 0.95),
       horizontalPadding: AppSpacing.sm,
       verticalPadding: 6.h,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.settings_rounded, size: 13.sp, color: AppColors.ink),
+          Icon(Icons.settings_rounded, size: 13.sp, color: context.colors.ink),
           HGap.xxs(),
           Flexible(
             child: Text(
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.label.copyWith(color: AppColors.ink),
+              style: context.texts.label.copyWith(color: context.colors.ink),
             ),
           ),
         ],
@@ -286,13 +292,13 @@ class _OverviewSection extends StatelessWidget {
           Text(
             course.title,
             textAlign: TextAlign.center,
-            style: AppTextStyles.display,
+            style: context.texts.display,
           ),
           VGap.sm(),
           Text(
             course.description,
             textAlign: TextAlign.center,
-            style: AppTextStyles.body,
+            style: context.texts.body,
           ),
           VGap.lg(),
           CourseStatGrid(stats: course.stats),
@@ -331,11 +337,11 @@ class _BottomActionBar extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.colors.surface,
         borderRadius: radius,
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow,
+            color: context.colors.shadow,
             blurRadius: 18,
             offset: Offset(0, -6.h),
           ),
@@ -350,7 +356,7 @@ class _BottomActionBar extends StatelessWidget {
             SizedBox(
               height: 1,
               width: double.infinity,
-              child: const ColoredBox(color: AppColors.border),
+              child: ColoredBox(color: context.colors.border),
             ),
             SafeArea(
               top: false,
@@ -412,8 +418,8 @@ class _ProgressBlock extends StatelessWidget {
               Container(
                 width: 8.w,
                 height: 8.w,
-                decoration: const BoxDecoration(
-                  color: AppColors.success,
+                decoration: BoxDecoration(
+                  color: context.colors.success,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -423,7 +429,9 @@ class _ProgressBlock extends StatelessWidget {
                   CourseDetailsStrings.enrolledLabel,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.label.copyWith(color: AppColors.success),
+                  style: context.texts.label.copyWith(
+                    color: context.colors.success,
+                  ),
                 ),
               ),
             ],
@@ -440,15 +448,15 @@ class _ProgressBlock extends StatelessWidget {
                   CourseDetailsStrings.progressLabel,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.metricLabel,
+                  style: context.texts.metricLabel,
                 ),
                 Text(
                   course.progressLabel,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.metricLabel.copyWith(
+                  style: context.texts.metricLabel.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: AppColors.ink,
+                    color: context.colors.ink,
                   ),
                 ),
               ],
@@ -487,14 +495,14 @@ class _PrimaryAction extends StatelessWidget {
             width: 28.w,
             height: 28.w,
             alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: AppColors.surface,
+            decoration: BoxDecoration(
+              color: context.colors.surface,
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.play_arrow_rounded,
               size: 18.sp,
-              color: AppColors.primary,
+              color: context.colors.primary,
             ),
           ),
           HGap.xs(),
@@ -503,7 +511,7 @@ class _PrimaryAction extends StatelessWidget {
               course.nextLessonLabel ?? CourseDetailsStrings.continueCta,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.button,
+              style: context.texts.button,
             ),
           ),
         ],

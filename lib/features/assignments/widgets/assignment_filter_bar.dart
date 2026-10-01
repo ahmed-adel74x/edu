@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
+import '../../../core/utils/number_format.dart';
 import '../data/models/assignment_filter.dart';
 import '../data/models/assignment_status.dart';
 
@@ -61,7 +62,9 @@ class _FilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final labelColor = isSelected ? AppColors.onPrimary : AppColors.inkMuted;
+    final labelColor = isSelected
+        ? context.colors.onPrimary
+        : context.colors.inkMuted;
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -69,7 +72,9 @@ class _FilterChip extends StatelessWidget {
         curve: Curves.easeOut,
         padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 4.h),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : AppColors.surfaceTint,
+          color: isSelected
+              ? context.colors.primary
+              : context.colors.surfaceTint,
           borderRadius: BorderRadius.circular(AppRadius.pill),
         ),
         alignment: Alignment.center,
@@ -78,19 +83,19 @@ class _FilterChip extends StatelessWidget {
             children: [
               TextSpan(
                 text: filter.label,
-                style: AppTextStyles.bodySmall.copyWith(
+                style: context.texts.bodySmall.copyWith(
                   fontWeight: FontWeight.w700,
                   color: labelColor,
                 ),
               ),
               if (filter.count != null)
                 TextSpan(
-                  text: ' (${_arabicDigits(filter.count!)})',
-                  style: AppTextStyles.bodySmall.copyWith(
+                  text: ' (${_formatCount(context, filter.count!)})',
+                  style: context.texts.bodySmall.copyWith(
                     fontWeight: FontWeight.w700,
                     color: isSelected
                         ? labelColor.withValues(alpha: 0.75)
-                        : AppColors.inkFaint,
+                        : context.colors.inkFaint,
                   ),
                 ),
             ],
@@ -103,13 +108,7 @@ class _FilterChip extends StatelessWidget {
   }
 }
 
-/// Renders a count with the Arabic-Indic numerals the rest of the screen uses
-/// ("٤" instead of "4").
-String _arabicDigits(int value) {
-  const digits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-  return value
-      .toString()
-      .split('')
-      .map((char) => digits[int.parse(char)])
-      .join();
-}
+/// Renders a count in the digits of the active language ("٤" in Arabic, "4" in
+/// English), through the app's shared number helper.
+String _formatCount(BuildContext context, int value) =>
+    formatNumber(context, value);

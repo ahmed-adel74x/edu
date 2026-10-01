@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_colors_extension.dart';
 import '../../core/theme/app_dimensions.dart';
-import '../../core/theme/app_text_styles.dart';
+import '../../core/theme/app_type_scale.dart';
 
 /// Full-width gradient call-to-action button with a trailing arrow and an
 /// optional loading state.
@@ -26,11 +26,11 @@ class AppPrimaryButton extends StatelessWidget {
     final radius = BorderRadius.circular(AppRadius.md);
     return Container(
       decoration: BoxDecoration(
-        gradient: AppColors.promoGradient,
+        gradient: context.colors.promoGradient,
         borderRadius: radius,
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.25),
+            color: context.colors.primary.withOpacity(0.25),
             blurRadius: 18,
             offset: Offset(0, 8.h),
           ),
@@ -48,9 +48,9 @@ class AppPrimaryButton extends StatelessWidget {
                   ? SizedBox(
                       width: 22.w,
                       height: 22.w,
-                      child: const CircularProgressIndicator(
+                      child: CircularProgressIndicator(
                         strokeWidth: 2.4,
-                        color: AppColors.onPrimary,
+                        color: context.colors.onPrimary,
                       ),
                     )
                   : Row(
@@ -65,13 +65,17 @@ class AppPrimaryButton extends StatelessWidget {
                             textAlign: TextAlign.center,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.button.copyWith(
+                            style: context.texts.button.copyWith(
                               fontSize: 15.sp,
                             ),
                           ),
                         ),
                         HGap.xs(),
-                        Icon(icon, size: 18.sp, color: AppColors.onPrimary),
+                        Icon(
+                          icon,
+                          size: 18.sp,
+                          color: context.colors.onPrimary,
+                        ),
                       ],
                     ),
             ),

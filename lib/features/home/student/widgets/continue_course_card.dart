@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/app_type_scale.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/app_progress_bar.dart';
 import '../../constants/home_strings.dart';
@@ -51,21 +51,21 @@ class ContinueCourseCard extends StatelessWidget {
                     VGap.xs(),
                     Text(
                       course.title,
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.start,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.cardTitle,
+                      style: context.texts.cardTitle,
                     ),
                     if (course.remainingLessons != null) ...[
                       VGap.xxs(),
                       Text(
                         course.remainingLessons!,
-                        textAlign: TextAlign.right,
+                        textAlign: TextAlign.start,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.bodySmall.copyWith(
+                        style: context.texts.bodySmall.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: AppColors.primary,
+                          color: context.colors.primary,
                         ),
                       ),
                     ],
@@ -78,12 +78,12 @@ class ContinueCourseCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(HomeStrings.progressLabel, style: AppTextStyles.metricLabel),
+              Text(HomeStrings.progressLabel, style: context.texts.metricLabel),
               Text(
                 course.progressLabel,
-                style: AppTextStyles.metricLabel.copyWith(
+                style: context.texts.metricLabel.copyWith(
                   fontWeight: FontWeight.w700,
-                  color: AppColors.ink,
+                  color: context.colors.ink,
                 ),
               ),
             ],
@@ -120,17 +120,17 @@ class _InstructorLine extends StatelessWidget {
         Flexible(
           child: Text(
             name,
-            textAlign: TextAlign.right,
+            textAlign: TextAlign.start,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.bodySmall,
+            style: context.texts.bodySmall,
           ),
         ),
         HGap.xxs(),
         Icon(
           Icons.person_outline_rounded,
           size: 14.sp,
-          color: AppColors.inkFaint,
+          color: context.colors.inkFaint,
         ),
       ],
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/widgets/app_icon_tile.dart';
 import '../data/models/course_details.dart';
 
@@ -56,7 +56,7 @@ class CourseStatTile extends StatelessWidget {
         vertical: AppSpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surfaceMuted,
+        color: context.colors.surfaceMuted,
         borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: Column(
@@ -65,10 +65,10 @@ class CourseStatTile extends StatelessWidget {
         children: [
           Text(
             stat.label,
-            textAlign: TextAlign.right,
+            textAlign: TextAlign.start,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.metricLabel,
+            style: context.texts.metricLabel,
           ),
           VGap.xs(),
           Row(
@@ -85,10 +85,10 @@ class CourseStatTile extends StatelessWidget {
               Expanded(
                 child: Text(
                   stat.value,
-                  textAlign: TextAlign.right,
+                  textAlign: TextAlign.start,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.statLabel.copyWith(
+                  style: context.texts.statLabel.copyWith(
                     fontWeight: FontWeight.w800,
                   ),
                 ),

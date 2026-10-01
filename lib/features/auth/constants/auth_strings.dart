@@ -1,68 +1,71 @@
+import 'package:easy_localization/easy_localization.dart';
+
 abstract final class AuthStrings {
   // Shared chrome
-  static const help = 'مساعدة؟';
-  static const back = 'رجوع';
-  static const continueWith = 'أو المتابعة باستخدام';
-  static const quickSignUpWith = 'أو التسجيل السريع بواسطة';
-  static const google = 'جوجل';
-  static const apple = 'آبل';
-  static const passwordHint = '••••••••';
-  static const emailOrPhoneLabel = 'البريد الإلكتروني أو رقم الهاتف';
-  static const emailOrPhoneHint = 'name@example.com أو 05xxxxxxxx';
-  static const passwordLabel = 'كلمة المرور';
+  static String get help => 'auth.common.help'.tr();
+  static String get back => 'auth.common.back'.tr();
+  static String get continueWith => 'auth.common.continueWith'.tr();
+  static String get quickSignUpWith => 'auth.common.quickSignUpWith'.tr();
+  static String get google => 'auth.common.google'.tr();
+  static String get apple => 'auth.common.apple'.tr();
+  static String get passwordHint => 'auth.common.passwordHint'.tr();
+  static String get emailOrPhoneLabel => 'auth.common.emailOrPhoneLabel'.tr();
+  static String get emailOrPhoneHint => 'auth.common.emailOrPhoneHint'.tr();
+  static String get passwordLabel => 'auth.common.passwordLabel'.tr();
 
   // Mock sign-in: which role the next session belongs to
-  static const roleSelectorLabel = 'نوع الحساب';
-  static const roleStudent = 'طالب';
-  static const roleTeacher = 'معلم';
-  static const roleParent = 'ولي أمر';
+  static String get roleSelectorLabel => 'auth.roles.label'.tr();
+  static String get roleStudent => 'auth.roles.student'.tr();
+  static String get roleTeacher => 'auth.roles.teacher'.tr();
+  static String get roleParent => 'auth.roles.parent'.tr();
 
   // Login
-  static const loginTitle = 'تسجيل الدخول';
-  static const loginBadge = '+500 دورة تدريبية معتمدة';
-  static const loginTag = '🚀 بوابتك للتميز';
-  static const loginHeroTitle = 'مرحباً بعودتك! 👋';
-  static const loginHeroSubtitle =
-      'سجّل دخولك الآن وتابع تقدم دروسك، وواجباتك واختباراتك اليومية بكل سهولة.';
-  static const forgotPassword = 'نسيت كلمة المرور؟';
-  static const rememberDevice = 'تذكر هذا الجهاز دائماً';
-  static const loginCta = 'تسجيل الدخول';
-  static const dailyWisdomLabel = 'حكمة اليوم:';
-  static const dailyWisdomText =
-      ' التعلم المستمر لمدة 15 دقيقة يومياً يصنع فارقاً حقيقياً في مستقبلك.';
-  static const noAccount = 'ليس لديك حساب بعد؟';
-  static const createAccountLink = 'إنشاء حساب جديد';
+  static String get loginTitle => 'auth.login.title'.tr();
+  static String get loginBadge => 'auth.login.badge'.tr();
+  static String get loginTag => 'auth.login.tag'.tr();
+  static String get loginHeroTitle => 'auth.login.heroTitle'.tr();
+  static String get loginHeroSubtitle => 'auth.login.heroSubtitle'.tr();
+  static String get forgotPassword => 'auth.login.forgotPassword'.tr();
+  static String get rememberDevice => 'auth.login.rememberDevice'.tr();
+  static String get loginCta => 'auth.login.cta'.tr();
+  static String get dailyWisdomLabel => 'auth.login.wisdomLabel'.tr();
+  static String get dailyWisdomText => 'auth.login.wisdomText'.tr();
+  static String get noAccount => 'auth.login.noAccount'.tr();
+  static String get createAccountLink => 'auth.login.createAccountLink'.tr();
 
   // Sign up
-  static const signUpTitle = 'إنشاء حساب جديد';
-  static const studentsBadge = '+50,000 طالب';
-  static const academicTag = '✨ بوابتك للتميز الأكاديمي';
-  static const signUpHeroTitle = 'ابدأ رحلتك التعليمية اليوم! 🎓';
-  static const signUpHeroSubtitle =
-      'انضم لنخبة من المتدربين والخبراء، واكتسب المهارات الأكثر طلباً مع شهادات معتمدة فورية.';
-  static const fullNameLabel = 'الاسم الكامل';
-  static const fullNameHint = 'مثال: بسنت سعيد أو أحمد محمود';
-  static const confirmPasswordLabel = 'تأكيد كلمة المرور';
-  static const termsPrefix = 'أوافق على ';
-  static const termsLink = 'الشروط والأحكام';
-  static const termsAnd = ' و';
-  static const privacyLink = 'سياسة الخصوصية';
-  static const termsSuffix = ' الخاصة بأكاديمية التعلم';
-  static const signUpCta = 'إنشاء الحساب ومتابعة التعلم';
-  static const certificatesLabel = 'شهادات فورية معتمدة:';
-  static const certificatesText =
-      ' وصول مدى الحياة لكافة الدروس والمهام بعد التسجيل مباشرة.';
-  static const haveAccount = 'لديك حساب بالفعل؟';
-  static const loginLink = 'تسجيل الدخول';
+  static String get signUpTitle => 'auth.signUp.title'.tr();
+  static String get studentsBadge => 'auth.signUp.studentsBadge'.tr();
+  static String get academicTag => 'auth.signUp.academicTag'.tr();
+  static String get signUpHeroTitle => 'auth.signUp.heroTitle'.tr();
+  static String get signUpHeroSubtitle => 'auth.signUp.heroSubtitle'.tr();
+  static String get fullNameLabel => 'auth.signUp.fullNameLabel'.tr();
+  static String get fullNameHint => 'auth.signUp.fullNameHint'.tr();
+  static String get confirmPasswordLabel =>
+      'auth.signUp.confirmPasswordLabel'.tr();
+  static String get termsPrefix => 'auth.signUp.termsPrefix'.tr();
+  static String get termsLink => 'auth.signUp.termsLink'.tr();
+  static String get termsAnd => 'auth.signUp.termsAnd'.tr();
+  static String get privacyLink => 'auth.signUp.privacyLink'.tr();
+  static String get termsSuffix => 'auth.signUp.termsSuffix'.tr();
+  static String get signUpCta => 'auth.signUp.cta'.tr();
+  static String get certificatesLabel => 'auth.signUp.certificatesLabel'.tr();
+  static String get certificatesText => 'auth.signUp.certificatesText'.tr();
+  static String get haveAccount => 'auth.signUp.haveAccount'.tr();
+  static String get loginLink => 'auth.signUp.loginLink'.tr();
 
   // Validation
-  static const fullNameRequired = 'من فضلك أدخل اسمك الكامل';
-  static const fullNameTooShort = 'الاسم قصير جداً';
-  static const emailOrPhoneRequired = 'من فضلك أدخل البريد الإلكتروني أو رقم الهاتف';
-  static const emailOrPhoneInvalid = 'أدخل بريداً إلكترونياً أو رقم هاتف صحيحاً';
-  static const passwordRequired = 'من فضلك أدخل كلمة المرور';
-  static const passwordTooShort = 'كلمة المرور يجب ألا تقل عن 8 أحرف';
-  static const confirmPasswordRequired = 'من فضلك أكّد كلمة المرور';
-  static const passwordsMismatch = 'كلمتا المرور غير متطابقتين';
-  static const termsRequired = 'يجب الموافقة على الشروط والأحكام للمتابعة';
+  static String get fullNameRequired => 'auth.validation.fullNameRequired'.tr();
+  static String get fullNameTooShort => 'auth.validation.fullNameTooShort'.tr();
+  static String get emailOrPhoneRequired =>
+      'auth.validation.emailOrPhoneRequired'.tr();
+  static String get emailOrPhoneInvalid =>
+      'auth.validation.emailOrPhoneInvalid'.tr();
+  static String get passwordRequired => 'auth.validation.passwordRequired'.tr();
+  static String get passwordTooShort => 'auth.validation.passwordTooShort'.tr();
+  static String get confirmPasswordRequired =>
+      'auth.validation.confirmPasswordRequired'.tr();
+  static String get passwordsMismatch =>
+      'auth.validation.passwordsMismatch'.tr();
+  static String get termsRequired => 'auth.validation.termsRequired'.tr();
 }

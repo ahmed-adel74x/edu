@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/widgets/app_pill.dart';
 import '../constants/home_strings.dart';
 import '../data/models/enrolled_course.dart';
@@ -30,38 +30,38 @@ class HomeScreen extends StatelessWidget {
 
   // Sample content — wire these to a repository call when the backend is
   // connected, exactly like the explore screen keeps its course list.
-  static const List<HomeStat> stats = [
+  static List<HomeStat> stats(AppColorsExtension colors) => [
     HomeStat(
       label: 'الدورات المسجلة',
       value: '٣',
       unit: 'دورات',
       icon: Icons.menu_book_rounded,
-      iconColor: AppColors.primary,
-      iconBackground: AppColors.tintLavender,
+      iconColor: colors.primary,
+      iconBackground: colors.tintLavender,
     ),
     HomeStat(
       label: 'ساعات الدراسة',
       value: '١٢',
       unit: 'ساعة',
       icon: Icons.schedule_rounded,
-      iconColor: AppColors.warningDeep,
-      iconBackground: AppColors.tintPeach,
+      iconColor: colors.warningDeep,
+      iconBackground: colors.tintPeach,
     ),
     HomeStat(
       label: 'الدورات المكتملة',
       value: '٧',
       unit: 'دورة',
       icon: Icons.check_circle_rounded,
-      iconColor: AppColors.accent,
-      iconBackground: AppColors.tintMint,
+      iconColor: colors.accent,
+      iconBackground: colors.tintMint,
     ),
     HomeStat(
       label: 'الشهادات المكتسبة',
       value: '١',
       unit: 'شهادة',
       icon: Icons.workspace_premium_rounded,
-      iconColor: AppColors.primary,
-      iconBackground: AppColors.tintLavender,
+      iconColor: colors.primary,
+      iconBackground: colors.tintLavender,
     ),
   ];
 
@@ -82,11 +82,11 @@ class HomeScreen extends StatelessWidget {
     progressLabel: '٪30',
   );
 
-  static const List<HomeTask> tasks = [
+  static List<HomeTask> tasks(AppColorsExtension colors) => [
     HomeTask(
       icon: Icons.fact_check_rounded,
-      iconColor: AppColors.error,
-      iconBackground: AppColors.tintBlush,
+      iconColor: colors.error,
+      iconBackground: colors.tintBlush,
       title: 'اختبار دورة جديدة',
       meta: 'تاريخ التسليم: غدًا، ٠٩:٠٠ م',
       progressBadge: '٪43',
@@ -95,8 +95,8 @@ class HomeScreen extends StatelessWidget {
     ),
     HomeTask(
       icon: Icons.edit_note_rounded,
-      iconColor: AppColors.accent,
-      iconBackground: AppColors.tintMint,
+      iconColor: colors.accent,
+      iconBackground: colors.tintMint,
       title: 'واجب المحاضرة ٣',
       statusNote: 'قيد التسليم للمراجعة',
       actionLabel: 'عرض',
@@ -119,6 +119,7 @@ class HomeScreen extends StatelessWidget {
     openCourseDetails(
       context,
       CourseDetails.fromCourse(
+        colors: context.colors,
         image: course.image,
         title: course.title,
         instructor: course.instructor,
@@ -132,63 +133,60 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        body: SafeArea(
-          bottom: false,
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 520),
-              child: ListView(
-                padding: EdgeInsets.fromLTRB(
-                  AppSpacing.lg,
-                  AppSpacing.sm,
-                  AppSpacing.lg,
-                  AppSpacing.xl,
-                ),
-                children: [
-                  // The course cards open the course details page; the actions
-                  // that still lead nowhere are wired to no-ops, exactly like
-                  // the explore screen does.
-                  WelcomeHeroCard(
-                    onBrowseNew: onSeeAllCourses,
-                    onCurriculumTap: onSeeAllCourses,
-                  ),
-                  VGap.md(),
-                  const StatTileGrid(stats: stats),
-                  VGap.xl(),
-                  HomeSectionHeader(
-                    title: HomeStrings.continueLearningTitle,
-                    trailing: _SeeAllLink(onTap: onSeeAllCourses),
-                  ),
-                  VGap.md(),
-                  ContinueCourseCard(
-                    course: featuredCourse,
-                    onContinue: () {},
-                    onTap: () => _openCourseDetails(context, featuredCourse),
-                  ),
-                  VGap.md(),
-                  CompactCourseTile(
-                    course: nextCourse,
-                    onTap: () => _openCourseDetails(context, nextCourse),
-                  ),
-                  VGap.xl(),
-                  HomeSectionHeader(
-                    title: HomeStrings.upcomingTitle,
-                    icon: Icons.assignment_turned_in_rounded,
-                    iconColor: AppColors.warningDeep,
-                    trailing: const _PendingBadge(),
-                  ),
-                  VGap.md(),
-                  for (final task in tasks) ...[
-                    UpcomingTaskCard(task: task, onAction: () {}),
-                    VGap.md(),
-                  ],
-                  VGap.sm(),
-                  const WeeklyActivityCard(days: week),
-                ],
+    return Scaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 520),
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.sm,
+                AppSpacing.lg,
+                AppSpacing.xl,
               ),
+              children: [
+                // The course cards open the course details page; the actions
+                // that still lead nowhere are wired to no-ops, exactly like
+                // the explore screen does.
+                WelcomeHeroCard(
+                  onBrowseNew: onSeeAllCourses,
+                  onCurriculumTap: onSeeAllCourses,
+                ),
+                VGap.md(),
+                StatTileGrid(stats: stats(context.colors)),
+                VGap.xl(),
+                HomeSectionHeader(
+                  title: HomeStrings.continueLearningTitle,
+                  trailing: _SeeAllLink(onTap: onSeeAllCourses),
+                ),
+                VGap.md(),
+                ContinueCourseCard(
+                  course: featuredCourse,
+                  onContinue: () {},
+                  onTap: () => _openCourseDetails(context, featuredCourse),
+                ),
+                VGap.md(),
+                CompactCourseTile(
+                  course: nextCourse,
+                  onTap: () => _openCourseDetails(context, nextCourse),
+                ),
+                VGap.xl(),
+                HomeSectionHeader(
+                  title: HomeStrings.upcomingTitle,
+                  icon: Icons.assignment_turned_in_rounded,
+                  iconColor: context.colors.warningDeep,
+                  trailing: const _PendingBadge(),
+                ),
+                VGap.md(),
+                for (final task in tasks(context.colors)) ...[
+                  UpcomingTaskCard(task: task, onAction: () {}),
+                  VGap.md(),
+                ],
+                VGap.sm(),
+                const WeeklyActivityCard(days: week),
+              ],
             ),
           ),
         ),
@@ -211,7 +209,7 @@ class _SeeAllLink extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: AppSpacing.xxs),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
-      child: Text(HomeStrings.seeAll, style: AppTextStyles.linkAction),
+      child: Text(HomeStrings.seeAll, style: context.texts.linkAction),
     );
   }
 }
@@ -223,12 +221,12 @@ class _PendingBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppPill(
-      color: AppColors.tintBlush,
+      color: context.colors.tintBlush,
       child: Text(
         HomeStrings.upcomingBadge,
-        style: AppTextStyles.bodySmall.copyWith(
+        style: context.texts.bodySmall.copyWith(
           fontWeight: FontWeight.w700,
-          color: AppColors.error,
+          color: context.colors.error,
         ),
       ),
     );

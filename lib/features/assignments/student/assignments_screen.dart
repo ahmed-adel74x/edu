@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/app_strings.dart';
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/widgets/app_search_field.dart';
 import '../../../shared/widgets/empty_state_view.dart';
 import '../constants/assignments_strings.dart';
@@ -35,11 +35,13 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     AssignmentSummary(label: 'معدل التقييم', value: '٪96'),
   ];
 
-  static const List<Assignment> assignments = [
+  /// The per-status icon tints come from the theme, so the mock rows are built
+  /// against the palette instead of baking a color into the sample data.
+  List<Assignment> get assignments => [
     Assignment(
       icon: Icons.assignment_rounded,
-      iconColor: AppColors.primary,
-      iconBackground: AppColors.surfaceTint,
+      iconColor: context.colors.primary,
+      iconBackground: context.colors.surfaceTint,
       course: 'برمجة الويب المقدمة',
       title: 'تطبيقات الواجهة الأولى',
       excerpt: 'تصميم نموذج تسجيل تفاعلي مع التحقق من المدخلات…',
@@ -50,8 +52,8 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     ),
     Assignment(
       icon: Icons.verified_rounded,
-      iconColor: AppColors.accent,
-      iconBackground: AppColors.tintMint,
+      iconColor: context.colors.accent,
+      iconBackground: context.colors.tintMint,
       course: 'هياكل البيانات والخوارزميات',
       title: 'متقدم Binary Search',
       excerpt: 'تنفيذ خوارزمية البحث الثنائي وتحليل تعقيدها الزمني…',
@@ -66,8 +68,8 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     ),
     Assignment(
       icon: Icons.edit_rounded,
-      iconColor: AppColors.primary,
-      iconBackground: AppColors.surfaceTint,
+      iconColor: context.colors.primary,
+      iconBackground: context.colors.surfaceTint,
       course: 'تصميم واجهات المستخدم UI/UX',
       title: 'تصميم شاشات تطبيق دراسي',
       excerpt: 'بناء الـ Wireframes وتجهيز نماذج التفاعل…',
@@ -77,8 +79,8 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     ),
     Assignment(
       icon: Icons.insights_rounded,
-      iconColor: AppColors.accent,
-      iconBackground: AppColors.tintMint,
+      iconColor: context.colors.accent,
+      iconBackground: context.colors.tintMint,
       course: 'أساسيات وتطوير الويب',
       title: 'تحليل بيانات المتجر الإلكتروني',
       excerpt: 'تحليل نتائج الحملة وإعداد تقرير مرئي مختصر…',
@@ -125,7 +127,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
         count: countOf(AssignmentStatus.submitted),
       ),
       // The graded chip carries no count, like the design.
-      const AssignmentFilter(
+      AssignmentFilter(
         label: AssignmentsStrings.filterGraded,
         status: AssignmentStatus.graded,
       ),
@@ -134,74 +136,73 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
 
   List<Assignment> get _visibleAssignments {
     final query = _query.trim().toLowerCase();
-    return assignments.where((item) {
-      if (_status != null && item.status != _status) return false;
-      if (query.isEmpty) return true;
-      return item.title.toLowerCase().contains(query) ||
-          item.course.toLowerCase().contains(query) ||
-          item.excerpt.toLowerCase().contains(query);
-    }).toList(growable: false);
+    return assignments
+        .where((item) {
+          if (_status != null && item.status != _status) return false;
+          if (query.isEmpty) return true;
+          return item.title.toLowerCase().contains(query) ||
+              item.course.toLowerCase().contains(query) ||
+              item.excerpt.toLowerCase().contains(query);
+        })
+        .toList(growable: false);
   }
 
   @override
   Widget build(BuildContext context) {
     final visible = _visibleAssignments;
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: AppColors.background,
-        body: SafeArea(
-          bottom: false,
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 520),
-              child: ListView(
-                padding: EdgeInsets.fromLTRB(
-                  AppSpacing.lg,
-                  AppSpacing.sm,
-                  AppSpacing.lg,
-                  AppSpacing.xl,
-                ),
-                children: [
-                  const _TopBar(),
-                  VGap.md(),
-                  const AssignmentsProgressHero(
-                    summary: summary,
-                    onPointsTap: _noop,
-                  ),
-                  VGap.md(),
-                  AppSearchField(
-                    controller: _searchController,
-                    hintText: AssignmentsStrings.searchHint,
-                    onChanged: (value) => setState(() => _query = value),
-                  ),
-                  VGap.md(),
-                  AssignmentFilterBar(
-                    filters: _filters,
-                    selected: _status,
-                    onSelected: (status) => setState(() => _status = status),
-                  ),
-                  VGap.md(),
-                  if (visible.isEmpty)
-                    const EmptyStateView(
-                      icon: Icons.assignment_rounded,
-                      title: AssignmentsStrings.emptyTitle,
-                      message: AssignmentsStrings.emptyMessage,
-                    )
-                  else
-                    for (final assignment in visible) ...[
-                      AssignmentCard(
-                        assignment: assignment,
-                        onSubmit: _noop,
-                        onDownloadBrief: _noop,
-                        onViewSubmission: _noop,
-                        onPreviewAttachment: _noop,
-                        onResend: _noop,
-                      ),
-                      VGap.md(),
-                    ],
-                ],
+    return Scaffold(
+      backgroundColor: context.colors.background,
+      body: SafeArea(
+        bottom: false,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 520),
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.sm,
+                AppSpacing.lg,
+                AppSpacing.xl,
               ),
+              children: [
+                const _TopBar(),
+                VGap.md(),
+                const AssignmentsProgressHero(
+                  summary: summary,
+                  onPointsTap: _noop,
+                ),
+                VGap.md(),
+                AppSearchField(
+                  controller: _searchController,
+                  hintText: AssignmentsStrings.searchHint,
+                  onChanged: (value) => setState(() => _query = value),
+                ),
+                VGap.md(),
+                AssignmentFilterBar(
+                  filters: _filters,
+                  selected: _status,
+                  onSelected: (status) => setState(() => _status = status),
+                ),
+                VGap.md(),
+                if (visible.isEmpty)
+                  EmptyStateView(
+                    icon: Icons.assignment_rounded,
+                    title: AssignmentsStrings.emptyTitle,
+                    message: AssignmentsStrings.emptyMessage,
+                  )
+                else
+                  for (final assignment in visible) ...[
+                    AssignmentCard(
+                      assignment: assignment,
+                      onSubmit: _noop,
+                      onDownloadBrief: _noop,
+                      onViewSubmission: _noop,
+                      onPreviewAttachment: _noop,
+                      onResend: _noop,
+                    ),
+                    VGap.md(),
+                  ],
+              ],
             ),
           ),
         ),
@@ -232,14 +233,14 @@ class _TopBar extends StatelessWidget {
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.label,
+                style: context.texts.label,
               ),
               Text(
                 AssignmentsStrings.screenTitle,
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.cardTitle,
+                style: context.texts.cardTitle,
               ),
             ],
           ),
@@ -266,24 +267,24 @@ class _NotificationBell extends StatelessWidget {
           onPressed: () {},
           tooltip: AppStrings.notifications,
           style: IconButton.styleFrom(
-            backgroundColor: AppColors.surface,
-            foregroundColor: AppColors.ink,
+            backgroundColor: context.colors.surface,
+            foregroundColor: context.colors.ink,
             fixedSize: Size(44.w, 44.w),
             shape: const CircleBorder(),
-            side: const BorderSide(color: AppColors.border),
+            side: BorderSide(color: context.colors.border),
           ),
           icon: Icon(Icons.notifications_none_rounded, size: 20.sp),
         ),
-        Positioned(
+        PositionedDirectional(
           top: 6.h,
-          right: 8.w,
+          start: 8.w,
           child: Container(
             width: 9.w,
             height: 9.w,
             decoration: BoxDecoration(
-              color: AppColors.error,
+              color: context.colors.error,
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.surface, width: 1.6),
+              border: Border.all(color: context.colors.surface, width: 1.6),
             ),
           ),
         ),
@@ -301,11 +302,15 @@ class _ProfileAvatar extends StatelessWidget {
       width: 44.w,
       height: 44.w,
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.colors.surface,
         shape: BoxShape.circle,
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
-      child: Icon(Icons.person_rounded, size: 22.sp, color: AppColors.inkFaint),
+      child: Icon(
+        Icons.person_rounded,
+        size: 22.sp,
+        color: context.colors.inkFaint,
+      ),
     );
   }
 }

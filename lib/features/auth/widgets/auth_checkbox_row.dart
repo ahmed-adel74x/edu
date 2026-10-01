@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
 
 /// Checkbox followed by arbitrary [child] content (plain text or rich text).
@@ -32,10 +32,10 @@ class AuthCheckboxRow extends StatelessWidget {
             child: Checkbox(
               value: value,
               onChanged: (v) => onChanged(v ?? false),
-              activeColor: AppColors.primary,
+              activeColor: context.colors.primary,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               visualDensity: VisualDensity.compact,
-              side: const BorderSide(color: AppColors.borderStrong, width: 1.4),
+              side: BorderSide(color: context.colors.borderStrong, width: 1.4),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6.r),
               ),

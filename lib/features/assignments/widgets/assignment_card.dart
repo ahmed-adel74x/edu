@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/app_icon_tile.dart';
 import '../../../shared/widgets/app_pill.dart';
@@ -68,26 +68,26 @@ class AssignmentCard extends StatelessWidget {
                   children: [
                     Text(
                       assignment.course,
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.start,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.bodySmall,
+                      style: context.texts.bodySmall,
                     ),
                     VGap.xxs(),
                     Text(
                       assignment.title,
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.start,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.cardTitle,
+                      style: context.texts.cardTitle,
                     ),
                     VGap.xxs(),
                     Text(
                       assignment.excerpt,
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.start,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.bodySmall,
+                      style: context.texts.bodySmall,
                     ),
                   ],
                 ),
@@ -184,20 +184,20 @@ class _StatusPill extends StatelessWidget {
     switch (status) {
       case AssignmentStatus.graded:
         return AppPill(
-          color: AppColors.tintMint,
+          color: context.colors.tintMint,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
                 Icons.check_circle_rounded,
                 size: 13.sp,
-                color: AppColors.accent,
+                color: context.colors.accent,
               ),
               HGap.xxs(),
               Flexible(
                 child: _PillLabel(
                   text: gradeLabel ?? AssignmentsStrings.gradedBadge,
-                  color: AppColors.accent,
+                  color: context.colors.accent,
                 ),
               ),
             ],
@@ -205,16 +205,16 @@ class _StatusPill extends StatelessWidget {
         );
       case AssignmentStatus.pending:
         return AppPill(
-          color: AppColors.surfaceMuted,
+          color: context.colors.surfaceMuted,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               const _WaitingDot(),
               HGap.xxs(),
-              const Flexible(
+              Flexible(
                 child: _PillLabel(
                   text: AssignmentsStrings.pendingBadge,
-                  color: AppColors.ink,
+                  color: context.colors.ink,
                 ),
               ),
             ],
@@ -222,20 +222,20 @@ class _StatusPill extends StatelessWidget {
         );
       case AssignmentStatus.submitted:
         return AppPill(
-          color: AppColors.surfaceMuted,
+          color: context.colors.surfaceMuted,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
                 Icons.schedule_rounded,
                 size: 13.sp,
-                color: AppColors.inkFaint,
+                color: context.colors.inkFaint,
               ),
               HGap.xxs(),
-              const Flexible(
+              Flexible(
                 child: _PillLabel(
                   text: AssignmentsStrings.underReviewBadge,
-                  color: AppColors.ink,
+                  color: context.colors.ink,
                 ),
               ),
             ],
@@ -257,7 +257,7 @@ class _PillLabel extends StatelessWidget {
       text,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: AppTextStyles.bodySmall.copyWith(
+      style: context.texts.bodySmall.copyWith(
         fontWeight: FontWeight.w700,
         color: color,
       ),
@@ -275,14 +275,14 @@ class _WaitingDot extends StatelessWidget {
       width: 15.w,
       height: 15.w,
       alignment: Alignment.center,
-      decoration: const BoxDecoration(
-        color: AppColors.warning,
+      decoration: BoxDecoration(
+        color: context.colors.warning,
         shape: BoxShape.circle,
       ),
       child: Icon(
         Icons.schedule_rounded,
         size: 10.sp,
-        color: AppColors.onPrimary,
+        color: context.colors.onPrimary,
       ),
     );
   }
@@ -305,7 +305,7 @@ class _AssignmentMeta extends StatelessWidget {
         vertical: AppSpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surfaceMuted,
+        color: context.colors.surfaceMuted,
         borderRadius: BorderRadius.circular(AppRadius.sm),
       ),
       child: Column(
@@ -315,14 +315,16 @@ class _AssignmentMeta extends StatelessWidget {
             _MetaLine(
               icon: Icons.schedule_rounded,
               text: assignment.dueLabel!,
-              color: assignment.isDueSoon ? AppColors.error : AppColors.inkMuted,
+              color: assignment.isDueSoon
+                  ? context.colors.error
+                  : context.colors.inkMuted,
             ),
           if (hasDue && hasFile) VGap.xs(),
           if (hasFile)
             _MetaLine(
               icon: Icons.description_outlined,
               text: assignment.fileLabel!,
-              color: AppColors.inkMuted,
+              color: context.colors.inkMuted,
             ),
         ],
       ),
@@ -350,10 +352,10 @@ class _MetaLine extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            textAlign: TextAlign.right,
+            textAlign: TextAlign.start,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.bodySmall.copyWith(
+            style: context.texts.bodySmall.copyWith(
               fontWeight: FontWeight.w600,
               color: color,
             ),
@@ -424,14 +426,16 @@ class _CardActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final foreground = isPrimary ? AppColors.onPrimary : AppColors.primary;
+    final foreground = isPrimary
+        ? context.colors.onPrimary
+        : context.colors.primary;
     final glyph = Icon(icon, size: 16.sp, color: foreground);
     final caption = Flexible(
       child: Text(
         label,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: AppTextStyles.bodySmall.copyWith(
+        style: context.texts.bodySmall.copyWith(
           fontWeight: FontWeight.w700,
           color: foreground,
         ),
@@ -441,8 +445,9 @@ class _CardActionButton extends StatelessWidget {
     return FilledButton(
       onPressed: onPressed,
       style: FilledButton.styleFrom(
-        backgroundColor:
-            isPrimary ? AppColors.uploadAccent : AppColors.surfaceTint,
+        backgroundColor: isPrimary
+            ? context.colors.uploadAccent
+            : context.colors.surfaceTint,
         foregroundColor: foreground,
         minimumSize: Size(0, 42.h),
         padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
@@ -474,7 +479,7 @@ class _InstructorNote extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.sm),
       decoration: BoxDecoration(
-        color: AppColors.surfaceTint,
+        color: context.colors.surfaceTint,
         borderRadius: BorderRadius.circular(AppRadius.sm),
       ),
       child: Column(
@@ -483,12 +488,12 @@ class _InstructorNote extends StatelessWidget {
           if (name != null) ...[
             Text(
               '${AssignmentsStrings.instructorNotesPrefix} $name',
-              textAlign: TextAlign.right,
+              textAlign: TextAlign.start,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.bodySmall.copyWith(
+              style: context.texts.bodySmall.copyWith(
                 fontWeight: FontWeight.w800,
-                color: AppColors.primary,
+                color: context.colors.primary,
               ),
             ),
             VGap.xs(),
@@ -501,8 +506,8 @@ class _InstructorNote extends StatelessWidget {
               Expanded(
                 child: Text(
                   assignment.instructorNote!,
-                  textAlign: TextAlign.right,
-                  style: AppTextStyles.bodySmall.copyWith(height: 1.7),
+                  textAlign: TextAlign.start,
+                  style: context.texts.bodySmall.copyWith(height: 1.7),
                 ),
               ),
             ],
@@ -529,16 +534,16 @@ class _InstructorAvatar extends StatelessWidget {
       height: _size.w,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: AppColors.primary,
+        color: context.colors.primary,
         shape: BoxShape.circle,
-        border: Border.all(color: AppColors.surface, width: 2),
+        border: Border.all(color: context.colors.surface, width: 2),
       ),
       child: Text(
         initials ?? '',
         maxLines: 1,
-        style: AppTextStyles.bodySmall.copyWith(
+        style: context.texts.bodySmall.copyWith(
           fontWeight: FontWeight.w800,
-          color: AppColors.onPrimary,
+          color: context.colors.onPrimary,
           fontSize: 13.sp,
         ),
       ),
@@ -561,18 +566,18 @@ class _SubmissionLine extends StatelessWidget {
         Icon(
           Icons.check_circle_rounded,
           size: 15.sp,
-          color: AppColors.accent,
+          color: context.colors.accent,
         ),
         HGap.xxs(),
         Flexible(
           child: Text(
             assignment.submittedLabel!,
-            textAlign: TextAlign.right,
+            textAlign: TextAlign.start,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.bodySmall.copyWith(
+            style: context.texts.bodySmall.copyWith(
               fontWeight: FontWeight.w600,
-              color: AppColors.accent,
+              color: context.colors.accent,
             ),
           ),
         ),
@@ -582,8 +587,8 @@ class _SubmissionLine extends StatelessWidget {
             assignment.submittedAtLabel!,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.inkFaint,
+            style: context.texts.bodySmall.copyWith(
+              color: context.colors.inkFaint,
             ),
           ),
         ],
@@ -611,8 +616,8 @@ class _ResendLink extends StatelessWidget {
               AssignmentsStrings.resendCta,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.linkAction.copyWith(
-                color: AppColors.inkMuted,
+              style: context.texts.linkAction.copyWith(
+                color: context.colors.inkMuted,
               ),
             ),
           ),
@@ -620,7 +625,7 @@ class _ResendLink extends StatelessWidget {
           Icon(
             Icons.refresh_rounded,
             size: 16.sp,
-            color: AppColors.inkMuted,
+            color: context.colors.inkMuted,
           ),
         ],
       ),

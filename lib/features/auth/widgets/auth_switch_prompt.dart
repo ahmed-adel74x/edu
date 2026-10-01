@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 
 /// "Don't have an account? Create one" / "Already have one? Log in" line.
 class AuthSwitchPrompt extends StatelessWidget {
@@ -26,7 +26,7 @@ class AuthSwitchPrompt extends StatelessWidget {
         Flexible(
           child: Text(
             question,
-            style: AppTextStyles.body,
+            style: context.texts.body,
             textAlign: TextAlign.center,
           ),
         ),
@@ -39,7 +39,7 @@ class AuthSwitchPrompt extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
               child: Text(
                 actionLabel,
-                style: AppTextStyles.linkAction.copyWith(fontSize: 14),
+                style: context.texts.linkAction.copyWith(fontSize: 14),
               ),
             ),
           ),

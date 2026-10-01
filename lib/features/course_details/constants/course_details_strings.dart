@@ -1,21 +1,25 @@
+import 'package:easy_localization/easy_localization.dart';
+
 /// Copy for the course details page. Per-course content (title, description,
 /// units, lessons…) lives on the sample data in the screen, exactly like the
 /// home and explore screens keep their content next to the screen.
 abstract final class CourseDetailsStrings {
   // Top bar
-  static const screenTitle = 'تفاصيل الدورة';
+  static String get screenTitle => 'courseDetails.screenTitle'.tr();
 
   // Overview
-  static const instructorSectionTitle = 'مرشدك المبدع';
-  static const instructorProfileBadge = 'الملف الشخصي';
-  static const studentsLabel = 'الطلاب';
+  static String get instructorSectionTitle =>
+      'courseDetails.instructorSectionTitle'.tr();
+  static String get instructorProfileBadge =>
+      'courseDetails.instructorProfileBadge'.tr();
+  static String get studentsLabel => 'courseDetails.studentsLabel'.tr();
 
   // Curriculum
-  static const curriculumTitle = 'منهج الدورة';
-  static const nowBadge = 'الآن';
+  static String get curriculumTitle => 'courseDetails.curriculumTitle'.tr();
+  static String get nowBadge => 'courseDetails.nowBadge'.tr();
 
   // Bottom action bar
-  static const enrolledLabel = 'مسجل بالفعل';
-  static const progressLabel = 'التقدم';
-  static const continueCta = 'متابعة الدورة';
+  static String get enrolledLabel => 'courseDetails.enrolledLabel'.tr();
+  static String get progressLabel => 'courseDetails.progressLabel'.tr();
+  static String get continueCta => 'courseDetails.continueCta'.tr();
 }

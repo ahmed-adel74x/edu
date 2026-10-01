@@ -1,0 +1,174 @@
+{
+  "common": {
+    "appName": "أكاديمية التعلم",
+    "appTitle": "استكشاف الدورات",
+    "currencySar": "ر.س",
+    "notifications": "الإشعارات",
+    "filterResults": "تصفية النتائج",
+    "emptyState": {
+      "title": "لا توجد نتائج",
+      "message": "جرّب تعديل معايير البحث."
+    },
+    "comingSoon": {
+      "title": "قريبًا",
+      "message": "هذا القسم قيد التطوير حاليًا."
+    },
+    "language": {
+      "label": "اللغة",
+      "ar": "العربية",
+      "en": "English"
+    },
+    "theme": {
+      "label": "المظهر",
+      "light": "فاتح",
+      "dark": "داكن",
+      "system": "حسب النظام"
+    }
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "myCourses": "دوراتي",
+    "explore": "استكشاف",
+    "assignments": "الواجبات",
+    "profile": "حسابي",
+    "students": "الطلاب",
+    "children": "الأبناء",
+    "progress": "التقدم"
+  },
+  "auth": {
+    "common": {
+      "help": "مساعدة؟",
+      "back": "رجوع",
+      "continueWith": "أو المتابعة باستخدام",
+      "quickSignUpWith": "أو التسجيل السريع بواسطة",
+      "google": "جوجل",
+      "apple": "آبل",
+      "passwordHint": "••••••••",
+      "emailOrPhoneLabel": "البريد الإلكتروني أو رقم الهاتف",
+      "emailOrPhoneHint": "name@example.com أو 05xxxxxxxx",
+      "passwordLabel": "كلمة المرور"
+    },
+    "roles": {
+      "label": "نوع الحساب",
+      "student": "طالب",
+      "teacher": "معلم",
+      "parent": "ولي أمر"
+    },
+    "login": {
+      "title": "تسجيل الدخول",
+      "badge": "+500 دورة تدريبية معتمدة",
+      "tag": "🚀 بوابتك للتميز",
+      "heroTitle": "مرحباً بعودتك! 👋",
+      "heroSubtitle": "سجّل دخولك الآن وتابع تقدم دروسك، وواجباتك واختباراتك اليومية بكل سهولة.",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "rememberDevice": "تذكر هذا الجهاز دائماً",
+      "cta": "تسجيل الدخول",
+      "wisdomLabel": "حكمة اليوم:",
+      "wisdomText": " التعلم المستمر لمدة 15 دقيقة يومياً يصنع فارقاً حقيقياً في مستقبلك.",
+      "noAccount": "ليس لديك حساب بعد؟",
+      "createAccountLink": "إنشاء حساب جديد"
+    },
+    "signUp": {
+      "title": "إنشاء حساب جديد",
+      "studentsBadge": "+50,000 طالب",
+      "academicTag": "✨ بوابتك للتميز الأكاديمي",
+      "heroTitle": "ابدأ رحلتك التعليمية اليوم! 🎓",
+      "heroSubtitle": "انضم لنخبة من المتدربين والخبراء، واكتسب المهارات الأكثر طلباً مع شهادات معتمدة فورية.",
+      "fullNameLabel": "الاسم الكامل",
+      "fullNameHint": "مثال: بسنت سعيد أو أحمد محمود",
+      "confirmPasswordLabel": "تأكيد كلمة المرور",
+      "termsPrefix": "أوافق على ",
+      "termsLink": "الشروط والأحكام",
+      "termsAnd": " و",
+      "privacyLink": "سياسة الخصوصية",
+      "termsSuffix": " الخاصة بأكاديمية التعلم",
+      "cta": "إنشاء الحساب ومتابعة التعلم",
+      "certificatesLabel": "شهادات فورية معتمدة:",
+      "certificatesText": " وصول مدى الحياة لكافة الدروس والمهام بعد التسجيل مباشرة.",
+      "haveAccount": "لديك حساب بالفعل؟",
+      "loginLink": "تسجيل الدخول"
+    },
+    "validation": {
+      "fullNameRequired": "من فضلك أدخل اسمك الكامل",
+      "fullNameTooShort": "الاسم قصير جداً",
+      "emailOrPhoneRequired": "من فضلك أدخل البريد الإلكتروني أو رقم الهاتف",
+      "emailOrPhoneInvalid": "أدخل بريداً إلكترونياً أو رقم هاتف صحيحاً",
+      "passwordRequired": "من فضلك أدخل كلمة المرور",
+      "passwordTooShort": "كلمة المرور يجب ألا تقل عن 8 أحرف",
+      "confirmPasswordRequired": "من فضلك أكّد كلمة المرور",
+      "passwordsMismatch": "كلمتا المرور غير متطابقتين",
+      "termsRequired": "يجب الموافقة على الشروط والأحكام للمتابعة"
+    }
+  },
+  "assignments": {
+    "screenTitle": "الواجبات والتكليفات",
+    "levelBadge": "مستوى التميز",
+    "streakBadge": "٣ أيام متتالية 🔥",
+    "heroTitle": "واجباتك الملحّة تنتظرك يا بطل!",
+    "heroSubtitle": "أنجز مهامك الدراسية في موعدها لتحصد نقاط خبرة، وأصبح الأفضل في لوحة الصدارة.",
+    "pointsTooltip": "نقاط الخبرة",
+    "searchHint": "ابحث باسم واجب أو المحاضرة...",
+    "filterAll": "الكل",
+    "filterPending": "قيد الانتظار",
+    "filterSubmitted": "تم التسليم",
+    "filterGraded": "تم التقييم",
+    "pendingBadge": "قيد الانتظار",
+    "underReviewBadge": "قيد المراجعة",
+    "gradedBadge": "تم التقييم",
+    "instructorNotesPrefix": "ملاحظات",
+    "submitCta": "رفع الواجب",
+    "briefCta": "تحميل الشرح",
+    "viewSubmissionCta": "عرض ملف الإجابة والشهادة",
+    "previewCta": "معاينة المرفق",
+    "resendCta": "إعادة الإرسال",
+    "emptyTitle": "لا توجد واجبات مطابقة",
+    "emptyMessage": "جرّب تعديل كلمة البحث أو حالة الواجب."
+  },
+  "home": {
+    "userName": "أحمد",
+    "welcomeTitle": "مرحبًا بعودتك، {name} 👋",
+    "welcomeSubtitle": "هل أنت مستعدة لمواصلة رحلتك في طلب المعرفة وتحقيق أهدافك اليومية؟",
+    "streakBadge": "حماسية مستمرة • ٤ أيام متتالية 🔥",
+    "browseNew": "تصفح الجديد",
+    "curriculumBadge": "منهاج تفاعلي متقدم متاح لك",
+    "continueLearningTitle": "مواصلة التعلم",
+    "seeAll": "عرض الكل",
+    "upcomingTitle": "الاختبارات والمهام القادمة",
+    "upcomingBadge": "٢ بانتظارك",
+    "progressLabel": "نسبة الإنجاز",
+    "continueLessonCta": "متابعة الدرس الحالي",
+    "weeklyTitle": "نشاط الحضور الأسبوعي",
+    "weeklySubtitle": "إجمالي التفاعل: ٥ أيام نشطة",
+    "weeklyRangePill": "هذا الأسبوع"
+  },
+  "explore": {
+    "screenTitle": "استكشاف الدورات",
+    "searchHint": "ابحث عن دورة، محاضر، أو تصنيف...",
+    "sectionTitle": "الدورات المتاحة",
+    "noCourses": "لا توجد دورات",
+    "oneCourse": "دورة واحدة",
+    "twoCourses": "دورتان",
+    "count": "{count} دورات",
+    "allCategory": "الكل",
+    "totalPrice": "السعر الكلي",
+    "emptyTitle": "لا توجد دورات مطابقة",
+    "emptyMessage": "جرّب تعديل كلمة البحث أو اختيار تصنيف آخر.",
+    "promoEyebrow": "عرض الأسبوع",
+    "promoTitle": "خصم 30% على جميع\nالدورات التقنية",
+    "promoSubtitle": "ارتقِ بمهاراتك المهنية اليوم مع شهادات معتمدة وتطبيق عملي حقيقي.",
+    "promoCode": "TECH30",
+    "promoCountdown": "ينتهي خلال 48 ساعة",
+    "promoActivateCta": "تفعيل الخصم"
+  },
+  "courseDetails": {
+    "screenTitle": "تفاصيل الدورة",
+    "instructorSectionTitle": "مرشدك المبدع",
+    "instructorProfileBadge": "الملف الشخصي",
+    "studentsLabel": "الطلاب",
+    "curriculumTitle": "منهج الدورة",
+    "nowBadge": "الآن",
+    "enrolledLabel": "مسجل بالفعل",
+    "progressLabel": "التقدم",
+    "continueCta": "متابعة الدورة"
+  }
+}

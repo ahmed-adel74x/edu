@@ -1,13 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// The bottom navigation bar every role's shell shows.
-///
-/// It is deliberately a thin wrapper around Material's [NavigationBar]: the
-/// bar's look (height, white surface, primary pill indicator, 22px icons, 11px
-/// labels, active/inactive colors) all comes from the shared
-/// `NavigationBarThemeData` in `AppTheme`, so every role renders
-/// pixel-for-pixel the same bar. Which tabs it holds is the caller's business —
-/// each role's shell declares its own list.
 class AppBottomNavBar extends StatelessWidget {
   const AppBottomNavBar({
     super.key,

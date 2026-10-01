@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/models/user_role.dart';
 import '../../../shared/widgets/app_pill.dart';
 import '../../../shared/widgets/app_primary_button.dart';
@@ -33,6 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _identifierController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmController = TextEditingController();
+
   /// Which role this mock session belongs to; the real app takes it from the
   /// new account instead.
   UserRole _role = UserRole.student;
@@ -68,8 +69,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final linkStyle = AppTextStyles.body.copyWith(
-      color: AppColors.primary,
+    final linkStyle = context.texts.body.copyWith(
+      color: context.colors.primary,
       fontWeight: FontWeight.w700,
     );
 
@@ -85,17 +86,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
       children: [
         AuthHeroCard(
           topStart: AppPill(
-            color: AppColors.tintPeach,
+            color: context.colors.tintPeach,
             child: Text(
               AuthStrings.academicTag,
-              style: AppTextStyles.label.copyWith(color: AppColors.warningDeep),
+              style: context.texts.label.copyWith(
+                color: context.colors.warningDeep,
+              ),
             ),
           ),
           topEnd: AppPill(
-            color: AppColors.surfaceTint,
+            color: context.colors.surfaceTint,
             child: Text(
               AuthStrings.studentsBadge,
-              style: AppTextStyles.label.copyWith(color: AppColors.primary),
+              style: context.texts.label.copyWith(
+                color: context.colors.primary,
+              ),
             ),
           ),
           title: AuthStrings.signUpHeroTitle,
@@ -166,13 +171,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           // TODO: make the two links open the terms / privacy pages.
           child: Text.rich(
             TextSpan(
-              style: AppTextStyles.body,
+              style: context.texts.body,
               children: [
-                const TextSpan(text: AuthStrings.termsPrefix),
+                TextSpan(text: AuthStrings.termsPrefix),
                 TextSpan(text: AuthStrings.termsLink, style: linkStyle),
-                const TextSpan(text: AuthStrings.termsAnd),
+                TextSpan(text: AuthStrings.termsAnd),
                 TextSpan(text: AuthStrings.privacyLink, style: linkStyle),
-                const TextSpan(text: AuthStrings.termsSuffix),
+                TextSpan(text: AuthStrings.termsSuffix),
               ],
             ),
           ),
@@ -181,7 +186,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           VGap.xxs(),
           Text(
             AuthStrings.termsRequired,
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
+            style: context.texts.bodySmall.copyWith(
+              color: context.colors.error,
+            ),
           ),
         ],
         VGap.lg(),
@@ -191,14 +198,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           onPressed: _submit,
         ),
         VGap.lg(),
-        const OrDivider(label: AuthStrings.quickSignUpWith),
+        OrDivider(label: AuthStrings.quickSignUpWith),
         VGap.md(),
         const SocialButtonsRow(),
         VGap.lg(),
-        const AuthInfoBanner(
+        AuthInfoBanner(
           icon: Icons.verified_user_outlined,
-          iconBackground: AppColors.tintMint,
-          iconColor: AppColors.accent,
+          iconBackground: context.colors.tintMint,
+          iconColor: context.colors.accent,
           label: AuthStrings.certificatesLabel,
           text: AuthStrings.certificatesText,
         ),

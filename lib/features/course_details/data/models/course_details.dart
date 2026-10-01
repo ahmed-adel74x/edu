@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 
 /// What a lesson row is currently showing in the curriculum list.
 enum LessonStatus {
@@ -169,7 +169,12 @@ class CourseDetails {
   /// duration, badge, progress — comes from the tapped course; the curriculum,
   /// the bio and the remaining summary tiles fall back to the shared
   /// [CourseDetailsDefaults] until per-course content is served by a backend.
+  ///
+  /// [colors] is the palette of the theme in force: the placeholder summary
+  /// tiles are painted with it, so the page has no light-only color left when
+  /// the dark theme is on.
   factory CourseDetails.fromCourse({
+    required AppColorsExtension colors,
     required String image,
     required String title,
     required String instructor,
@@ -183,6 +188,7 @@ class CourseDetails {
   }) {
     final completion = progress.clamp(0.0, 1.0);
     final courseRating = rating ?? CourseDetailsDefaults.rating;
+    final durationStat = CourseDetailsDefaults.durationStat(colors);
 
     return CourseDetails(
       image: image,
@@ -191,12 +197,10 @@ class CourseDetails {
       coverBadge: badge ?? CourseDetailsDefaults.coverBadge,
       rating: courseRating,
       stats: [
-        CourseDetailsDefaults.lessonsStat,
-        duration == null
-            ? CourseDetailsDefaults.durationStat
-            : CourseDetailsDefaults.durationStat.withValue(duration),
-        CourseDetailsDefaults.levelStat,
-        CourseDetailsDefaults.certificateStat,
+        CourseDetailsDefaults.lessonsStat(colors),
+        duration == null ? durationStat : durationStat.withValue(duration),
+        CourseDetailsDefaults.levelStat(colors),
+        CourseDetailsDefaults.certificateStat(colors),
       ],
       instructor: CourseInstructor(
         name: instructor,
@@ -225,6 +229,10 @@ class CourseDetails {
 /// curriculum, the instructor bio, the cover badge and the summary tiles that
 /// have no data behind them. Kept in one place so real repository data can
 /// replace it in a single edit.
+///
+/// The summary tiles are functions of the palette rather than constants: their
+/// icon tints belong to the theme in force, so the page can't keep a light-only
+/// color in the dark theme.
 abstract final class CourseDetailsDefaults {
   static const rating = '4.9';
   static const coverBadge = 'المنهاج الدراسي - معتمد';
@@ -238,37 +246,41 @@ abstract final class CourseDetailsDefaults {
       'في التعليم التفاعلي.';
   static const instructorStudents = '50k+';
 
-  static const lessonsStat = CourseDetailStat(
-    label: 'عدد الدروس',
-    value: '15 درس',
-    icon: Icons.smart_display_rounded,
-    iconColor: AppColors.accent,
-    iconBackground: AppColors.tintMint,
-  );
+  static CourseDetailStat lessonsStat(AppColorsExtension colors) =>
+      CourseDetailStat(
+        label: 'عدد الدروس',
+        value: '15 درس',
+        icon: Icons.smart_display_rounded,
+        iconColor: colors.accent,
+        iconBackground: colors.tintMint,
+      );
 
-  static const durationStat = CourseDetailStat(
-    label: 'مدة الدورة',
-    value: '30 ساعة',
-    icon: Icons.schedule_rounded,
-    iconColor: AppColors.primary,
-    iconBackground: AppColors.tintLavender,
-  );
+  static CourseDetailStat durationStat(AppColorsExtension colors) =>
+      CourseDetailStat(
+        label: 'مدة الدورة',
+        value: '30 ساعة',
+        icon: Icons.schedule_rounded,
+        iconColor: colors.primary,
+        iconBackground: colors.tintLavender,
+      );
 
-  static const levelStat = CourseDetailStat(
-    label: 'المستوى',
-    value: 'متوسط',
-    icon: Icons.trending_up_rounded,
-    iconColor: AppColors.primary,
-    iconBackground: AppColors.tintLavender,
-  );
+  static CourseDetailStat levelStat(AppColorsExtension colors) =>
+      CourseDetailStat(
+        label: 'المستوى',
+        value: 'متوسط',
+        icon: Icons.trending_up_rounded,
+        iconColor: colors.primary,
+        iconBackground: colors.tintLavender,
+      );
 
-  static const certificateStat = CourseDetailStat(
-    label: 'الاعتماد',
-    value: 'شهاده إنعام',
-    icon: Icons.workspace_premium_rounded,
-    iconColor: AppColors.warningDeep,
-    iconBackground: AppColors.tintPeach,
-  );
+  static CourseDetailStat certificateStat(AppColorsExtension colors) =>
+      CourseDetailStat(
+        label: 'الاعتماد',
+        value: 'شهاده إنعام',
+        icon: Icons.workspace_premium_rounded,
+        iconColor: colors.warningDeep,
+        iconBackground: colors.tintPeach,
+      );
 
   static const units = <CourseUnit>[
     CourseUnit(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_dimensions.dart';
 
 /// Square course image used by the "continue learning" cards. The featured
@@ -42,7 +42,7 @@ class CourseThumbnail extends StatelessWidget {
                   width: 34.w,
                   height: 34.w,
                   decoration: BoxDecoration(
-                    color: AppColors.scrim.withValues(alpha: 0.5),
+                    color: context.colors.scrim.withValues(alpha: 0.5),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(

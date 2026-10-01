@@ -4,9 +4,9 @@ import 'package:test_edu/features/explore_courses/constants/explore_courses_stri
 
 import '../data/models/course.dart';
 import '../../../core/constants/app_strings.dart';
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/widgets/app_pill.dart';
 
 class CourseCard extends StatefulWidget {
@@ -44,12 +44,12 @@ class _CourseCardState extends State<CourseCard> {
         child: Container(
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.colors.surface,
             borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: context.colors.border),
             boxShadow: [
               BoxShadow(
-                color: AppColors.shadow,
+                color: context.colors.shadow,
                 blurRadius: 18,
                 offset: Offset(0, 6.h),
               ),
@@ -76,10 +76,10 @@ class _CourseCardState extends State<CourseCard> {
                         Expanded(
                           child: Text(
                             course.title,
-                            textAlign: TextAlign.right,
+                            textAlign: TextAlign.start,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.cardTitle,
+                            style: context.texts.cardTitle,
                           ),
                         ),
                         HGap.xs(),
@@ -97,16 +97,16 @@ class _CourseCardState extends State<CourseCard> {
                           children: [
                             Text(
                               course.instructor,
-                              style: AppTextStyles.bodySmall,
+                              style: context.texts.bodySmall,
                             ),
                             HGap.xs(),
                             CircleAvatar(
                               radius: 12.r,
-                              backgroundColor: AppColors.surfaceTint,
+                              backgroundColor: context.colors.surfaceTint,
                               child: Text(
                                 course.avatar,
-                                style: AppTextStyles.label.copyWith(
-                                  color: AppColors.primary,
+                                style: context.texts.label.copyWith(
+                                  color: context.colors.primary,
                                 ),
                               ),
                             ),
@@ -117,12 +117,12 @@ class _CourseCardState extends State<CourseCard> {
                             Icon(
                               Icons.schedule_rounded,
                               size: 14.sp,
-                              color: AppColors.inkFaint,
+                              color: context.colors.inkFaint,
                             ),
                             HGap.xxs(),
                             Text(
                               course.duration,
-                              style: AppTextStyles.bodySmall,
+                              style: context.texts.bodySmall,
                             ),
                           ],
                         ),
@@ -149,7 +149,7 @@ class _CourseCardState extends State<CourseCard> {
                                 ExploreCoursesStrings.totalPrice,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: AppTextStyles.label,
+                                style: context.texts.label,
                               ),
                               VGap.xxs(),
                               Row(
@@ -161,14 +161,14 @@ class _CourseCardState extends State<CourseCard> {
                                       course.price,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: AppTextStyles.priceLarge,
+                                      style: context.texts.priceLarge,
                                     ),
                                   ),
                                   HGap.xxs(),
                                   Text(
                                     AppStrings.currencySar,
-                                    style: AppTextStyles.bodySmall.copyWith(
-                                      color: AppColors.primary,
+                                    style: context.texts.bodySmall.copyWith(
+                                      color: context.colors.primary,
                                     ),
                                   ),
                                 ],
@@ -222,9 +222,9 @@ class _CardImage extends StatelessWidget {
           child: Image.asset(course.image, fit: BoxFit.cover),
         ),
         // Subtle bottom scrim so the badge always stays legible over any photo.
-        Positioned(
-          left: 0,
-          right: 0,
+        PositionedDirectional(
+          start: 0,
+          end: 0,
           bottom: 0,
           height: 56.h,
           child: DecoratedBox(
@@ -232,24 +232,29 @@ class _CardImage extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Colors.transparent, AppColors.scrim.withOpacity(0.55)],
+                colors: [
+                  Colors.transparent,
+                  context.colors.scrim.withOpacity(0.55),
+                ],
               ),
             ),
           ),
         ),
-        Positioned(
+        PositionedDirectional(
           top: AppSpacing.sm,
-          left: AppSpacing.sm,
+          start: AppSpacing.sm,
           child: _FavoriteButton(isFavorite: isFavorite, onTap: onFavoriteTap),
         ),
-        Positioned(
-          right: AppSpacing.sm,
+        PositionedDirectional(
+          end: AppSpacing.sm,
           bottom: AppSpacing.sm,
           child: AppPill(
-            color: AppColors.accent,
+            color: context.colors.accent,
             child: Text(
               course.badge,
-              style: AppTextStyles.label.copyWith(color: Colors.white),
+              style: context.texts.label.copyWith(
+                color: context.colors.onPrimary,
+              ),
             ),
           ),
         ),
@@ -272,7 +277,7 @@ class _FavoriteButton extends StatelessWidget {
         width: 36.w,
         height: 36.w,
         decoration: BoxDecoration(
-          color: AppColors.scrim.withOpacity(0.4),
+          color: context.colors.scrim.withOpacity(0.4),
           shape: BoxShape.circle,
         ),
         child: AnimatedSwitcher(
@@ -300,20 +305,20 @@ class _RatingPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppPill(
-      color: AppColors.surfaceMuted,
+      color: context.colors.surfaceMuted,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.star_rounded, size: 15.sp, color: AppColors.star),
+          Icon(Icons.star_rounded, size: 15.sp, color: context.colors.star),
           HGap.xxs(),
           Text(
             rating,
-            style: AppTextStyles.bodySmall.copyWith(
+            style: context.texts.bodySmall.copyWith(
               fontWeight: FontWeight.w700,
-              color: AppColors.ink,
+              color: context.colors.ink,
             ),
           ),
-          Text(' ($reviews)', style: AppTextStyles.label),
+          Text(' ($reviews)', style: context.texts.label),
         ],
       ),
     );

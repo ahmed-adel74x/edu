@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/app_icon_tile.dart';
 import '../constants/course_details_strings.dart';
@@ -51,16 +51,16 @@ class _CourseCurriculumSectionState extends State<CourseCurriculumSection> {
             Icon(
               Icons.format_list_bulleted_rounded,
               size: 20.sp,
-              color: AppColors.primary,
+              color: context.colors.primary,
             ),
             HGap.xs(),
             Expanded(
               child: Text(
                 CourseDetailsStrings.curriculumTitle,
-                textAlign: TextAlign.right,
+                textAlign: TextAlign.start,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.sectionTitle,
+                style: context.texts.sectionTitle,
               ),
             ),
             HGap.sm(),
@@ -69,7 +69,7 @@ class _CourseCurriculumSectionState extends State<CourseCurriculumSection> {
                 widget.meta,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.bodySmall,
+                style: context.texts.bodySmall,
               ),
             ),
           ],
@@ -107,7 +107,7 @@ class _CurriculumUnit extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Material(
-          color: AppColors.surfaceMuted,
+          color: context.colors.surfaceMuted,
           borderRadius: BorderRadius.circular(AppRadius.md),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
@@ -127,18 +127,18 @@ class _CurriculumUnit extends StatelessWidget {
                       children: [
                         Text(
                           unit.title,
-                          textAlign: TextAlign.right,
+                          textAlign: TextAlign.start,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.cardTitle,
+                          style: context.texts.cardTitle,
                         ),
                         VGap.xxs(),
                         Text(
                           unit.meta,
-                          textAlign: TextAlign.right,
+                          textAlign: TextAlign.start,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.bodySmall,
+                          style: context.texts.bodySmall,
                         ),
                       ],
                     ),
@@ -151,7 +151,7 @@ class _CurriculumUnit extends StatelessWidget {
                     child: Icon(
                       Icons.keyboard_arrow_down_rounded,
                       size: 22.sp,
-                      color: AppColors.inkMuted,
+                      color: context.colors.inkMuted,
                     ),
                   ),
                 ],
@@ -191,20 +191,19 @@ class _UnitBadge extends StatelessWidget {
       height: 30.w,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: active ? AppColors.primary : AppColors.surfaceTint,
+        color: active ? context.colors.primary : context.colors.surfaceTint,
         shape: BoxShape.circle,
       ),
       child: Text(
         '$order',
-        style: AppTextStyles.bodySmall.copyWith(
+        style: context.texts.bodySmall.copyWith(
           fontWeight: FontWeight.w700,
-          color: active ? AppColors.onPrimary : AppColors.inkMuted,
+          color: active ? context.colors.onPrimary : context.colors.inkMuted,
         ),
       ),
     );
   }
 }
-
 
 /// The white panel holding a unit's lesson rows.
 class _LessonList extends StatelessWidget {
@@ -246,12 +245,12 @@ class _LessonRow extends StatelessWidget {
         vertical: AppSpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: isCurrent ? AppColors.surfaceTint : null,
+        color: isCurrent ? context.colors.surfaceTint : null,
         borderRadius: BorderRadius.circular(AppRadius.sm),
       ),
       child: Row(
         children: [
-          _statusTile(lesson.status),
+          _statusTile(context, lesson.status),
           HGap.sm(),
           Expanded(
             child: Column(
@@ -262,11 +261,13 @@ class _LessonRow extends StatelessWidget {
                     Flexible(
                       child: Text(
                         lesson.title,
-                        textAlign: TextAlign.right,
+                        textAlign: TextAlign.start,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.cardTitle.copyWith(
-                          color: muted ? AppColors.inkFaint : AppColors.ink,
+                        style: context.texts.cardTitle.copyWith(
+                          color: muted
+                              ? context.colors.inkFaint
+                              : context.colors.ink,
                         ),
                       ),
                     ),
@@ -276,16 +277,16 @@ class _LessonRow extends StatelessWidget {
                 VGap.xxs(),
                 Text(
                   lesson.meta,
-                  textAlign: TextAlign.right,
+                  textAlign: TextAlign.start,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.bodySmall,
+                  style: context.texts.bodySmall,
                 ),
               ],
             ),
           ),
           HGap.sm(),
-          _kindTile(lesson),
+          _kindTile(context, lesson),
         ],
       ),
     );
@@ -299,30 +300,27 @@ class _NowBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.xs,
-        vertical: 2.h,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.xs, vertical: 2.h),
       decoration: BoxDecoration(
-        color: AppColors.primary,
+        color: context.colors.primary,
         borderRadius: BorderRadius.circular(AppRadius.xs),
       ),
       child: Text(
         CourseDetailsStrings.nowBadge,
-        style: AppTextStyles.label.copyWith(color: AppColors.onPrimary),
+        style: context.texts.label.copyWith(color: context.colors.onPrimary),
       ),
     );
   }
 }
 
 /// Leading circle: watched, listening now, available or still locked.
-Widget _statusTile(LessonStatus status) {
+Widget _statusTile(BuildContext context, LessonStatus status) {
   switch (status) {
     case LessonStatus.completed:
       return AppIconTile(
         icon: Icons.check_rounded,
-        color: AppColors.accent,
-        background: AppColors.tintMint,
+        color: context.colors.accent,
+        background: context.colors.tintMint,
         size: 40,
         iconSize: 20,
         radius: AppRadius.pill,
@@ -330,8 +328,8 @@ Widget _statusTile(LessonStatus status) {
     case LessonStatus.playing:
       return AppIconTile(
         icon: Icons.graphic_eq_rounded,
-        color: AppColors.accent,
-        background: AppColors.tintMint,
+        color: context.colors.accent,
+        background: context.colors.tintMint,
         size: 40,
         iconSize: 20,
         radius: AppRadius.pill,
@@ -339,8 +337,8 @@ Widget _statusTile(LessonStatus status) {
     case LessonStatus.locked:
       return AppIconTile(
         icon: Icons.lock_outline_rounded,
-        color: AppColors.inkFaint,
-        background: AppColors.surfaceMuted,
+        color: context.colors.inkFaint,
+        background: context.colors.surfaceMuted,
         size: 40,
         iconSize: 18,
         radius: AppRadius.pill,
@@ -348,8 +346,8 @@ Widget _statusTile(LessonStatus status) {
     case LessonStatus.available:
       return AppIconTile(
         icon: Icons.play_arrow_rounded,
-        color: AppColors.primary,
-        background: AppColors.tintLavender,
+        color: context.colors.primary,
+        background: context.colors.tintLavender,
         size: 40,
         iconSize: 20,
         radius: AppRadius.pill,
@@ -359,12 +357,12 @@ Widget _statusTile(LessonStatus status) {
 
 /// Trailing circle: the lesson type, or the play button of the lesson the
 /// learner can resume right now.
-Widget _kindTile(CourseLesson lesson) {
+Widget _kindTile(BuildContext context, CourseLesson lesson) {
   if (lesson.status == LessonStatus.playing) {
     return AppIconTile(
       icon: Icons.play_arrow_rounded,
-      color: AppColors.onPrimary,
-      background: AppColors.primary,
+      color: context.colors.onPrimary,
+      background: context.colors.primary,
       size: 38,
       iconSize: 22,
       radius: AppRadius.pill,
@@ -375,8 +373,8 @@ Widget _kindTile(CourseLesson lesson) {
     case LessonKind.video:
       return AppIconTile(
         icon: Icons.play_arrow_rounded,
-        color: AppColors.accent,
-        background: AppColors.tintMint,
+        color: context.colors.accent,
+        background: context.colors.tintMint,
         size: 36,
         iconSize: 20,
         radius: AppRadius.pill,
@@ -384,8 +382,8 @@ Widget _kindTile(CourseLesson lesson) {
     case LessonKind.quiz:
       return AppIconTile(
         icon: Icons.rule_rounded,
-        color: AppColors.primary,
-        background: AppColors.tintLavender,
+        color: context.colors.primary,
+        background: context.colors.tintLavender,
         size: 36,
         iconSize: 18,
         radius: AppRadius.pill,
@@ -393,8 +391,8 @@ Widget _kindTile(CourseLesson lesson) {
     case LessonKind.reading:
       return AppIconTile(
         icon: Icons.menu_book_rounded,
-        color: AppColors.warningDeep,
-        background: AppColors.tintPeach,
+        color: context.colors.warningDeep,
+        background: context.colors.tintPeach,
         size: 36,
         iconSize: 18,
         radius: AppRadius.pill,

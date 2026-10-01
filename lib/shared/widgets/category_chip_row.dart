@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_colors_extension.dart';
 import '../../core/theme/app_dimensions.dart';
-import '../../core/theme/app_text_styles.dart';
+import '../../core/theme/app_type_scale.dart';
 
 class CategoryChipRow extends StatelessWidget {
   const CategoryChipRow({
@@ -59,15 +59,19 @@ class _CategoryChip extends StatelessWidget {
         curve: Curves.easeOut,
         padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 4.h),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : AppColors.surfaceTint,
+          color: isSelected
+              ? context.colors.primary
+              : context.colors.surfaceTint,
           borderRadius: BorderRadius.circular(AppRadius.pill),
         ),
         alignment: Alignment.center,
         child: Text(
           label,
-          style: AppTextStyles.bodySmall.copyWith(
+          style: context.texts.bodySmall.copyWith(
             fontWeight: FontWeight.w700,
-            color: isSelected ? AppColors.onPrimary : AppColors.inkMuted,
+            color: isSelected
+                ? context.colors.onPrimary
+                : context.colors.inkMuted,
           ),
         ),
       ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/app_type_scale.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/app_icon_tile.dart';
 import '../../../../shared/widgets/app_pill.dart';
@@ -39,31 +39,31 @@ class UpcomingTaskCard extends StatelessWidget {
                   children: [
                     Text(
                       task.title,
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.start,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.cardTitle,
+                      style: context.texts.cardTitle,
                     ),
                     if (task.meta != null) ...[
                       VGap.xxs(),
                       Text(
                         task.meta!,
-                        textAlign: TextAlign.right,
+                        textAlign: TextAlign.start,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.bodySmall,
+                        style: context.texts.bodySmall,
                       ),
                     ],
                     if (task.statusNote != null) ...[
                       VGap.xxs(),
                       Text(
                         task.statusNote!,
-                        textAlign: TextAlign.right,
+                        textAlign: TextAlign.start,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.bodySmall.copyWith(
+                        style: context.texts.bodySmall.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: AppColors.accent,
+                          color: context.colors.accent,
                         ),
                       ),
                     ],
@@ -73,12 +73,12 @@ class UpcomingTaskCard extends StatelessWidget {
               if (task.progressBadge != null) ...[
                 HGap.xs(),
                 AppPill(
-                  color: AppColors.tintLavender,
+                  color: context.colors.tintLavender,
                   child: Text(
                     task.progressBadge!,
-                    style: AppTextStyles.bodySmall.copyWith(
+                    style: context.texts.bodySmall.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: AppColors.primary,
+                      color: context.colors.primary,
                     ),
                   ),
                 ),
@@ -117,16 +117,16 @@ class _CountdownLabel extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Icons.schedule_rounded, size: 15.sp, color: AppColors.error),
+        Icon(Icons.schedule_rounded, size: 15.sp, color: context.colors.error),
         HGap.xxs(),
         Flexible(
           child: Text(
             text,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.bodySmall.copyWith(
+            style: context.texts.bodySmall.copyWith(
               fontWeight: FontWeight.w700,
-              color: AppColors.error,
+              color: context.colors.error,
             ),
           ),
         ),
@@ -146,8 +146,8 @@ class _TaskActionButton extends StatelessWidget {
     return FilledButton(
       onPressed: onPressed,
       style: FilledButton.styleFrom(
-        backgroundColor: AppColors.surfaceTint,
-        foregroundColor: AppColors.primary,
+        backgroundColor: context.colors.surfaceTint,
+        foregroundColor: context.colors.primary,
         minimumSize: Size(0, 38.h),
         padding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
         shape: RoundedRectangleBorder(
@@ -156,9 +156,9 @@ class _TaskActionButton extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: AppTextStyles.bodySmall.copyWith(
+        style: context.texts.bodySmall.copyWith(
           fontWeight: FontWeight.w700,
-          color: AppColors.primary,
+          color: context.colors.primary,
         ),
       ),
     );

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/widgets/app_pill.dart';
 import '../constants/assignments_strings.dart';
 import '../data/models/assignment_summary.dart';
@@ -29,11 +29,11 @@ class AssignmentsProgressHero extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        gradient: AppColors.promoGradient,
+        gradient: context.colors.promoGradient,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow,
+            color: context.colors.shadow,
             blurRadius: 18,
             offset: Offset(0, 6.h),
           ),
@@ -55,12 +55,12 @@ class AssignmentsProgressHero extends StatelessWidget {
                     Flexible(
                       child: Text(
                         AssignmentsStrings.streakBadge,
-                        textAlign: TextAlign.right,
+                        textAlign: TextAlign.start,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.bodySmall.copyWith(
+                        style: context.texts.bodySmall.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: AppColors.onPrimary,
+                          color: context.colors.onPrimary,
                         ),
                       ),
                     ),
@@ -74,21 +74,21 @@ class AssignmentsProgressHero extends StatelessWidget {
           VGap.md(),
           Text(
             AssignmentsStrings.heroTitle,
-            textAlign: TextAlign.right,
+            textAlign: TextAlign.start,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.sectionTitle.copyWith(
-              color: AppColors.onPrimary,
+            style: context.texts.sectionTitle.copyWith(
+              color: context.colors.onPrimary,
             ),
           ),
           VGap.xs(),
           Text(
             AssignmentsStrings.heroSubtitle,
-            textAlign: TextAlign.right,
+            textAlign: TextAlign.start,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.onPrimary.withValues(alpha: 0.82),
+            style: context.texts.bodySmall.copyWith(
+              color: context.colors.onPrimary.withValues(alpha: 0.82),
             ),
           ),
           VGap.md(),
@@ -106,20 +106,24 @@ class _LevelBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppPill(
-      color: AppColors.onPrimary.withValues(alpha: 0.18),
+      color: context.colors.onPrimary.withValues(alpha: 0.18),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.bolt_rounded, size: 14.sp, color: AppColors.onPrimary),
+          Icon(
+            Icons.bolt_rounded,
+            size: 14.sp,
+            color: context.colors.onPrimary,
+          ),
           HGap.xxs(),
           Flexible(
             child: Text(
               AssignmentsStrings.levelBadge,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.bodySmall.copyWith(
+              style: context.texts.bodySmall.copyWith(
                 fontWeight: FontWeight.w700,
-                color: AppColors.onPrimary,
+                color: context.colors.onPrimary,
               ),
             ),
           ),
@@ -141,8 +145,8 @@ class _PointsButton extends StatelessWidget {
       onPressed: onTap,
       tooltip: AssignmentsStrings.pointsTooltip,
       style: IconButton.styleFrom(
-        backgroundColor: AppColors.onPrimary.withValues(alpha: 0.18),
-        foregroundColor: AppColors.onPrimary,
+        backgroundColor: context.colors.onPrimary.withValues(alpha: 0.18),
+        foregroundColor: context.colors.onPrimary,
         fixedSize: Size(42.w, 42.w),
         shape: const CircleBorder(),
       ),
@@ -162,7 +166,7 @@ class _SummaryStrip extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
       decoration: BoxDecoration(
-        color: AppColors.onPrimary.withValues(alpha: 0.14),
+        color: context.colors.onPrimary.withValues(alpha: 0.14),
         borderRadius: BorderRadius.circular(AppRadius.sm),
       ),
       child: Row(
@@ -185,7 +189,7 @@ class _StripDivider extends StatelessWidget {
     return Container(
       width: 1,
       height: 32.h,
-      color: AppColors.onPrimary.withValues(alpha: 0.2),
+      color: context.colors.onPrimary.withValues(alpha: 0.2),
     );
   }
 }
@@ -206,8 +210,8 @@ class _SummaryCell extends StatelessWidget {
           textAlign: TextAlign.center,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: AppTextStyles.bodySmall.copyWith(
-            color: AppColors.onPrimary.withValues(alpha: 0.78),
+          style: context.texts.bodySmall.copyWith(
+            color: context.colors.onPrimary.withValues(alpha: 0.78),
           ),
         ),
         VGap.xxs(),
@@ -222,8 +226,8 @@ class _SummaryCell extends StatelessWidget {
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.cardTitle.copyWith(
-                  color: AppColors.onPrimary,
+                style: context.texts.cardTitle.copyWith(
+                  color: context.colors.onPrimary,
                 ),
               ),
             ),
@@ -234,9 +238,9 @@ class _SummaryCell extends StatelessWidget {
                   item.unit!,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.bodySmall.copyWith(
+                  style: context.texts.bodySmall.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: AppColors.onPrimary.withValues(alpha: 0.85),
+                    color: context.colors.onPrimary.withValues(alpha: 0.85),
                   ),
                 ),
               ),

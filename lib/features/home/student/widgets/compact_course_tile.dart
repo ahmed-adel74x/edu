@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/app_type_scale.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/app_progress_bar.dart';
 import '../../data/models/enrolled_course.dart';
@@ -31,27 +31,27 @@ class CompactCourseTile extends StatelessWidget {
               children: [
                 Text(
                   course.title,
-                  textAlign: TextAlign.right,
+                  textAlign: TextAlign.start,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.cardTitle,
+                  style: context.texts.cardTitle,
                 ),
                 VGap.xxs(),
                 Text(
                   course.instructor,
-                  textAlign: TextAlign.right,
+                  textAlign: TextAlign.start,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.bodySmall,
+                  style: context.texts.bodySmall,
                 ),
                 VGap.sm(),
                 Row(
                   children: [
                     Text(
                       course.progressLabel,
-                      style: AppTextStyles.metricLabel.copyWith(
+                      style: context.texts.metricLabel.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: AppColors.primary,
+                        color: context.colors.primary,
                       ),
                     ),
                     HGap.xs(),
@@ -68,8 +68,8 @@ class CompactCourseTile extends StatelessWidget {
             onPressed: onTap,
             tooltip: course.title,
             style: IconButton.styleFrom(
-              backgroundColor: AppColors.surfaceTint,
-              foregroundColor: AppColors.primary,
+              backgroundColor: context.colors.surfaceTint,
+              foregroundColor: context.colors.primary,
               fixedSize: Size(44.w, 44.w),
               shape: const CircleBorder(),
             ),

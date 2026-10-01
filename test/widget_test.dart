@@ -35,6 +35,8 @@ import 'package:test_edu/features/explore_courses/widgets/course_card.dart';
 import 'package:test_edu/features/explore_courses/widgets/course_card_skeleton.dart';
 import 'package:test_edu/main.dart';
 
+import 'helpers/app_test_harness.dart';
+
 /// A common phone canvas (iPhone 14-ish), in logical pixels.
 const Size phoneSize = Size(390, 844);
 
@@ -62,9 +64,9 @@ Finder exploreScrollable() => find
 /// The explore screen's card for [title]; the home tab may show the same
 /// course, hence the scoping.
 Finder courseTile(String title) => find.descendant(
-      of: find.byType(ExploreCoursesScreen),
-      matching: find.text(title),
-    );
+  of: find.byType(ExploreCoursesScreen),
+  matching: find.text(title),
+);
 
 /// Advances the clock past [ExploreCoursesScreen.loadingDuration] so the
 /// courses replace the `CourseCardSkeleton` placeholders.
@@ -80,7 +82,11 @@ Future<void> reveal(
   Finder target, {
   double delta = 200,
 }) async {
-  await tester.scrollUntilVisible(target, delta, scrollable: exploreScrollable());
+  await tester.scrollUntilVisible(
+    target,
+    delta,
+    scrollable: exploreScrollable(),
+  );
   await tester.pump();
 }
 
@@ -103,7 +109,9 @@ Future<void> pumpExploreScreen(
   tester.view.physicalSize = phoneSize;
   tester.view.devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
-  await tester.pumpWidget(MyApp(auth: AuthNotifier.signedIn()));
+  await tester.pumpWidget(
+    MyApp(auth: AuthNotifier.signedIn(), assetLoader: memoryAssetLoader),
+  );
   await tester.pump();
 
   await tester.tap(find.text(AppStrings.navExplore));
@@ -126,6 +134,8 @@ Future<void> search(WidgetTester tester, String query) async {
 }
 
 void main() {
+  setUp(prepareAppEnvironment);
+
   testWidgets('shows the header, the promo banner and every course', (
     WidgetTester tester,
   ) async {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/app_type_scale.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/app_pill.dart';
 import '../../constants/home_strings.dart';
@@ -32,18 +32,18 @@ class WeeklyActivityCard extends StatelessWidget {
                   children: [
                     Text(
                       HomeStrings.weeklyTitle,
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.start,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.sectionTitle,
+                      style: context.texts.sectionTitle,
                     ),
                     VGap.xxs(),
                     Text(
                       HomeStrings.weeklySubtitle,
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.start,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.bodySmall,
+                      style: context.texts.bodySmall,
                     ),
                   ],
                 ),
@@ -66,24 +66,24 @@ class _RangePill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppPill(
-      color: AppColors.surfaceTint,
+      color: context.colors.surfaceTint,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             width: 7.w,
             height: 7.w,
-            decoration: const BoxDecoration(
-              color: AppColors.success,
+            decoration: BoxDecoration(
+              color: context.colors.success,
               shape: BoxShape.circle,
             ),
           ),
           HGap.xxs(),
           Text(
             HomeStrings.weeklyRangePill,
-            style: AppTextStyles.bodySmall.copyWith(
+            style: context.texts.bodySmall.copyWith(
               fontWeight: FontWeight.w700,
-              color: AppColors.inkMuted,
+              color: context.colors.inkMuted,
             ),
           ),
         ],
@@ -118,7 +118,9 @@ class WeeklyActivityChart extends StatelessWidget {
           children: [
             for (var i = 0; i < days.length; i++) ...[
               if (i > 0) HGap.xxs(),
-              Expanded(child: _ActivityBar(day: days[i], progress: progress)),
+              Expanded(
+                child: _ActivityBar(day: days[i], progress: progress),
+              ),
             ],
           ],
         );
@@ -140,7 +142,8 @@ class _ActivityBar extends StatelessWidget {
     final ratio = day.ratio.clamp(0.0, 1.0);
     final height =
         (WeeklyActivityChart.minBarHeight +
-            (WeeklyActivityChart.maxBarHeight - WeeklyActivityChart.minBarHeight) *
+            (WeeklyActivityChart.maxBarHeight -
+                    WeeklyActivityChart.minBarHeight) *
                 ratio) *
         progress;
 
@@ -152,7 +155,7 @@ class _ActivityBar extends StatelessWidget {
           height: height.h,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: _color(),
+              color: _color(context),
               borderRadius: BorderRadius.vertical(
                 top: Radius.circular(AppRadius.pill),
                 bottom: Radius.circular(AppRadius.xs),
@@ -166,15 +169,15 @@ class _ActivityBar extends StatelessWidget {
           textAlign: TextAlign.center,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: AppTextStyles.axisLabel,
+          style: context.texts.axisLabel,
         ),
       ],
     );
   }
 
-  Color _color() {
-    if (day.isToday) return AppColors.accent;
-    if (day.isActive) return AppColors.primary;
-    return AppColors.borderStrong;
+  Color _color(BuildContext context) {
+    if (day.isToday) return context.colors.accent;
+    if (day.isActive) return context.colors.primary;
+    return context.colors.borderStrong;
   }
 }

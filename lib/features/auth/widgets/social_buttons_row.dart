@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../constants/auth_strings.dart';
 
 /// Google + Apple quick-auth buttons, side by side.
@@ -53,10 +53,10 @@ class _SocialButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(AppRadius.md);
     return Material(
-      color: AppColors.surface,
+      color: context.colors.surface,
       shape: RoundedRectangleBorder(
         borderRadius: radius,
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: context.colors.border),
       ),
       child: InkWell(
         borderRadius: radius,
@@ -66,11 +66,11 @@ class _SocialButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 24.sp, color: AppColors.ink),
+              Icon(icon, size: 24.sp, color: context.colors.ink),
               HGap.xs(),
               Text(
                 label,
-                style: AppTextStyles.cardTitle.copyWith(fontSize: 14.sp),
+                style: context.texts.cardTitle.copyWith(fontSize: 14.sp),
               ),
             ],
           ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 import '../../../shared/models/user_role.dart';
 import '../../../shared/widgets/app_pill.dart';
 import '../../../shared/widgets/app_primary_button.dart';
@@ -32,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _identifierController = TextEditingController();
   final _passwordController = TextEditingController();
+
   /// Which role this mock session belongs to; the real app takes it from the
   /// signed-in account instead.
   UserRole _role = UserRole.student;
@@ -65,10 +66,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return AuthScaffold(
       title: AuthStrings.loginTitle,
       footer: [
-        const AuthInfoBanner(
+        AuthInfoBanner(
           icon: Icons.lightbulb_outline_rounded,
-          iconBackground: AppColors.accent,
-          iconColor: AppColors.onPrimary,
+          iconBackground: context.colors.accent,
+          iconColor: context.colors.onPrimary,
           label: AuthStrings.dailyWisdomLabel,
           text: AuthStrings.dailyWisdomText,
         ),
@@ -82,11 +83,15 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         AuthHeroCard(
           topStart: AppPill(
-            color: AppColors.surface,
+            color: context.colors.surface,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.star_rounded, size: 15.sp, color: AppColors.star),
+                Icon(
+                  Icons.star_rounded,
+                  size: 15.sp,
+                  color: context.colors.star,
+                ),
                 HGap.xxs(),
                 // Shrinkable: the badge is a sentence, so on a narrow surface
                 // (or a wide glyph set) it wraps inside the pill instead of
@@ -94,15 +99,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 Flexible(
                   child: Text(
                     AuthStrings.loginBadge,
-                    style: AppTextStyles.label.copyWith(
-                      color: AppColors.primary,
+                    style: context.texts.label.copyWith(
+                      color: context.colors.primary,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          topEnd: Text(AuthStrings.loginTag, style: AppTextStyles.bodySmall),
+          topEnd: Text(AuthStrings.loginTag, style: context.texts.bodySmall),
           title: AuthStrings.loginHeroTitle,
           subtitle: AuthStrings.loginHeroSubtitle,
         ),
@@ -140,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () {}, // TODO: forgot-password flow
                   child: Text(
                     AuthStrings.forgotPassword,
-                    style: AppTextStyles.linkAction,
+                    style: context.texts.linkAction,
                   ),
                 ),
               ),
@@ -151,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
         AuthCheckboxRow(
           value: _rememberDevice,
           onChanged: (v) => setState(() => _rememberDevice = v),
-          child: Text(AuthStrings.rememberDevice, style: AppTextStyles.body),
+          child: Text(AuthStrings.rememberDevice, style: context.texts.body),
         ),
         VGap.lg(),
         AppPrimaryButton(
@@ -160,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onPressed: _submit,
         ),
         VGap.lg(),
-        const OrDivider(label: AuthStrings.continueWith),
+        OrDivider(label: AuthStrings.continueWith),
         VGap.md(),
         const SocialButtonsRow(),
       ],

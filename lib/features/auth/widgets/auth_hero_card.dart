@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_colors_extension.dart';
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 
 /// Welcome card at the top of the auth screens. [topStart] / [topEnd] are the
 /// two small badges on the first row (right / left in RTL).
@@ -26,12 +26,12 @@ class AuthHeroCard extends StatelessWidget {
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        gradient: AppColors.heroGradient,
+        gradient: context.colors.heroGradient,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.border),
-        boxShadow: const [
+        border: Border.all(color: context.colors.border),
+        boxShadow: [
           BoxShadow(
-            color: AppColors.shadow,
+            color: context.colors.shadow,
             blurRadius: 18,
             offset: Offset(0, 6),
           ),
@@ -39,14 +39,14 @@ class AuthHeroCard extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          // Faint cap watermark on the trailing (left) edge.
-          Positioned(
-            left: -AppSpacing.md,
+          // Faint cap watermark on the trailing edge.
+          PositionedDirectional(
+            end: -AppSpacing.md,
             bottom: -AppSpacing.md,
             child: Icon(
               Icons.school_rounded,
               size: 96.sp,
-              color: AppColors.primary.withOpacity(0.06),
+              color: context.colors.primary.withOpacity(0.06),
             ),
           ),
           Padding(
@@ -66,9 +66,9 @@ class AuthHeroCard extends StatelessWidget {
                   children: [topStart, topEnd],
                 ),
                 VGap.sm(),
-                Text(title, style: AppTextStyles.display),
+                Text(title, style: context.texts.display),
                 VGap.xs(),
-                Text(subtitle, style: AppTextStyles.body),
+                Text(subtitle, style: context.texts.body),
               ],
             ),
           ),

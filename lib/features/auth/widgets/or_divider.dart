@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_dimensions.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_type_scale.dart';
 
 /// Horizontal rule with a centered caption ("or continue with").
 class OrDivider extends StatelessWidget {
@@ -16,7 +16,7 @@ class OrDivider extends StatelessWidget {
         const Expanded(child: Divider()),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-          child: Text(label, style: AppTextStyles.bodySmall),
+          child: Text(label, style: context.texts.bodySmall),
         ),
         const Expanded(child: Divider()),
       ],
