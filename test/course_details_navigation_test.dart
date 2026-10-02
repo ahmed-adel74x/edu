@@ -16,16 +16,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:test_edu/core/constants/app_strings.dart';
-import 'package:test_edu/features/auth/auth_notifier.dart';
+import 'package:test_edu/core/utils/number_format.dart';
 import 'package:test_edu/features/course_details/student/course_details_screen.dart';
 import 'package:test_edu/features/explore_courses/student/explore_courses_screen.dart';
 import 'package:test_edu/features/explore_courses/widgets/course_card.dart';
+import 'package:test_edu/features/home/constants/home_strings.dart';
 import 'package:test_edu/features/home/student/home_screen.dart';
 import 'package:test_edu/features/home/student/widgets/compact_course_tile.dart';
 import 'package:test_edu/features/home/student/widgets/continue_course_card.dart';
 import 'package:test_edu/main.dart';
 
 import 'helpers/app_test_harness.dart';
+import 'helpers/auth_test_harness.dart';
 
 /// A common phone canvas (iPhone 14-ish), in logical pixels.
 const Size phoneSize = Size(390, 844);
@@ -36,6 +38,11 @@ Finder inDetails(String text) => find.descendant(
   matching: find.text(text),
 );
 
+/// The details page's own context, for the copy it renders in the locale's
+/// digits (the app counts with Arabic-Indic numerals in Arabic).
+BuildContext detailsContext(WidgetTester tester) =>
+    tester.element(find.byType(CourseDetailsScreen));
+
 /// Pumps the app on a phone canvas, letting the explore tab's simulated fetch
 /// finish so that no timer is left pending at teardown.
 Future<void> pumpApp(WidgetTester tester) async {
@@ -43,7 +50,7 @@ Future<void> pumpApp(WidgetTester tester) async {
   tester.view.devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
   await tester.pumpWidget(
-    MyApp(auth: AuthNotifier.signedIn(), assetLoader: memoryAssetLoader),
+    MyApp(auth: signedInAuthCubit(), assetLoader: memoryAssetLoader),
   );
   await tester.pump();
   await tester.pump(ExploreCoursesScreen.loadingDuration);
@@ -102,7 +109,12 @@ void main() {
     expect(find.byType(CourseDetailsScreen), findsOneWidget);
     expect(inDetails('تجربة للدورات (المحاضرات)'), findsOneWidget);
     expect(inDetails('أحمد سعيد - Ahmed Teacher3'), findsOneWidget);
-    expect(inDetails('٪65'), findsOneWidget);
+    // The 65% the continue card showed, handed over as-is — in the digits of the
+    // locale the app opened in, which for Arabic are Arabic-Indic.
+    expect(
+      inDetails(HomeStrings.percent(formatNumber(detailsContext(tester), 65))),
+      findsOneWidget,
+    );
 
     await tester.tap(detailsBackButton());
     await tester.pumpAndSettle();

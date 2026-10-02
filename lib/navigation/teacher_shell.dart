@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/constants/app_strings.dart';
+import '../features/auth/widgets/profile_logout_placeholder.dart';
 import '../shared/widgets/coming_soon_screen.dart';
 import 'app_shell_scaffold.dart';
 import 'nav_tab.dart';
@@ -59,10 +60,14 @@ class TeacherShell extends StatelessWidget {
   ];
 
   /// The stand-in page for tab [index], while that tab has no screen yet.
-  static Widget placeholder(int index) => ComingSoonScreen(
-    icon: tabs[index].selectedIcon,
-    title: tabs[index].label,
-  );
+  ///
+  /// Profile is the exception: it carries the temporary sign-out button.
+  static Widget placeholder(int index) => index == profileIndex
+      ? const ProfileLogoutPlaceholder()
+      : ComingSoonScreen(
+          icon: tabs[index].selectedIcon,
+          title: tabs[index].label,
+        );
 
   @override
   Widget build(BuildContext context) => AppShellScaffold(

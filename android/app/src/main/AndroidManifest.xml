@@ -1,4 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The app talks to the backend over HTTPS; release builds need this
+         explicitly (the debug and profile manifests add it on their own). -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="test_edu"
         android:name="${applicationName}"

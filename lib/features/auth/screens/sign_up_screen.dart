@@ -8,8 +8,8 @@ import '../../../shared/widgets/app_pill.dart';
 import '../../../shared/widgets/app_primary_button.dart';
 import '../../../shared/widgets/app_text_field.dart';
 import '../constants/auth_strings.dart';
+import '../utils/auth_feedback.dart';
 import '../utils/auth_validators.dart';
-import '../auth_notifier.dart';
 import '../auth_route.dart';
 import '../widgets/auth_checkbox_row.dart';
 import '../widgets/auth_hero_card.dart';
@@ -39,7 +39,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   UserRole _role = UserRole.student;
   bool _acceptedTerms = false;
   bool _showTermsError = false;
-  bool _submitting = false;
 
   @override
   void dispose() {
@@ -50,21 +49,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  Future<void> _submit() async {
+  void _submit() {
     FocusScope.of(context).unfocus();
     final formValid = _formKey.currentState?.validate() ?? false;
     setState(() => _showTermsError = !_acceptedTerms);
     if (!formValid || !_acceptedTerms) return;
 
-    setState(() => _submitting = true);
-    // Simulated request; wire this to a real repository call when the
-    // backend is connected.
-    await Future.delayed(const Duration(milliseconds: 800));
-    if (!mounted) return;
-    setState(() => _submitting = false);
-    // Mock sign-up: the picked role decides which shell the router opens.
-    AuthScope.of(context).signInWithRole(_role);
-    openMainShell(context);
+    // Sign-up has no backend yet: it signs nobody in and says so.
+    showNotAvailableMessage(context);
   }
 
   @override
@@ -194,7 +186,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         VGap.lg(),
         AppPrimaryButton(
           label: AuthStrings.signUpCta,
-          isLoading: _submitting,
           onPressed: _submit,
         ),
         VGap.lg(),

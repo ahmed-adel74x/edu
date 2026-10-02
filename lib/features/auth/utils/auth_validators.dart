@@ -5,6 +5,22 @@ abstract final class AuthValidators {
   static final _emailRegex = RegExp(r'^[\w.+-]+@[\w-]+\.[\w.-]+$');
   static final _phoneRegex = RegExp(r'^05\d{8}$');
 
+  /// The login field is an email; the server accepts nothing else.
+  static String? email(String? value) {
+    final v = (value ?? '').trim();
+    if (v.isEmpty) return AuthStrings.emailRequired;
+    if (!_emailRegex.hasMatch(v)) return AuthStrings.emailInvalid;
+    return null;
+  }
+
+  /// The login password, mirroring the server's minimum of 6 characters.
+  static String? loginPassword(String? value) {
+    final v = value ?? '';
+    if (v.isEmpty) return AuthStrings.passwordRequired;
+    if (v.length < 6) return AuthStrings.passwordMinSix;
+    return null;
+  }
+
   static String? fullName(String? value) {
     final v = value?.trim() ?? '';
     if (v.isEmpty) return AuthStrings.fullNameRequired;

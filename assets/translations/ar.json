@@ -46,13 +46,16 @@
       "passwordHint": "••••••••",
       "emailOrPhoneLabel": "البريد الإلكتروني أو رقم الهاتف",
       "emailOrPhoneHint": "name@example.com أو 05xxxxxxxx",
-      "passwordLabel": "كلمة المرور"
+      "passwordLabel": "كلمة المرور",
+      "notAvailable": "هذه الميزة غير متاحة بعد",
+      "logout": "تسجيل الخروج"
     },
     "roles": {
       "label": "نوع الحساب",
       "student": "طالب",
       "teacher": "معلم",
-      "parent": "ولي أمر"
+      "parent": "ولي أمر",
+      "devOnly": "نسخة تجريبية فقط"
     },
     "login": {
       "title": "تسجيل الدخول",
@@ -97,7 +100,10 @@
       "passwordTooShort": "كلمة المرور يجب ألا تقل عن 8 أحرف",
       "confirmPasswordRequired": "من فضلك أكّد كلمة المرور",
       "passwordsMismatch": "كلمتا المرور غير متطابقتين",
-      "termsRequired": "يجب الموافقة على الشروط والأحكام للمتابعة"
+      "termsRequired": "يجب الموافقة على الشروط والأحكام للمتابعة",
+      "emailRequired": "من فضلك أدخل البريد الإلكتروني",
+      "emailInvalid": "أدخل بريداً إلكترونياً صحيحاً",
+      "passwordMinSix": "كلمة المرور يجب ألا تقل عن 6 أحرف"
     }
   },
   "assignments": {
@@ -125,21 +131,59 @@
     "emptyMessage": "جرّب تعديل كلمة البحث أو حالة الواجب."
   },
   "home": {
-    "userName": "أحمد",
     "welcomeTitle": "مرحبًا بعودتك، {name} 👋",
     "welcomeSubtitle": "هل أنت مستعدة لمواصلة رحلتك في طلب المعرفة وتحقيق أهدافك اليومية؟",
-    "streakBadge": "حماسية مستمرة • ٤ أيام متتالية 🔥",
     "browseNew": "تصفح الجديد",
     "curriculumBadge": "منهاج تفاعلي متقدم متاح لك",
     "continueLearningTitle": "مواصلة التعلم",
     "seeAll": "عرض الكل",
     "upcomingTitle": "الاختبارات والمهام القادمة",
-    "upcomingBadge": "٢ بانتظارك",
+    "upcomingBadge": "{count} بانتظارك",
     "progressLabel": "نسبة الإنجاز",
+    "percent": "٪{value}",
     "continueLessonCta": "متابعة الدرس الحالي",
-    "weeklyTitle": "نشاط الحضور الأسبوعي",
-    "weeklySubtitle": "إجمالي التفاعل: ٥ أيام نشطة",
-    "weeklyRangePill": "هذا الأسبوع"
+    "remainingLectures": "متبقي {count} محاضرة",
+    "assignmentAction": "التفاصيل",
+    "dueDate": "تاريخ التسليم: {date}",
+    "retry": "إعادة المحاولة",
+    "stats": {
+      "enrolledCourses": "الدورات المسجلة",
+      "studyHours": "ساعات الدراسة",
+      "completedCourses": "الدورات المكتملة",
+      "certificates": "الشهادات المكتسبة",
+      "coursesUnit": "دورات",
+      "hoursUnit": "ساعة",
+      "courseUnit": "دورة",
+      "certificateUnit": "شهادة"
+    },
+    "emptyCourses": {
+      "title": "لا توجد دورات بعد",
+      "message": "سجّل في دورة لتجدها هنا جاهزة للمتابعة."
+    },
+    "emptyAssignments": {
+      "title": "لا مهام قادمة",
+      "message": "ستظهر هنا الاختبارات والواجبات التي تقترب مواعيدها."
+    },
+    "attendance": {
+      "title": "نشاط الحضور",
+      "subtitle": "حضرت {attended} من {total} محاضرة"
+    },
+    "emptyAttendance": {
+      "title": "لا يوجد نشاط بعد",
+      "message": "ستظهر هنا نسبة حضورك للمحاضرات شهرًا بشهر."
+    },
+    "recentQuizzes": {
+      "title": "اختبارات حديثة",
+      "scoreLabel": "النتيجة",
+      "emptyTitle": "لا اختبارات بعد",
+      "emptyMessage": "ستظهر هنا نتائج الاختبارات التي تؤديها."
+    },
+    "recentChats": {
+      "title": "محادثات حديثة",
+      "noMessages": "لا توجد رسائل بعد",
+      "emptyTitle": "لا محادثات بعد",
+      "emptyMessage": "ستظهر هنا محادثات دوراتك ورسائلها الأخيرة."
+    }
   },
   "explore": {
     "screenTitle": "استكشاف الدورات",
@@ -170,5 +214,19 @@
     "enrolledLabel": "مسجل بالفعل",
     "progressLabel": "التقدم",
     "continueCta": "متابعة الدورة"
+  },
+  "errors": {
+    "network": "لا يوجد اتصال بالإنترنت. تحقق من اتصالك وحاول مرة أخرى.",
+    "timeout": "انتهت مدة الطلب. حاول مرة أخرى.",
+    "server": "حدث خطأ في الخادم. حاول مرة أخرى بعد قليل.",
+    "unknown": "حدث خطأ غير متوقع. حاول مرة أخرى.",
+    "validation": "من فضلك تحقق من البيانات المدخلة.",
+    "wrongCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+    "alreadyLoggedIn": "حسابك مسجّل الدخول على جهاز آخر. سجّل الخروج من هناك أولاً.",
+    "enrollmentPending": "طلب تسجيلك قيد المراجعة.",
+    "enrollmentRejected": "تم رفض طلب تسجيلك.",
+    "studentOnly": "هذا التطبيق مخصص للطلاب فقط.",
+    "unsupportedRole": "هذا النوع من الحسابات غير مدعوم في هذا التطبيق.",
+    "sessionEnded": "انتهت جلستك. من فضلك سجّل الدخول مرة أخرى."
   }
 }

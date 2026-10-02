@@ -12,12 +12,15 @@ abstract final class AuthStrings {
   static String get emailOrPhoneLabel => 'auth.common.emailOrPhoneLabel'.tr();
   static String get emailOrPhoneHint => 'auth.common.emailOrPhoneHint'.tr();
   static String get passwordLabel => 'auth.common.passwordLabel'.tr();
+  static String get notAvailable => 'auth.common.notAvailable'.tr();
+  static String get logout => 'auth.common.logout'.tr();
 
   // Mock sign-in: which role the next session belongs to
   static String get roleSelectorLabel => 'auth.roles.label'.tr();
   static String get roleStudent => 'auth.roles.student'.tr();
   static String get roleTeacher => 'auth.roles.teacher'.tr();
   static String get roleParent => 'auth.roles.parent'.tr();
+  static String get roleDevOnly => 'auth.roles.devOnly'.tr();
 
   // Login
   static String get loginTitle => 'auth.login.title'.tr();
@@ -57,6 +60,9 @@ abstract final class AuthStrings {
   // Validation
   static String get fullNameRequired => 'auth.validation.fullNameRequired'.tr();
   static String get fullNameTooShort => 'auth.validation.fullNameTooShort'.tr();
+  static String get emailRequired => 'auth.validation.emailRequired'.tr();
+  static String get emailInvalid => 'auth.validation.emailInvalid'.tr();
+  static String get passwordMinSix => 'auth.validation.passwordMinSix'.tr();
   static String get emailOrPhoneRequired =>
       'auth.validation.emailOrPhoneRequired'.tr();
   static String get emailOrPhoneInvalid =>

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 
@@ -20,4 +22,16 @@ String formatNumber(BuildContext context, num value) {
     RegExp(r'\d'),
     (match) => _arabicIndicDigits[int.parse(match[0]!)],
   );
+}
+
+/// Renders a possibly-fractional [value] cleanly: at most [fractionDigits]
+/// decimals (default one), a whole number losing its fractional part, in the
+/// language's digits.
+///
+/// A raw `num` like `study_hours` can arrive as `1.0000001`, which must read as
+/// `1`, not `1.0000001`.
+String formatDecimal(BuildContext context, num value, {int fractionDigits = 1}) {
+  final factor = math.pow(10, fractionDigits);
+  final rounded = (value * factor).round() / factor;
+  return formatNumber(context, rounded);
 }

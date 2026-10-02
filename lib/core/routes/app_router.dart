@@ -1,6 +1,9 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/auth/auth_notifier.dart';
+import '../../features/auth/cubit/auth_cubit.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/sign_up_screen.dart';
 import '../../features/course_details/data/models/course_details.dart';
@@ -19,15 +22,14 @@ import 'teacher_routes.dart';
 /// location into the next.
 ///
 /// The table is one route per screen plus one `StatefulShellRoute` per role; the
-/// guard in [redirectFor] decides which of them the session may see, and [auth]
-/// is the `refreshListenable` that re-runs that guard after a sign-in or
-/// sign-out.
-GoRouter createAppRouter({required AuthNotifier auth}) {
+/// guard in [redirectFor] decides which of them the session may see, and the
+/// [GoRouterRefreshStream] re-runs that guard whenever the session cubit emits.
+GoRouter createAppRouter({required AuthCubit auth}) {
   return GoRouter(
     initialLocation: RoutePaths.root,
-    refreshListenable: auth,
+    refreshListenable: GoRouterRefreshStream(auth.stream),
     redirect: (context, state) =>
-        redirectFor(role: auth.role, location: state.matchedLocation),
+        redirectFor(role: auth.state.role, location: state.matchedLocation),
     routes: [
       GoRoute(
         path: RoutePaths.root,
@@ -35,7 +37,7 @@ GoRouter createAppRouter({required AuthNotifier auth}) {
         // at login while signed out. The guard above normally resolves it first;
         // this keeps the table consistent on its own.
         redirect: (context, state) =>
-            redirectFor(role: auth.role, location: RoutePaths.root),
+            redirectFor(role: auth.state.role, location: RoutePaths.root),
       ),
       GoRoute(
         path: RoutePaths.login,
@@ -86,4 +88,21 @@ String? redirectFor({required UserRole? role, required String location}) {
   }
   final owner = roleForLocation(location);
   return owner == null || owner == role ? null : homePathFor(role);
+}
+
+/// Bridges a [Stream] to the [Listenable] `GoRouter.refreshListenable` wants: the
+/// router re-runs its guard every time the session cubit emits. Small enough to
+/// need no package (the classic go_router recipe).
+class GoRouterRefreshStream extends ChangeNotifier {
+  GoRouterRefreshStream(Stream<Object?> stream) {
+    _subscription = stream.asBroadcastStream().listen((_) => notifyListeners());
+  }
+
+  late final StreamSubscription<Object?> _subscription;
+
+  @override
+  void dispose() {
+    unawaited(_subscription.cancel());
+    super.dispose();
+  }
 }

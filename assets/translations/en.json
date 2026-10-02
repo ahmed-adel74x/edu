@@ -46,13 +46,16 @@
       "passwordHint": "••••••••",
       "emailOrPhoneLabel": "Email or phone number",
       "emailOrPhoneHint": "name@example.com or 05xxxxxxxx",
-      "passwordLabel": "Password"
+      "passwordLabel": "Password",
+      "notAvailable": "This feature isn’t available yet",
+      "logout": "Sign out"
     },
     "roles": {
       "label": "Account type",
       "student": "Student",
       "teacher": "Teacher",
-      "parent": "Parent"
+      "parent": "Parent",
+      "devOnly": "Dev only"
     },
     "login": {
       "title": "Sign in",
@@ -97,7 +100,10 @@
       "passwordTooShort": "Your password must be at least 8 characters",
       "confirmPasswordRequired": "Please confirm your password",
       "passwordsMismatch": "The two passwords don't match",
-      "termsRequired": "You need to accept the terms and conditions to continue"
+      "termsRequired": "You need to accept the terms and conditions to continue",
+      "emailRequired": "Please enter your email",
+      "emailInvalid": "Enter a valid email address",
+      "passwordMinSix": "Your password must be at least 6 characters"
     }
   },
   "assignments": {
@@ -125,21 +131,59 @@
     "emptyMessage": "Try adjusting your search or the assignment status."
   },
   "home": {
-    "userName": "Ahmed",
     "welcomeTitle": "Welcome back, {name} 👋",
     "welcomeSubtitle": "Ready to carry on your learning journey and reach your goals today?",
-    "streakBadge": "On a roll • 4-day streak 🔥",
     "browseNew": "Browse new",
     "curriculumBadge": "An advanced interactive curriculum, ready for you",
     "continueLearningTitle": "Continue learning",
     "seeAll": "See all",
     "upcomingTitle": "Upcoming quizzes and tasks",
-    "upcomingBadge": "2 waiting for you",
+    "upcomingBadge": "{count} waiting for you",
     "progressLabel": "Progress",
+    "percent": "{value}%",
     "continueLessonCta": "Continue current lesson",
-    "weeklyTitle": "Weekly attendance activity",
-    "weeklySubtitle": "Total engagement: 5 active days",
-    "weeklyRangePill": "This week"
+    "remainingLectures": "{count} lectures remaining",
+    "assignmentAction": "Details",
+    "dueDate": "Due: {date}",
+    "retry": "Try again",
+    "stats": {
+      "enrolledCourses": "Enrolled courses",
+      "studyHours": "Study hours",
+      "completedCourses": "Completed courses",
+      "certificates": "Certificates earned",
+      "coursesUnit": "courses",
+      "hoursUnit": "h",
+      "courseUnit": "course",
+      "certificateUnit": "certificates"
+    },
+    "emptyCourses": {
+      "title": "No courses yet",
+      "message": "Enrol in a course and it will show up here, ready to pick up."
+    },
+    "emptyAssignments": {
+      "title": "Nothing coming up",
+      "message": "Quizzes and assignments with a due date will show up here."
+    },
+    "attendance": {
+      "title": "Attendance activity",
+      "subtitle": "You attended {attended} of {total} lectures"
+    },
+    "emptyAttendance": {
+      "title": "No activity yet",
+      "message": "Your lecture attendance will show up here, month by month."
+    },
+    "recentQuizzes": {
+      "title": "Recent quizzes",
+      "scoreLabel": "Score",
+      "emptyTitle": "No quizzes yet",
+      "emptyMessage": "The quizzes you take will show up here with their results."
+    },
+    "recentChats": {
+      "title": "Recent chats",
+      "noMessages": "No messages yet",
+      "emptyTitle": "No chats yet",
+      "emptyMessage": "Your course chats and their latest messages will show up here."
+    }
   },
   "explore": {
     "screenTitle": "Explore courses",
@@ -170,5 +214,19 @@
     "enrolledLabel": "Already enrolled",
     "progressLabel": "Progress",
     "continueCta": "Continue course"
+  },
+  "errors": {
+    "network": "No internet connection. Check your connection and try again.",
+    "timeout": "The request timed out. Please try again.",
+    "server": "Something went wrong on the server. Please try again shortly.",
+    "unknown": "Something went wrong. Please try again.",
+    "validation": "Please check the information you entered.",
+    "wrongCredentials": "The email or password is incorrect.",
+    "alreadyLoggedIn": "Your account is signed in on another device. Sign out there first.",
+    "enrollmentPending": "Your enrollment is still under review.",
+    "enrollmentRejected": "Your enrollment was rejected.",
+    "studentOnly": "This app is for students only.",
+    "unsupportedRole": "This kind of account isn’t supported in this app.",
+    "sessionEnded": "Your session has ended. Please sign in again."
   }
 }

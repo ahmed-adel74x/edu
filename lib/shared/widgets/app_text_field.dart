@@ -23,6 +23,7 @@ class AppTextField extends StatefulWidget {
     this.textInputAction,
     this.onFieldSubmitted,
     this.labelAction,
+    this.enabled = true,
   });
 
   final TextEditingController controller;
@@ -35,6 +36,9 @@ class AppTextField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final ValueChanged<String>? onFieldSubmitted;
   final Widget? labelAction;
+
+  /// When false the field is locked (used while a submission is in flight).
+  final bool enabled;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -68,6 +72,7 @@ class _AppTextFieldState extends State<AppTextField> {
         TextFormField(
           controller: widget.controller,
           obscureText: _obscure,
+          enabled: widget.enabled,
           keyboardType: widget.keyboardType,
           textInputAction: widget.textInputAction,
           onFieldSubmitted: widget.onFieldSubmitted,

@@ -76,15 +76,21 @@ class StatTile extends StatelessWidget {
             ],
           ),
           VGap.md(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text(stat.value, style: context.texts.statValue),
-              HGap.xxs(),
-              Text(stat.unit, style: context.texts.statUnit),
-            ],
+          // The figure and its unit are scaled down together rather than
+          // overflowing: a long localized number ("١٢٫٥ ساعة", "12.5 h") must
+          // fit the tile on a narrow phone as well as on a wide one.
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: AlignmentDirectional.centerStart,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(stat.value, style: context.texts.statValue),
+                HGap.xxs(),
+                Text(stat.unit, style: context.texts.statUnit),
+              ],
+            ),
           ),
         ],
       ),

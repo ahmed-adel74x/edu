@@ -3,19 +3,20 @@
 // The guard is a pure function of the current role and the location, so its
 // rules are asserted directly. The flows that need a tree — signing in, landing
 // in the right shell, refusing another role's deep link — pump the whole app.
-// Where the login form itself is not the subject, the session is injected as a
-// signed-in AuthNotifier instead of walking through it.
+// Where the login form is not the subject, the session is seeded by registering a
+// session cubit already signed in instead of walking through it.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:test_edu/core/constants/app_strings.dart';
+import 'package:test_edu/core/network/result.dart';
 import 'package:test_edu/core/routes/app_router.dart';
 import 'package:test_edu/core/routes/route_names.dart';
 import 'package:test_edu/features/assignments/student/assignments_screen.dart';
-import 'package:test_edu/features/auth/auth_notifier.dart';
 import 'package:test_edu/features/auth/constants/auth_strings.dart';
+import 'package:test_edu/features/auth/cubit/auth_cubit.dart';
 import 'package:test_edu/features/auth/screens/login_screen.dart';
 import 'package:test_edu/features/auth/screens/sign_up_screen.dart';
 import 'package:test_edu/features/home/student/home_screen.dart';
@@ -28,15 +29,16 @@ import 'package:test_edu/shared/widgets/app_primary_button.dart';
 import 'package:test_edu/shared/widgets/app_text_field.dart';
 
 import 'helpers/app_test_harness.dart';
+import 'helpers/auth_test_harness.dart';
 
 /// A common phone canvas (iPhone 14-ish), in logical pixels. Every dimension
 /// comes from `flutter_screenutil` (design canvas 375x812), so the surface has
 /// to stay phone-sized.
 const Size phoneSize = Size(390, 844);
 
-/// Pumps the app with [auth] injected, then lets the explore tab's simulated
-/// fetch finish so that no timer is left pending at teardown.
-Future<void> pumpApp(WidgetTester tester, AuthNotifier auth) async {
+/// Pumps the app over [auth], then lets the explore tab's simulated fetch finish
+/// so that no timer is left pending at teardown.
+Future<void> pumpApp(WidgetTester tester, AuthCubit auth) async {
   tester.view.physicalSize = phoneSize;
   tester.view.devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
@@ -58,7 +60,7 @@ int selectedTab(WidgetTester tester) =>
     tester.widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex;
 
 /// Walks the login form: fills both fields, picks the [roleLabel] account and
-/// submits, including the screen's simulated request.
+/// submits.
 Future<void> signInThroughLogin(
   WidgetTester tester, {
   required String roleLabel,
@@ -76,7 +78,6 @@ Future<void> signInThroughLogin(
   await tester.ensureVisible(submit);
   await tester.pump();
   await tester.tap(submit);
-  await tester.pump(const Duration(milliseconds: 900));
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 400));
 }
@@ -190,7 +191,7 @@ void main() {
     testWidgets('opens login instead of a shell while signed out', (
       tester,
     ) async {
-      await pumpApp(tester, AuthNotifier());
+      await pumpApp(tester, registerTestAuth(repository: fakeAuthRepository()));
 
       expect(find.byType(LoginScreen), findsOneWidget);
       expect(find.byType(AppBottomNavBar), findsNothing);
@@ -201,12 +202,15 @@ void main() {
     testWidgets('signs a student in and opens the student shell', (
       tester,
     ) async {
-      final auth = AuthNotifier();
+      final repository = fakeAuthRepository(
+        loginResult: Success(testUser(UserRole.student)),
+      );
+      final auth = registerTestAuth(repository: repository);
       await pumpApp(tester, auth);
 
       await signInThroughLogin(tester, roleLabel: AuthStrings.roleStudent);
 
-      expect(auth.role, UserRole.student);
+      expect(auth.state.role, UserRole.student);
       expect(find.byType(LoginScreen), findsNothing);
       expect(find.byType(HomeScreen), findsOneWidget);
       expect(barLabels(tester), [
@@ -219,15 +223,15 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('signs a teacher in and opens the teacher shell', (
+    testWidgets('the debug selector previews the teacher shell', (
       tester,
     ) async {
-      final auth = AuthNotifier();
+      final auth = registerTestAuth(repository: fakeAuthRepository());
       await pumpApp(tester, auth);
 
       await signInThroughLogin(tester, roleLabel: AuthStrings.roleTeacher);
 
-      expect(auth.role, UserRole.teacher);
+      expect(auth.state.role, UserRole.teacher);
       expect(find.byType(TeacherShell), findsOneWidget);
       expect(find.byType(HomeScreen), findsNothing);
       expect(barLabels(tester), [
@@ -237,12 +241,11 @@ void main() {
         AppStrings.navStudents,
         AppStrings.navProfile,
       ]);
-      expect(find.text(AppStrings.navExplore), findsNothing);
       expect(tester.takeException(), isNull);
     });
 
     testWidgets('opens the parent shell for a parent session', (tester) async {
-      await pumpApp(tester, AuthNotifier.signedIn(UserRole.parent));
+      await pumpApp(tester, signedInAuthCubit(UserRole.parent));
 
       expect(find.byType(ParentShell), findsOneWidget);
       expect(barLabels(tester), [
@@ -256,7 +259,7 @@ void main() {
     });
 
     testWidgets('switches a placeholder tab and back', (tester) async {
-      await pumpApp(tester, AuthNotifier.signedIn(UserRole.teacher));
+      await pumpApp(tester, signedInAuthCubit(UserRole.teacher));
 
       await tester.tap(find.text(AppStrings.navStudents));
       await tester.pump();
@@ -270,16 +273,13 @@ void main() {
     });
 
     testWidgets('a deep link into another role is refused', (tester) async {
-      await pumpApp(tester, AuthNotifier.signedIn(UserRole.student));
+      await pumpApp(tester, signedInAuthCubit());
 
-      // Move off the home tab first, so the assertions can tell the guard's
-      // bounce to the student's first tab apart from "nothing happened".
       await tester.tap(find.text(AppStrings.navAssignments));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 400));
       expect(find.byType(AssignmentsScreen), findsOneWidget);
 
-      // A stale notification (or a hand-typed URL) pointing at the teacher area.
       GoRouter.of(tester.element(find.byType(AppBottomNavBar)))
           .go(RoutePaths.teacherStudents);
       await tester.pump();
@@ -293,7 +293,7 @@ void main() {
     testWidgets('sign-up renders, with the same three role choices', (
       tester,
     ) async {
-      await pumpApp(tester, AuthNotifier());
+      await pumpApp(tester, registerTestAuth(repository: fakeAuthRepository()));
 
       final createAccount = find.text(AuthStrings.createAccountLink);
       await tester.ensureVisible(createAccount);
@@ -317,16 +317,33 @@ void main() {
     });
 
     testWidgets('signing out returns to login', (tester) async {
-      final auth = AuthNotifier.signedIn(UserRole.student);
+      final auth = signedInAuthCubit();
       await pumpApp(tester, auth);
       expect(find.byType(HomeScreen), findsOneWidget);
 
-      auth.signOut();
+      await auth.logout();
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 400));
 
       expect(find.byType(LoginScreen), findsOneWidget);
       expect(find.byType(AppBottomNavBar), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('the temporary Profile tab signs out', (tester) async {
+      final auth = signedInAuthCubit();
+      await pumpApp(tester, auth);
+
+      await tester.tap(find.text(AppStrings.navProfile));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(find.text(AuthStrings.logout), findsOneWidget);
+
+      await tester.tap(find.widgetWithText(AppPrimaryButton, AuthStrings.logout));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+
+      expect(find.byType(LoginScreen), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   });

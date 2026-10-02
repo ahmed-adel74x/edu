@@ -4,13 +4,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_dimensions.dart';
 import '../../../../core/theme/app_type_scale.dart';
-import '../../../../shared/widgets/app_pill.dart';
 import '../../constants/home_strings.dart';
 
-/// Greeting card at the top of the home screen: streak badge, "browse new"
-/// link, the welcome copy and a preview of the interactive curriculum.
+/// Greeting card at the top of the home screen: the "browse new" link, the
+/// welcome copy and a preview of the interactive curriculum.
 class WelcomeHeroCard extends StatelessWidget {
-  const WelcomeHeroCard({super.key, this.onBrowseNew, this.onCurriculumTap});
+  const WelcomeHeroCard({
+    super.key,
+    required this.name,
+    this.onBrowseNew,
+    this.onCurriculumTap,
+  });
+
+  /// The signed-in student's name, shown in the greeting.
+  final String name;
 
   final VoidCallback? onBrowseNew;
   final VoidCallback? onCurriculumTap;
@@ -35,34 +42,15 @@ class WelcomeHeroCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            children: [
-              // The badge takes whatever the link leaves behind, so the row
-              // survives narrow phones and large accessibility text scales
-              // without ever overflowing.
-              Expanded(
-                child: Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: AppPill(
-                    color: context.colors.surface.withValues(alpha: 0.72),
-                    child: Text(
-                      HomeStrings.streakBadge,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: context.texts.bodySmall.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: context.colors.ink,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              HGap.xs(),
-              _BrowseNewLink(onTap: onBrowseNew),
-            ],
+          // The "browse new" link keeps the trailing spot it held opposite the
+          // (now removed) streak badge, so the header reads in the same order on
+          // narrow phones as on wide ones.
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: _BrowseNewLink(onTap: onBrowseNew),
           ),
           VGap.md(),
-          Text(HomeStrings.welcomeTitle, style: context.texts.display),
+          Text(HomeStrings.welcomeTitle(name), style: context.texts.display),
           VGap.xs(),
           Text(HomeStrings.welcomeSubtitle, style: context.texts.body),
           VGap.lg(),

@@ -6,16 +6,22 @@ import '../../../../core/theme/app_dimensions.dart';
 
 /// Square course image used by the "continue learning" cards. The featured
 /// card layers a play affordance on top of it.
+///
+/// [coverPath] is whatever the API sent, exactly as sent: only an absolute
+/// `http(s)` URL is loaded over the network; anything else (a relative path the
+/// app has no documented base for, or null) falls back to the neutral
+/// placeholder built from the app's own surface/icon treatment.
 class CourseThumbnail extends StatelessWidget {
   const CourseThumbnail({
     super.key,
-    required this.image,
+    required this.coverPath,
     this.size = 88,
     this.radius,
     this.showPlayOverlay = false,
   });
 
-  final String image;
+  /// The cover path/URL as the API sent it, or null.
+  final String? coverPath;
 
   /// Rendered as a square of `size.w`.
   final double size;
@@ -24,6 +30,11 @@ class CourseThumbnail extends StatelessWidget {
   final double? radius;
 
   final bool showPlayOverlay;
+
+  bool get _isUrl {
+    final path = coverPath;
+    return path != null && path.startsWith('http');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +46,14 @@ class CourseThumbnail extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(image, fit: BoxFit.cover),
+            if (_isUrl)
+              Image.network(
+                coverPath!,
+                fit: BoxFit.cover,
+                errorBuilder: (_, _, _) => _Placeholder(iconSize: size * 0.3),
+              )
+            else
+              _Placeholder(iconSize: size * 0.3),
             if (showPlayOverlay)
               Center(
                 child: Container(
@@ -53,6 +71,28 @@ class CourseThumbnail extends StatelessWidget {
                 ),
               ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Neutral cover used when there is no renderable cover: the app's own tinted
+/// surface with the brand's school glyph.
+class _Placeholder extends StatelessWidget {
+  const _Placeholder({required this.iconSize});
+
+  final double iconSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: context.colors.surfaceTint,
+      child: Center(
+        child: Icon(
+          Icons.school_rounded,
+          color: context.colors.primary,
+          size: iconSize.sp,
         ),
       ),
     );

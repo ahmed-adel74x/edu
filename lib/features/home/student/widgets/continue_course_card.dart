@@ -38,7 +38,7 @@ class ContinueCourseCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CourseThumbnail(
-                image: course.image,
+                coverPath: course.coverPath,
                 size: 88,
                 showPlayOverlay: true,
               ),
@@ -47,8 +47,10 @@ class ContinueCourseCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _InstructorLine(name: course.instructor),
-                    VGap.xs(),
+                    if (course.instructor != null) ...[
+                      _InstructorLine(name: course.instructor!),
+                      VGap.xs(),
+                    ],
                     Text(
                       course.title,
                       textAlign: TextAlign.start,

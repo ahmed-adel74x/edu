@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:test_edu/core/constants/app_strings.dart';
-import 'package:test_edu/features/auth/auth_notifier.dart';
 import 'package:test_edu/navigation/app_bottom_nav_bar.dart';
 import 'package:test_edu/navigation/student_shell.dart';
 import 'package:test_edu/features/assignments/student/assignments_screen.dart';
@@ -18,6 +17,7 @@ import 'package:test_edu/features/home/student/home_screen.dart';
 import 'package:test_edu/main.dart';
 
 import 'helpers/app_test_harness.dart';
+import 'helpers/auth_test_harness.dart';
 
 /// Sizes the test surface like a phone: on a much larger canvas ScreenUtil
 /// would scale every `.w`/`.sp` value past the screens' `maxWidth` column.
@@ -183,7 +183,7 @@ void main() {
       'the other tabs', (tester) async {
     useCanvas(tester, const Size(390, 844));
     await tester.pumpWidget(
-      MyApp(auth: AuthNotifier.signedIn(), assetLoader: memoryAssetLoader),
+      MyApp(auth: signedInAuthCubit(), assetLoader: memoryAssetLoader),
     );
     await tester.pump(const Duration(milliseconds: 600));
 

@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:test_edu/core/constants/app_strings.dart';
-import 'package:test_edu/features/auth/auth_notifier.dart';
 import 'package:test_edu/shared/widgets/app_pill.dart';
 import 'package:test_edu/shared/widgets/app_search_field.dart';
 import 'package:test_edu/shared/widgets/category_chip_row.dart';
@@ -36,6 +35,7 @@ import 'package:test_edu/features/explore_courses/widgets/course_card_skeleton.d
 import 'package:test_edu/main.dart';
 
 import 'helpers/app_test_harness.dart';
+import 'helpers/auth_test_harness.dart';
 
 /// A common phone canvas (iPhone 14-ish), in logical pixels.
 const Size phoneSize = Size(390, 844);
@@ -110,7 +110,7 @@ Future<void> pumpExploreScreen(
   tester.view.devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
   await tester.pumpWidget(
-    MyApp(auth: AuthNotifier.signedIn(), assetLoader: memoryAssetLoader),
+    MyApp(auth: signedInAuthCubit(), assetLoader: memoryAssetLoader),
   );
   await tester.pump();
 

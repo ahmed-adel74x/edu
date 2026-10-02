@@ -15,10 +15,7 @@ import 'package:test_edu/core/theme/app_colors_extension.dart';
 import 'package:test_edu/features/explore_courses/student/explore_courses_screen.dart';
 import 'package:test_edu/features/explore_courses/widgets/course_card.dart';
 import 'package:test_edu/features/explore_courses/widgets/course_card_skeleton.dart';
-import 'package:test_edu/features/home/constants/home_strings.dart';
-import 'package:test_edu/features/home/student/home_screen.dart';
 import 'package:test_edu/main.dart';
-import 'package:test_edu/shared/widgets/app_pill.dart';
 
 import 'helpers/app_test_harness.dart';
 
@@ -102,15 +99,6 @@ List<Color> paintedFills(WidgetTester tester, Finder root) {
 /// The colour the cover badge's label is painted in.
 Color? badgeInk(WidgetTester tester) =>
     tester.widget<Text>(find.text(course.badge)).style!.color;
-
-/// The Home hero card's streak chip — the other place that used to be a
-/// hardcoded white surface.
-AppPill streakChip(WidgetTester tester) => tester.widget<AppPill>(
-  find.ancestor(
-    of: find.text(HomeStrings.streakBadge),
-    matching: find.byType(AppPill),
-  ),
-);
 
 void main() {
   setUp(prepareAppEnvironment);
@@ -204,32 +192,5 @@ void main() {
       paintedFills(tester, find.byType(CourseCard)),
       contains(Colors.white),
     );
-  });
-
-  testWidgets('the hero streak chip darkens with the theme too', (
-    tester,
-  ) async {
-    // The same hardcoded white had a second site: the Home hero's streak chip
-    // is a translucent *surface*, so on the dark hero it has to darken, or the
-    // light ink it carries would vanish into it.
-    await pumpIn(
-      tester,
-      child: const HomeScreen(),
-      locale: const Locale('ar'),
-      dark: false,
-    );
-    // The shipped value was white, and the light palette's surface *is* white,
-    // so the chip is bit-for-bit what it was.
-    expect(streakChip(tester).color, Colors.white.withValues(alpha: 0.72));
-
-    await pumpIn(
-      tester,
-      child: const HomeScreen(),
-      locale: const Locale('ar'),
-      dark: true,
-    );
-    await tester.pumpAndSettle(); // the theme change itself is animated
-    expect(streakChip(tester).color, dark.surface.withValues(alpha: 0.72));
-    expect(streakChip(tester).color, isNot(Colors.white));
   });
 }

@@ -23,7 +23,11 @@ class CompactCourseTile extends StatelessWidget {
       onTap: onTap,
       child: Row(
         children: [
-          CourseThumbnail(image: course.image, size: 72, radius: AppRadius.sm),
+          CourseThumbnail(
+            coverPath: course.coverPath,
+            size: 72,
+            radius: AppRadius.sm,
+          ),
           HGap.sm(),
           Expanded(
             child: Column(
@@ -36,14 +40,16 @@ class CompactCourseTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: context.texts.cardTitle,
                 ),
-                VGap.xxs(),
-                Text(
-                  course.instructor,
-                  textAlign: TextAlign.start,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.texts.bodySmall,
-                ),
+                if (course.instructor != null) ...[
+                  VGap.xxs(),
+                  Text(
+                    course.instructor!,
+                    textAlign: TextAlign.start,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.texts.bodySmall,
+                  ),
+                ],
                 VGap.sm(),
                 Row(
                   children: [

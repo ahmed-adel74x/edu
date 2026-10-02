@@ -10,9 +10,11 @@
 // because the loading skeletons animate forever.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:test_edu/core/theme/app_colors_extension.dart';
+import 'package:test_edu/features/auth/cubit/auth_cubit.dart';
 import 'package:test_edu/features/course_details/constants/course_details_strings.dart';
 import 'package:test_edu/features/course_details/student/course_details_screen.dart';
 import 'package:test_edu/features/course_details/widgets/course_stat_grid.dart';
@@ -24,6 +26,7 @@ import 'package:test_edu/main.dart';
 import 'package:test_edu/shared/widgets/app_icon_tile.dart';
 
 import 'helpers/app_test_harness.dart';
+import 'helpers/auth_test_harness.dart';
 
 /// A common phone canvas (iPhone 14-ish), and a narrow one for English copy.
 const phoneSize = Size(390, 844);
@@ -36,16 +39,27 @@ void useCanvas(WidgetTester tester, Size size) {
 }
 
 /// Pumps one screen in the given language and theme.
+///
+/// [session] is the signed-in session a screen watches; pass it for the screens
+/// that read one (the dashboard greets the learner by name, so it also needs its
+/// graph registered — see `registerTestAuth`).
 Future<void> pumpScreen(
   WidgetTester tester, {
   required Widget screen,
   required Locale locale,
   required bool dark,
   Size size = phoneSize,
+  AuthCubit? session,
 }) async {
   useCanvas(tester, size);
   await tester.pumpWidget(
-    localizedApp(child: screen, locale: locale, dark: dark),
+    localizedApp(
+      child: session == null
+          ? screen
+          : BlocProvider<AuthCubit>.value(value: session, child: screen),
+      locale: locale,
+      dark: dark,
+    ),
   );
   await tester.pump();
   await tester.pump(ExploreCoursesScreen.loadingDuration);
@@ -74,14 +88,20 @@ void main() {
       final combination = '${locale.languageCode}/${dark ? 'dark' : 'light'}';
 
       testWidgets('home builds in $combination', (tester) async {
+        // The dashboard greets the session's learner and reads its payload from
+        // its own graph in the locator, so it needs both.
         await pumpScreen(
           tester,
           screen: const HomeScreen(),
           locale: locale,
           dark: dark,
+          session: signedInAuthCubit(),
         );
 
-        expect(find.text(HomeStrings.welcomeTitle), findsOneWidget);
+        expect(
+          find.text(HomeStrings.welcomeTitle(testUserName)),
+          findsOneWidget,
+        );
         expect(find.text(HomeStrings.continueLearningTitle), findsOneWidget);
         await walkThrough(tester);
       });
@@ -124,6 +144,7 @@ void main() {
       locale: locale,
       dark: false,
       size: smallPhoneSize,
+      session: signedInAuthCubit(),
     );
     await walkThrough(tester, steps: 14);
 
